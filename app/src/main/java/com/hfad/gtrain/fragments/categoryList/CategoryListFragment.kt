@@ -9,6 +9,7 @@ import com.hfad.gtrain.R
 
 class CategoryListFragment : Fragment() {
 
+
     override fun onCreateView(
         inflater: LayoutInflater, container: ViewGroup?,
         savedInstanceState: Bundle?
