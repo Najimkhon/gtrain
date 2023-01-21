@@ -4,8 +4,6 @@ import android.os.Parcelable
 import kotlinx.parcelize.Parcelize
 
 @Parcelize
-data class Category (
-    val title: String,
-    val imageUrl: String ="",
-    val exerciseList: ArrayList<Exercise>
+data class Set (
+    val reps: ArrayList<Rep>
         ):Parcelable

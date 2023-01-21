@@ -4,15 +4,12 @@ import android.os.Parcelable
 import androidx.room.Entity
 import androidx.room.PrimaryKey
 import kotlinx.parcelize.Parcelize
-@Entity
+
+@Entity(tableName = "muscleGroup")
 @Parcelize
-data class Exercise(
+data class MuscleGroup (
     @PrimaryKey(autoGenerate = true)
     val id: Int,
-    val name: String,
-    val image: String = "",
-    val videoUrl: String = "",
-    val description: String = "",
-    val calories: Int,
-    val muscleGroupId: Int
-    ):Parcelable
+    val title: String,
+    val imageUrl: String =""
+        ):Parcelable
