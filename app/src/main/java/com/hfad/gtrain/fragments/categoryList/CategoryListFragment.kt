@@ -11,6 +11,7 @@ import androidx.navigation.fragment.NavHostFragment
 import com.hfad.gtrain.R
 import com.hfad.gtrain.data.DummyData
 import com.hfad.gtrain.databinding.FragmentCategoryListBinding
+import com.hfad.gtrain.models.Exercise
 import com.hfad.gtrain.models.MuscleGroup
 import com.hfad.gtrain.viewmodels.MainViewmodel
 import dagger.hilt.android.AndroidEntryPoint
@@ -29,18 +30,33 @@ class CategoryListFragment : Fragment() {
         _binding = FragmentCategoryListBinding.inflate(inflater, container, false)
         val view = binding.root
         binding.tvWelcomeMessage.text = viewModel.testString
+        val exercises = viewModel.getMuscleGroupWithExercises("Chest")
+        exercises.observe(viewLifecycleOwner){
+            binding.tvCategoryName.text = it[0].exercises[0].name
+        }
+
+
         binding.tvWelcomeMessage.setOnClickListener {
-            println("hop: Button is created")
+            println("hop: Button is pressed")
             viewModel.getAllData.observe(viewLifecycleOwner) {
                 if (it.isEmpty()) {
                     DummyData.muscleGroups.forEach { muscleGroup ->
                         insertMuscleGroup(muscleGroup)
 
-                        println("hop: DummyData is created")
-
+                        println("hop: MuscleGroups are added")
                     }
                 }
             }
+            viewModel.getAllExercise.observe(viewLifecycleOwner){
+                if (it.isEmpty()){
+                    DummyData.exercises.forEach { exercise ->
+                        viewModel.insertExercise(exercise)
+                        println("hop: Exercises are added")
+                    }
+                }
+            }
+
+
         }
 
 

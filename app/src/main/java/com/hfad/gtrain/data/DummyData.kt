@@ -1,6 +1,7 @@
 package com.hfad.gtrain.data
 
 
+import com.hfad.gtrain.models.Exercise
 import com.hfad.gtrain.models.MuscleGroup
 
 
@@ -8,35 +9,105 @@ object DummyData {
 
     val muscleGroups = listOf(
         MuscleGroup(
-            0,
             "Chest",
             ""
         ),
         MuscleGroup(
-            0,
             "Biceps",
             ""
         ),
         MuscleGroup(
-            0,
             "Triceps",
             ""
         ),
         MuscleGroup(
-            0,
             "Back",
             ""
         ),
         MuscleGroup(
-            0,
             "Legs",
             ""
         ),
         MuscleGroup(
-            0,
             "Shoulders",
             ""
         ),
+    )
+
+    val exercises = listOf(
+        Exercise(
+            0,
+            "Bench Press",
+            "",
+            "",
+            "One of the core exercises",
+            54,
+            "Chest"
+        ),
+        Exercise(
+            0,
+            "Incline Presses",
+            "",
+            "",
+            "30 degrees",
+            50,
+            "Chest"
+        ),
+        Exercise(
+            0,
+            "Incline Dumbbell",
+            "",
+            "",
+            "30 degrees",
+            50,
+            "Chest"
+        ),
+        Exercise(
+            0,
+            "Parallel Bar Dips",
+            "",
+            "",
+            "Bruce",
+            60,
+            "Chest"
+        ),
+        Exercise(
+            0,
+            "Curls",
+            "",
+            "",
+            "30 degrees",
+            52,
+            "Biceps"
+        ),
+        Exercise(
+            0,
+            "Barbell Curls",
+            "",
+            "",
+            "30 degrees",
+            52,
+            "Biceps"
+        ),
+        Exercise(
+            0,
+            "Preacher Curls",
+            "",
+            "",
+            "30 degrees",
+            52,
+            "Biceps"
+        ),
+        Exercise(
+            0,
+            "Hammer Curls",
+            "",
+            "",
+            "30 degrees",
+            52,
+            "Biceps"
+        )
+
     )
 
 

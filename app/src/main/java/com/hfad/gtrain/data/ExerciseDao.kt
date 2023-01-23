@@ -10,8 +10,11 @@ import com.hfad.gtrain.models.relations.MuscleGroupWithExercises
 
 @Dao
 interface ExerciseDao {
-    @Query("SELECT * FROM muscleGroup ORDER BY id ASC")
+    @Query("SELECT * FROM muscleGroup")
     fun getAllData(): LiveData<List<MuscleGroup>>
+
+    @Query("SELECT * FROM exercise")
+    fun getAllExercise(): LiveData<List<Exercise>>
 
     @Insert(onConflict = OnConflictStrategy.REPLACE)
     suspend fun insertMuscleGroup(muscleGroup: MuscleGroup)
@@ -27,8 +30,8 @@ interface ExerciseDao {
     fun getExerciseWithRecords(id: Int):LiveData<List<ExerciseWithRecords>>
 
     @Transaction
-    @Query("SELECT * FROM muscleGroup WHERE id = :id")
-    fun getMuscleGroupWithExercises(id: Int):LiveData<List<MuscleGroupWithExercises>>
+    @Query("SELECT * FROM muscleGroup WHERE title = :muscleGroup")
+    fun getMuscleGroupWithExercises(muscleGroup: String):LiveData<List<MuscleGroupWithExercises>>
 
 
 

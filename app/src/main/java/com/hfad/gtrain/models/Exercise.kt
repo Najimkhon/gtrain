@@ -14,5 +14,5 @@ data class Exercise(
     val videoUrl: String = "",
     val description: String = "",
     val calories: Int,
-    val muscleGroupId: Int
+    val muscleGroup: String
     ):Parcelable
