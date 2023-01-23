@@ -12,16 +12,16 @@ import com.hfad.gtrain.models.Record
 @Database(entities = [MuscleGroup::class, Exercise::class, Record::class],
     version = 1, exportSchema = false)
 @TypeConverters(Converter::class)
-abstract class CardDatabase : RoomDatabase() {
+abstract class ExerciseDatabase : RoomDatabase() {
 
     abstract fun exerciseDao(): ExerciseDao
 
     companion object {
 
         @Volatile
-        private var INSTANCE: CardDatabase? = null
+        private var INSTANCE: ExerciseDatabase? = null
 
-        fun getDatabase(context: Context): CardDatabase {
+        fun getDatabase(context: Context): ExerciseDatabase {
             val tempInstance = INSTANCE
             if (tempInstance != null) {
                 return tempInstance
@@ -29,7 +29,7 @@ abstract class CardDatabase : RoomDatabase() {
             synchronized(this) {
                 val instance = Room.databaseBuilder(
                     context.applicationContext,
-                    CardDatabase::class.java,
+                    ExerciseDatabase::class.java,
                     "exercise_database"
                 ).build()
                 INSTANCE = instance

@@ -2,17 +2,17 @@
 <menu
     xmlns:android="http://schemas.android.com/apk/res/android">
     <item
-        android:id="@+id/homeFragment"
+        android:id="@+id/categoryListFragment"
         android:icon="@drawable/ic_exercises"
         android:title="Exercises" />
 
     <item
-        android:id="@+id/historyFragment"
+        android:id="@+id/exerciseListFragment"
         android:icon="@drawable/ic_programs"
         android:title="Programs" />
 
     <item
-        android:id="@+id/budgetFragment"
+        android:id="@+id/exerciseDetailFragment"
         android:icon="@drawable/ic_logs"
         android:title="Logs" />
 

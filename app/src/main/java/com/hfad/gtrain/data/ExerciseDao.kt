@@ -24,11 +24,11 @@ interface ExerciseDao {
 
     @Transaction
     @Query("SELECT * FROM exercise WHERE id = :id")
-    suspend fun getExerciseWithRecords(id: Int):List<ExerciseWithRecords>
+    fun getExerciseWithRecords(id: Int):LiveData<List<ExerciseWithRecords>>
 
     @Transaction
     @Query("SELECT * FROM muscleGroup WHERE id = :id")
-    suspend fun getMuscleGroupWithExercises(id: Int):List<MuscleGroupWithExercises>
+    fun getMuscleGroupWithExercises(id: Int):LiveData<List<MuscleGroupWithExercises>>
 
 
 
