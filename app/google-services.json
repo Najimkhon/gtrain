@@ -1,0 +1,39 @@
+{
+  "project_info": {
+    "project_number": "424875134607",
+    "project_id": "gtrain-197b9",
+    "storage_bucket": "gtrain-197b9.appspot.com"
+  },
+  "client": [
+    {
+      "client_info": {
+        "mobilesdk_app_id": "1:424875134607:android:fac6ac4dc4fe7f18602afa",
+        "android_client_info": {
+          "package_name": "com.hfad.gtrain"
+        }
+      },
+      "oauth_client": [
+        {
+          "client_id": "424875134607-rpj2i2tkdteu66cfa7v09ts8mr9dkpal.apps.googleusercontent.com",
+          "client_type": 3
+        }
+      ],
+      "api_key": [
+        {
+          "current_key": "AIzaSyAEmYkV1c3L6wTOd9_ySoTsXWUprHNJmE0"
+        }
+      ],
+      "services": {
+        "appinvite_service": {
+          "other_platform_oauth_client": [
+            {
+              "client_id": "424875134607-rpj2i2tkdteu66cfa7v09ts8mr9dkpal.apps.googleusercontent.com",
+              "client_type": 3
+            }
+          ]
+        }
+      }
+    }
+  ],
+  "configuration_version": "1"
+}

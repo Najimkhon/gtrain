@@ -13,8 +13,9 @@ class RoomRepository @Inject constructor(
    val exerciseDao: ExerciseDao
 ) {
     val testString = "Dagger works!"
-    val getAllData: LiveData<List<MuscleGroup>> = exerciseDao.getAllData()
+    val getAllmuscleGroup: LiveData<List<MuscleGroup>> = exerciseDao.getAllMuscleGroup()
     val getAllExercise: LiveData<List<Exercise>> = exerciseDao.getAllExercise()
+    val getAllRecord: LiveData<List<Record>> = exerciseDao.getAllRecord()
 
     suspend fun insertMuscleGroup(muscleGroup: MuscleGroup){
         exerciseDao.insertMuscleGroup(muscleGroup)

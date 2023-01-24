@@ -5,5 +5,6 @@ import kotlinx.parcelize.Parcelize
 
 @Parcelize
 data class Set (
-    val reps: ArrayList<Rep>
+    val reps: Int,
+    val weights: Int
         ):Parcelable

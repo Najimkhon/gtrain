@@ -6,16 +6,10 @@ import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
 import androidx.fragment.app.viewModels
-import androidx.lifecycle.viewModelScope
-import androidx.navigation.fragment.NavHostFragment
-import com.hfad.gtrain.R
 import com.hfad.gtrain.data.DummyData
 import com.hfad.gtrain.databinding.FragmentCategoryListBinding
-import com.hfad.gtrain.models.Exercise
-import com.hfad.gtrain.models.MuscleGroup
 import com.hfad.gtrain.viewmodels.MainViewmodel
 import dagger.hilt.android.AndroidEntryPoint
-import kotlin.math.log
 
 @AndroidEntryPoint
 class CategoryListFragment : Fragment() {
@@ -26,47 +20,59 @@ class CategoryListFragment : Fragment() {
     override fun onCreateView(
         inflater: LayoutInflater, container: ViewGroup?,
         savedInstanceState: Bundle?
-    ): View? {
+    ): View {
         _binding = FragmentCategoryListBinding.inflate(inflater, container, false)
         val view = binding.root
         binding.tvWelcomeMessage.text = viewModel.testString
-        val exercises = viewModel.getMuscleGroupWithExercises("Chest")
-        exercises.observe(viewLifecycleOwner){
-            binding.tvCategoryName.text = it[0].exercises[0].name
+        binding.tvCategoryName.setOnClickListener {
+            val exercises = viewModel.getMuscleGroupWithExercises("Chest")
+            exercises.observe(viewLifecycleOwner) {
+                if (it.isNotEmpty()) {
+                    binding.tvCategoryName.text = it[0].exercises[0].name
+                }
+            }
+            val records = viewModel.getExerciseWithRecords(0)
+            records.observe(viewLifecycleOwner) {
+                if (it.isNotEmpty()) {
+                    binding.tvDescription.text = it[0].records[0].exerciseId.toString()
+                }
+            }
         }
-
 
         binding.tvWelcomeMessage.setOnClickListener {
             println("hop: Button is pressed")
-            viewModel.getAllData.observe(viewLifecycleOwner) {
+            viewModel.getAllmuscleGroup.observe(viewLifecycleOwner) {
                 if (it.isEmpty()) {
                     DummyData.muscleGroups.forEach { muscleGroup ->
-                        insertMuscleGroup(muscleGroup)
+                        viewModel.insertMuscleGroup(muscleGroup)
 
-                        println("hop: MuscleGroups are added")
+                        println("hop: MuscleGroup is added")
                     }
                 }
             }
-            viewModel.getAllExercise.observe(viewLifecycleOwner){
-                if (it.isEmpty()){
+            viewModel.getAllExercise.observe(viewLifecycleOwner) {
+                if (it.isEmpty()) {
                     DummyData.exercises.forEach { exercise ->
                         viewModel.insertExercise(exercise)
-                        println("hop: Exercises are added")
+                        println("hop: Exercise is added")
                     }
                 }
             }
 
+            viewModel.getAllRecord.observe(viewLifecycleOwner) {
+                if (it.isEmpty()) {
+                    DummyData.records.forEach { record ->
+                        viewModel.insertRecord(record)
+                        println("hop: Record is added")
+                    }
+                }
+            }
 
         }
-
-
 
         return view
 
     }
 
-    private fun insertMuscleGroup(muscleGroup: MuscleGroup) {
-        viewModel.insertMuscleGroup(muscleGroup)
-    }
 
 }

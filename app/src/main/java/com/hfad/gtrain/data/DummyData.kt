@@ -3,6 +3,8 @@ package com.hfad.gtrain.data
 
 import com.hfad.gtrain.models.Exercise
 import com.hfad.gtrain.models.MuscleGroup
+import com.hfad.gtrain.models.Record
+import com.hfad.gtrain.models.Set
 
 
 object DummyData {
@@ -108,6 +110,66 @@ object DummyData {
             "Biceps"
         )
 
+    )
+
+    val records = listOf(
+        Record(
+            0,
+            0,
+            exercises[0].id,
+            listOf(
+                Set(
+                    12,
+                    60
+                ),
+                Set(
+                    12,
+                    60
+                ),
+                Set(
+                    12,
+                    65
+                ),
+            )
+        ),
+        Record(
+            0,
+            0,
+            exercises[1].id,
+            listOf(
+                Set(
+                    12,
+                    60
+                ),
+                Set(
+                    12,
+                    60
+                ),
+                Set(
+                    12,
+                    65
+                ),
+            )
+        ),
+        Record(
+            0,
+            0,
+            exercises[2].id,
+            listOf(
+                Set(
+                    12,
+                    60
+                ),
+                Set(
+                    12,
+                    60
+                ),
+                Set(
+                    12,
+                    65
+                ),
+            )
+        )
     )
 
 
