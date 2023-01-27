@@ -2,7 +2,7 @@
 <menu
     xmlns:android="http://schemas.android.com/apk/res/android">
     <item
-        android:id="@+id/categoryListFragment"
+        android:id="@+id/muscleGroupListFragment"
         android:icon="@drawable/ic_exercises"
         android:title="Exercises" />
 

@@ -3,13 +3,13 @@
     xmlns:app="http://schemas.android.com/apk/res-auto"
     xmlns:tools="http://schemas.android.com/tools"
     android:id="@+id/nav_graph"
-    app:startDestination="@id/categoryListFragment">
+    app:startDestination="@id/muscleGroupListFragment">
 
     <fragment
-        android:id="@+id/categoryListFragment"
-        android:name="com.hfad.gtrain.fragments.categoryList.CategoryListFragment"
+        android:id="@+id/muscleGroupListFragment"
+        android:name="com.hfad.gtrain.fragments.muscleGroupList.MuscleGroupListFragment"
         android:label="fragment_category_list"
-        tools:layout="@layout/fragment_category_list" />
+        tools:layout="@layout/fragment_muscle_group_list" />
     <fragment
         android:id="@+id/exerciseListFragment"
         android:name="com.hfad.gtrain.fragments.exerciseList.ExerciseListFragment"

@@ -1,4 +1,4 @@
-package com.hfad.gtrain.fragments.categoryList
+package com.hfad.gtrain.fragments.muscleGroupList
 
 import android.os.Bundle
 import androidx.fragment.app.Fragment
@@ -7,13 +7,13 @@ import android.view.View
 import android.view.ViewGroup
 import androidx.fragment.app.viewModels
 import com.hfad.gtrain.data.DummyData
-import com.hfad.gtrain.databinding.FragmentCategoryListBinding
+import com.hfad.gtrain.databinding.FragmentMuscleGroupListBinding
 import com.hfad.gtrain.viewmodels.MainViewmodel
 import dagger.hilt.android.AndroidEntryPoint
 
 @AndroidEntryPoint
-class CategoryListFragment : Fragment() {
-    private var _binding: FragmentCategoryListBinding? = null
+class MuscleGroupListFragment : Fragment() {
+    private var _binding: FragmentMuscleGroupListBinding? = null
     private val binding get() = _binding!!
     private val viewModel: MainViewmodel by viewModels()
 
@@ -21,7 +21,7 @@ class CategoryListFragment : Fragment() {
         inflater: LayoutInflater, container: ViewGroup?,
         savedInstanceState: Bundle?
     ): View {
-        _binding = FragmentCategoryListBinding.inflate(inflater, container, false)
+        _binding = FragmentMuscleGroupListBinding.inflate(inflater, container, false)
         val view = binding.root
         binding.tvWelcomeMessage.text = viewModel.testString
         binding.tvCategoryName.setOnClickListener {
