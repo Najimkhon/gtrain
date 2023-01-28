@@ -6,16 +6,19 @@ import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
 import androidx.fragment.app.viewModels
+import androidx.recyclerview.widget.LinearLayoutManager
 import com.hfad.gtrain.data.DummyData
 import com.hfad.gtrain.databinding.FragmentMuscleGroupListBinding
 import com.hfad.gtrain.viewmodels.MainViewmodel
 import dagger.hilt.android.AndroidEntryPoint
+import jp.wasabeef.recyclerview.animators.LandingAnimator
 
 @AndroidEntryPoint
-class MuscleGroupListFragment : Fragment() {
+class MuscleGroupListFragment : Fragment(), MuscleGroupItemLayout.OnItemClickListener {
     private var _binding: FragmentMuscleGroupListBinding? = null
     private val binding get() = _binding!!
     private val viewModel: MainViewmodel by viewModels()
+    private val adapter: MuscleGroupAdapter by lazy {MuscleGroupAdapter(requireContext(), this)}
 
     override fun onCreateView(
         inflater: LayoutInflater, container: ViewGroup?,
@@ -23,22 +26,7 @@ class MuscleGroupListFragment : Fragment() {
     ): View {
         _binding = FragmentMuscleGroupListBinding.inflate(inflater, container, false)
         val view = binding.root
-        binding.tvWelcomeMessage.text = viewModel.testString
-        binding.tvCategoryName.setOnClickListener {
-            val exercises = viewModel.getMuscleGroupWithExercises("Chest")
-            exercises.observe(viewLifecycleOwner) {
-                if (it.isNotEmpty()) {
-                    binding.tvCategoryName.text = it[0].exercises[0].name
-                }
-            }
-            val records = viewModel.getExerciseWithRecords(0)
-            records.observe(viewLifecycleOwner) {
-                if (it.isNotEmpty()) {
-                    binding.tvDescription.text = it[0].records[0].exerciseId.toString()
-                }
-            }
-        }
-
+        
         binding.tvWelcomeMessage.setOnClickListener {
             println("hop: Button is pressed")
             viewModel.getAllmuscleGroup.observe(viewLifecycleOwner) {
@@ -69,9 +57,26 @@ class MuscleGroupListFragment : Fragment() {
             }
 
         }
+        viewModel.getAllmuscleGroup.observe(viewLifecycleOwner){
+            adapter.setData(it)
+        }
+
+        setupRecyclerView()
 
         return view
 
+    }
+
+    private fun setupRecyclerView(){
+        val recyclerView = binding.rvMuscleGroupList
+        recyclerView.adapter = adapter
+        recyclerView.layoutManager = LinearLayoutManager(requireContext())
+        recyclerView.itemAnimator = LandingAnimator().apply { addDuration = 300 }
+    }
+
+    override fun onDestroy() {
+        super.onDestroy()
+        _binding = null
     }
 
 
