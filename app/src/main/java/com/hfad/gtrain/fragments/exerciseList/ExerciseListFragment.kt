@@ -7,6 +7,7 @@ import android.view.View
 import android.view.ViewGroup
 import androidx.fragment.app.viewModels
 import androidx.recyclerview.widget.LinearLayoutManager
+import com.hfad.gtrain.R
 import com.hfad.gtrain.databinding.FragmentExerciseListBinding
 import com.hfad.gtrain.databinding.FragmentMuscleGroupListBinding
 import com.hfad.gtrain.models.Exercise
@@ -30,6 +31,16 @@ class ExerciseListFragment : Fragment(), ExsListLayout.OnItemClickListener {
         viewModel.getAllExercise.observe(viewLifecycleOwner){
             adapter.setData(it)
         }
+
+        binding.btnSwitchToCustom.setOnClickListener{
+            binding.btnSwitchToExercises.setBackgroundDrawable(resources.getDrawable(R.drawable.dark_oval_card_bg))
+            binding.btnSwitchToCustom.setBackgroundDrawable(resources.getDrawable(R.drawable.button_light_blue_bg))
+        }
+        binding.btnSwitchToExercises.setOnClickListener{
+            binding.btnSwitchToExercises.setBackgroundDrawable(resources.getDrawable(R.drawable.button_light_blue_bg))
+            binding.btnSwitchToCustom.setBackgroundDrawable(resources.getDrawable(R.drawable.dark_oval_card_bg))
+        }
+
         setupRecyclerView()
         return binding.root
 
