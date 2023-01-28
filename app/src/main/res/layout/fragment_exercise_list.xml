@@ -4,131 +4,64 @@
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    tools:context=".fragments.exerciseList.ExerciseListFragment"
-    android:background="@color/black">
+    android:background="@color/black"
+    tools:context=".fragments.exerciseList.ExerciseListFragment">
 
-    <include layout="@layout/exercise_list_fr_toolbar"
+    <include
         android:id="@+id/toolbar"
-        app:layout_constraintTop_toTopOf="parent"
-        />
+        layout="@layout/exercise_list_fr_toolbar"
+        app:layout_constraintTop_toTopOf="parent" />
+
     <androidx.cardview.widget.CardView
         android:id="@+id/btnSwitchFragment"
-        app:cardBackgroundColor="@color/dark_grey"
-        app:cardCornerRadius="25dp"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
+        android:layout_marginLeft="16dp"
         android:layout_marginTop="8dp"
         android:layout_marginRight="16dp"
-        android:layout_marginLeft="16dp"
-        app:layout_constraintTop_toBottomOf="@+id/toolbar"
-        >
-        <androidx.constraintlayout.widget.ConstraintLayout
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content">
-        <androidx.appcompat.widget.AppCompatButton
-            android:id="@+id/btnSwitchToExercises"
-            android:layout_width="0dp"
-            android:layout_height="wrap_content"
-            android:text="Exercises"
-            android:textStyle="bold"
-            android:background="@drawable/button_light_blue_bg"
-            android:textColor="@color/light_grey"
-            app:layout_constraintTop_toTopOf="parent"
-            app:layout_constraintLeft_toLeftOf="parent"
-            app:layout_constraintRight_toLeftOf="@+id/btnSwitchToCustom"
-            />
-        <androidx.appcompat.widget.AppCompatButton
-            android:id="@+id/btnSwitchToCustom"
-            android:layout_width="0dp"
-            android:layout_height="wrap_content"
-            android:text="CUSTOM"
-            android:textStyle="bold"
-            android:background="@drawable/dark_oval_card_bg"
-            android:textColor="@color/light_grey"
-            app:layout_constraintRight_toRightOf="parent"
-            app:layout_constraintTop_toTopOf="parent"
-            app:layout_constraintLeft_toRightOf="@+id/btnSwitchToExercises"
-            />
-        </androidx.constraintlayout.widget.ConstraintLayout>
-
-    </androidx.cardview.widget.CardView>
-    
-    <androidx.cardview.widget.CardView
-        android:id="@+id/cvItem1"
-        android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        app:layout_constraintTop_toBottomOf="@+id/btnSwitchFragment"
-        android:layout_marginTop="16dp"
-        android:layout_marginRight="16dp"
-        android:layout_marginLeft="16dp"
         app:cardBackgroundColor="@color/dark_grey"
         app:cardCornerRadius="25dp"
-        >
+        app:layout_constraintTop_toBottomOf="@+id/toolbar">
 
         <androidx.constraintlayout.widget.ConstraintLayout
+            android:id="@+id/toggleButton"
             android:layout_width="match_parent"
-            android:layout_height="match_parent"
-            android:background="@drawable/card_shape_dark"
-            android:layout_margin="2dp"
-            android:padding="8dp"
-            >
-            <TextView
-                android:id="@+id/tvExTitle"
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:text="Bench Press"
-                android:fontFamily="@font/sf_pro_rounded_bold"
-                android:textSize="24sp"
-                android:textColor="@color/light_blue"
-                app:layout_constraintLeft_toLeftOf="parent"
-                app:layout_constraintTop_toTopOf="parent"
-                android:layout_marginLeft="16dp"
-                />
-            <ImageView
-                android:id="@+id/icCalorie"
-                android:layout_width="24dp"
-                android:layout_height="24dp"
-                app:layout_constraintTop_toBottomOf="@+id/tvExTitle"
-                app:layout_constraintLeft_toLeftOf="@+id/tvExTitle"
-                android:src="@drawable/ic_fire"
-                android:layout_marginTop="8dp"
-                />
-            <TextView
-                android:id="@+id/tvCalorieLabel"
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                app:layout_constraintLeft_toRightOf="@+id/icCalorie"
-                app:layout_constraintTop_toTopOf="@+id/icCalorie"
-                app:layout_constraintBottom_toBottomOf="@id/icCalorie"
-                android:textSize="16sp"
-                android:text="Kcal/15 reps: "
-                android:textStyle="bold"
-                android:textColor="@color/light_grey"
-                />
-            <TextView
-                android:id="@+id/tvCalorie"
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                app:layout_constraintLeft_toRightOf="@+id/tvCalorieLabel"
-                app:layout_constraintTop_toTopOf="@+id/tvCalorieLabel"
-                app:layout_constraintBottom_toBottomOf="@id/tvCalorieLabel"
-                android:textSize="18sp"
-                android:text="45"
-                android:textStyle="bold"
-                android:textColor="@color/light_blue"
-                />
-            <de.hdodenhof.circleimageview.CircleImageView
-                android:layout_width="80dp"
-                android:layout_height="80dp"
-                app:layout_constraintTop_toTopOf="parent"
-                app:layout_constraintRight_toRightOf="parent"
-                android:src="@drawable/img_benchpress_1"
-                app:civ_border_width="2dp"
-                app:civ_border_color="@color/divider_color"
-                />
+            android:layout_height="wrap_content">
 
+            <androidx.appcompat.widget.AppCompatButton
+                android:id="@+id/btnSwitchToExercises"
+                android:layout_width="0dp"
+                android:layout_height="wrap_content"
+                android:background="@drawable/button_light_blue_bg"
+                android:text="Exercises"
+                android:textColor="@color/light_grey"
+                android:textStyle="bold"
+                app:layout_constraintLeft_toLeftOf="parent"
+                app:layout_constraintRight_toLeftOf="@+id/btnSwitchToCustom"
+                app:layout_constraintTop_toTopOf="parent" />
+
+            <androidx.appcompat.widget.AppCompatButton
+                android:id="@+id/btnSwitchToCustom"
+                android:layout_width="0dp"
+                android:layout_height="wrap_content"
+                android:background="@drawable/dark_oval_card_bg"
+                android:text="CUSTOM"
+                android:textColor="@color/light_grey"
+                android:textStyle="bold"
+                app:layout_constraintLeft_toRightOf="@+id/btnSwitchToExercises"
+                app:layout_constraintRight_toRightOf="parent"
+                app:layout_constraintTop_toTopOf="parent" />
 
         </androidx.constraintlayout.widget.ConstraintLayout>
     </androidx.cardview.widget.CardView>
+
+    <androidx.recyclerview.widget.RecyclerView
+        android:id="@+id/rvExerciseList"
+        android:layout_width="0dp"
+        android:layout_height="0dp"
+        app:layout_constraintBottom_toBottomOf="parent"
+        app:layout_constraintLeft_toLeftOf="parent"
+        app:layout_constraintRight_toRightOf="parent"
+        app:layout_constraintTop_toBottomOf="@+id/btnSwitchFragment" />
 
 </androidx.constraintlayout.widget.ConstraintLayout>

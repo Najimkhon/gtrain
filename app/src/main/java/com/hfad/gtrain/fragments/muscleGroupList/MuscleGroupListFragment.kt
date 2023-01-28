@@ -26,7 +26,7 @@ class MuscleGroupListFragment : Fragment(), MuscleGroupItemLayout.OnItemClickLis
     ): View {
         _binding = FragmentMuscleGroupListBinding.inflate(inflater, container, false)
         val view = binding.root
-        
+
         binding.tvWelcomeMessage.setOnClickListener {
             println("hop: Button is pressed")
             viewModel.getAllmuscleGroup.observe(viewLifecycleOwner) {
