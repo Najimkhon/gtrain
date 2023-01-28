@@ -34,6 +34,14 @@ object DummyData {
             "Shoulders",
             ""
         ),
+        MuscleGroup(
+            "Core",
+            ""
+        ),
+        MuscleGroup(
+            "Full Body",
+            ""
+        )
     )
 
     val exercises = listOf(

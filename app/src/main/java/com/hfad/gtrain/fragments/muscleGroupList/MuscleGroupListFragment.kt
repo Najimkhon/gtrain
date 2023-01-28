@@ -64,7 +64,6 @@ class MuscleGroupListFragment : Fragment(), MuscleGroupItemLayout.OnItemClickLis
         setupRecyclerView()
 
         return view
-
     }
 
     private fun setupRecyclerView(){
