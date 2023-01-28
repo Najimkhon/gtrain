@@ -11,40 +11,26 @@
         android:id="@+id/toolbar"
         layout="@layout/exercise_list_fr_toolbar"
         app:layout_constraintTop_toTopOf="parent" />
+    <TextView
+        android:id="@+id/toolbarDivider"
+        android:layout_width="match_parent"
+        android:layout_height="1dp"
+        android:visibility="gone"
+        android:background="@color/divider_color"
+        app:layout_constraintTop_toBottomOf="@+id/toolbar"
+        />
 
-
-    <ScrollView
+    <androidx.core.widget.NestedScrollView
         android:id="@+id/scrollView"
         android:layout_width="match_parent"
         android:layout_height="0dp"
         app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintTop_toBottomOf="@+id/toolbar">
 
-        <androidx.constraintlayout.widget.ConstraintLayout
+        <LinearLayout
             android:layout_width="match_parent"
-            android:layout_height="match_parent">
-
-            <TextView
-                android:id="@+id/divider"
-                android:layout_width="match_parent"
-                android:layout_height="1dp"
-                android:layout_marginLeft="16dp"
-                android:layout_marginTop="16dp"
-                android:layout_marginRight="16dp"
-                android:background="@color/divider_color"
-                app:layout_constraintTop_toBottomOf="@+id/tvDescription" />
-
-            <TextView
-                android:id="@+id/tvWorkoutProgram"
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:layout_marginLeft="16dp"
-                android:layout_marginTop="16dp"
-                android:fontFamily="@font/sf_pro_rounded_regular"
-                android:text="Workout Program"
-                android:textColor="@color/light_blue"
-                app:layout_constraintLeft_toLeftOf="parent"
-                app:layout_constraintTop_toBottomOf="@+id/divider" />
+            android:layout_height="match_parent"
+            android:orientation="vertical">
 
             <androidx.appcompat.widget.AppCompatTextView
                 android:id="@+id/tvWelcomeMessage"
@@ -55,9 +41,8 @@
                 android:text="Welcome to G-train"
                 android:textColor="@color/light_blue"
                 android:textSize="32sp"
-                app:layout_constraintLeft_toLeftOf="parent"
-                app:layout_constraintRight_toRightOf="parent"
-                app:layout_constraintTop_toTopOf="parent" />
+                android:layout_gravity="center"
+                />
 
             <TextView
                 android:id="@+id/tvDescription"
@@ -69,36 +54,38 @@
                 android:fontFamily="@font/sf_pro_rounded_regular"
                 android:text="In this section, you can learn about classical gym exercises and record your progress."
                 android:textColor="@color/light_grey"
-                app:layout_constraintBottom_toTopOf="@+id/divider"
-                app:layout_constraintLeft_toLeftOf="parent"
-                app:layout_constraintRight_toRightOf="parent"
-                app:layout_constraintTop_toBottomOf="@+id/tvWelcomeMessage" />
+                />
+
+            <TextView
+                android:id="@+id/divider"
+                android:layout_width="match_parent"
+                android:layout_height="1dp"
+                android:layout_marginLeft="16dp"
+                android:layout_marginTop="16dp"
+                android:layout_marginRight="16dp"
+                android:background="@color/divider_color"
+                />
+            <TextView
+                android:id="@+id/tvWorkoutProgram"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_marginLeft="16dp"
+                android:layout_marginTop="16dp"
+                android:fontFamily="@font/sf_pro_rounded_regular"
+                android:text="Workout Program"
+                android:textColor="@color/light_blue"
+                />
 
             <androidx.recyclerview.widget.RecyclerView
                 android:id="@+id/rvMuscleGroupList"
-                android:layout_width="0dp"
-                android:layout_height="0dp"
-                app:layout_constraintBottom_toBottomOf="parent"
-                app:layout_constraintLeft_toLeftOf="parent"
-                app:layout_constraintRight_toRightOf="parent"
-                app:layout_constraintTop_toBottomOf="@+id/tvWorkoutProgram" />
-
-            <androidx.appcompat.widget.AppCompatButton
                 android:layout_width="match_parent"
-                android:layout_height="56dp"
-                android:layout_margin="32dp"
-                android:background="@drawable/button_light_blue_bg"
-                android:elevation="24dp"
-                android:gravity="center"
-                android:stateListAnimator="@null"
-                android:text="Get Started"
-                android:textColor="@color/dark_grey"
-                android:textStyle="bold"
-                android:visibility="gone"
-                app:layout_constraintBottom_toBottomOf="parent" />
-        </androidx.constraintlayout.widget.ConstraintLayout>
+                android:layout_height="wrap_content"
 
-    </ScrollView>
+                />
+
+        </LinearLayout>
+
+    </androidx.core.widget.NestedScrollView>
 
 
 </androidx.constraintlayout.widget.ConstraintLayout>

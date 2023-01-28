@@ -5,6 +5,7 @@ import androidx.fragment.app.Fragment
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
+import androidx.core.widget.NestedScrollView
 import androidx.fragment.app.viewModels
 import androidx.recyclerview.widget.LinearLayoutManager
 import com.hfad.gtrain.data.DummyData
@@ -60,6 +61,14 @@ class MuscleGroupListFragment : Fragment(), MuscleGroupItemLayout.OnItemClickLis
         viewModel.getAllmuscleGroup.observe(viewLifecycleOwner){
             adapter.setData(it)
         }
+        binding.scrollView.setOnScrollChangeListener(NestedScrollView.OnScrollChangeListener { v, scrollX, scrollY, oldScrollX, oldScrollY ->
+            if (scrollY>0){
+                binding.toolbarDivider.visibility = View.VISIBLE
+            }else{
+                binding.toolbarDivider.visibility = View.GONE
+            }
+
+        })
 
         setupRecyclerView()
 
@@ -71,6 +80,7 @@ class MuscleGroupListFragment : Fragment(), MuscleGroupItemLayout.OnItemClickLis
         recyclerView.adapter = adapter
         recyclerView.layoutManager = LinearLayoutManager(requireContext())
         recyclerView.itemAnimator = LandingAnimator().apply { addDuration = 300 }
+
     }
 
     override fun onDestroy() {
