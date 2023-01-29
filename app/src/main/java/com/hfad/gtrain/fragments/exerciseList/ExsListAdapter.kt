@@ -5,6 +5,7 @@ import android.view.View
 import android.view.ViewGroup
 import androidx.recyclerview.widget.RecyclerView
 import com.hfad.gtrain.models.Exercise
+import com.hfad.gtrain.models.relations.MuscleGroupWithExercises
 
 class ExsListAdapter(
     val context: Context,
@@ -12,7 +13,6 @@ class ExsListAdapter(
 ) : RecyclerView.Adapter<ExsListAdapter.ExsListViewHolder>() {
 
     private var exerciseList = emptyList<Exercise>()
-
 
     override fun onCreateViewHolder(parent: ViewGroup, viewType: Int): ExsListViewHolder {
         return ExsListViewHolder(ExsListLayout(context, listener))

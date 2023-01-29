@@ -9,15 +9,29 @@
         android:id="@+id/muscleGroupListFragment"
         android:name="com.hfad.gtrain.fragments.muscleGroupList.MuscleGroupListFragment"
         android:label="fragment_category_list"
-        tools:layout="@layout/fragment_muscle_group_list" />
+        tools:layout="@layout/fragment_muscle_group_list" >
+        <action
+            android:id="@+id/action_muscleGroupListFragment_to_exerciseListFragment"
+            app:destination="@id/exerciseListFragment" />
+    </fragment>
     <fragment
         android:id="@+id/exerciseListFragment"
         android:name="com.hfad.gtrain.fragments.exerciseList.ExerciseListFragment"
         android:label="fragment_exercise_list"
-        tools:layout="@layout/fragment_exercise_list" />
+        tools:layout="@layout/fragment_exercise_list" >
+        <argument
+            android:name="muscleGroup"
+            app:argType="string"
+            app:nullable="true" />
+    </fragment>
     <fragment
         android:id="@+id/exerciseDetailFragment"
         android:name="com.hfad.gtrain.fragments.exerciseDetail.ExerciseDetailFragment"
         android:label="fragment_exercise_detail"
         tools:layout="@layout/fragment_exercise_detail" />
+    <fragment
+        android:id="@+id/addExerciseFragment"
+        android:name="com.hfad.gtrain.AddExerciseFragment"
+        android:label="fragment_add_exercise"
+        tools:layout="@layout/fragment_add_exercise" />
 </navigation>

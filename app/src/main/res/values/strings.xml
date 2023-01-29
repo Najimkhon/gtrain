@@ -5,4 +5,5 @@
     <string name="bg_image">bg_image</string>
     <string name="start_workout">Start workout</string>
     <string name="exercise">Exercise</string>
+    <string name="exercises">Exercises</string>
 </resources>

@@ -10,7 +10,7 @@ data class Exercise(
     @PrimaryKey(autoGenerate = true)
     val id: Int,
     val name: String,
-    val image: String = "",
+    val image: List<String> = emptyList(),
     val videoUrl: String = "",
     val description: String = "",
     val calories: Int,

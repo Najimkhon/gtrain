@@ -7,9 +7,11 @@ import android.view.View
 import android.view.ViewGroup
 import androidx.core.widget.NestedScrollView
 import androidx.fragment.app.viewModels
+import androidx.navigation.fragment.findNavController
 import androidx.recyclerview.widget.LinearLayoutManager
 import com.hfad.gtrain.data.DummyData
 import com.hfad.gtrain.databinding.FragmentMuscleGroupListBinding
+import com.hfad.gtrain.models.MuscleGroup
 import com.hfad.gtrain.viewmodels.MainViewmodel
 import dagger.hilt.android.AndroidEntryPoint
 import jp.wasabeef.recyclerview.animators.LandingAnimator
@@ -28,13 +30,14 @@ class MuscleGroupListFragment : Fragment(), MuscleGroupItemLayout.OnItemClickLis
         _binding = FragmentMuscleGroupListBinding.inflate(inflater, container, false)
         val view = binding.root
 
+        binding.toolbar.tvTitle.text = "Muscle Groups"
+
         binding.tvWelcomeMessage.setOnClickListener {
             println("hop: Button is pressed")
             viewModel.getAllmuscleGroup.observe(viewLifecycleOwner) {
                 if (it.isEmpty()) {
                     DummyData.muscleGroups.forEach { muscleGroup ->
                         viewModel.insertMuscleGroup(muscleGroup)
-
                         println("hop: MuscleGroup is added")
                     }
                 }
@@ -83,10 +86,17 @@ class MuscleGroupListFragment : Fragment(), MuscleGroupItemLayout.OnItemClickLis
 
     }
 
+    override fun onItemClicked(clickedItem: MuscleGroup) {
+        val action = MuscleGroupListFragmentDirections.actionMuscleGroupListFragmentToExerciseListFragment(clickedItem.title)
+        findNavController().navigate(action)
+    }
+
+
     override fun onDestroy() {
         super.onDestroy()
         _binding = null
     }
+
 
 
 }

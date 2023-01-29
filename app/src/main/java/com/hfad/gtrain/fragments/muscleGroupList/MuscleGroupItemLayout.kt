@@ -27,8 +27,13 @@ open class MuscleGroupItemLayout(context: Context, private val listener: OnItemC
             "Full Body" -> binding.ivBackground.setImageResource(R.drawable.img_full_body)
             "Core" -> binding.ivBackground.setImageResource(R.drawable.img_abs)
         }
+        binding.itemView.setOnClickListener{
+            listener.onItemClicked(muscleGroup)
+        }
     }
 
-    interface OnItemClickListener
+    interface OnItemClickListener{
+        fun onItemClicked(clickedItem: MuscleGroup)
+    }
 }
 

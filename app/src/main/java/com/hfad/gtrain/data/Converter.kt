@@ -17,5 +17,15 @@ class Converter {
     fun jsonToSetList(setList: String):List<Set>{
         return Gson().fromJson(setList, Array<Set>::class.java).toList()
     }
+
+    @TypeConverter
+    fun stringListToJson(list: List<String>):String{
+        return Gson().toJson(list)
+    }
+
+    @TypeConverter
+    fun jsonToStringList(list: String):List<String>{
+        return Gson().fromJson(list, Array<String>::class.java).toList()
+    }
 }
 

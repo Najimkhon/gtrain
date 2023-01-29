@@ -5,6 +5,7 @@ import android.view.LayoutInflater
 import android.widget.RelativeLayout
 import com.hfad.gtrain.databinding.ExerciseItemLayoutBinding
 import com.hfad.gtrain.models.Exercise
+import com.hfad.gtrain.models.relations.MuscleGroupWithExercises
 
 class ExsListLayout(context: Context, private val listener: OnItemClickListener) :
     RelativeLayout(context) {
