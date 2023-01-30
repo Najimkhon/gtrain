@@ -46,7 +46,7 @@ class ExerciseListFragment : Fragment(), ExsListLayout.OnItemClickListener {
             binding.btnSwitchToExercises.setBackgroundDrawable(resources.getDrawable(R.drawable.button_light_blue_bg))
             binding.btnSwitchToCustom.setBackgroundDrawable(resources.getDrawable(R.drawable.dark_oval_card_bg))
         }
-
+        setupViewPager()
         setupRecyclerView()
         return binding.root
 
@@ -69,7 +69,12 @@ class ExerciseListFragment : Fragment(), ExsListLayout.OnItemClickListener {
                 }
             }
         })
+    }
 
+    private fun setupViewPager(){
+        val vp = binding.vp
+        val vpAdapter = fragmentManager?.let { ExerciseListVpAdapter(it, lifecycle) }
+        vp.adapter = vpAdapter
     }
 
     override fun onItemClicked(clickedItem: Exercise) {
