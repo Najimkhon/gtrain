@@ -58,9 +58,9 @@
         android:id="@+id/toolbarDivider"
         android:layout_width="match_parent"
         android:layout_height="1dp"
-        android:visibility="gone"
+        android:visibility="visible"
         android:background="@color/divider_color"
-        app:layout_constraintBottom_toTopOf="@+id/rvExerciseList"
+        app:layout_constraintTop_toBottomOf="@+id/btnSwitchFragment"
         />
 
     <androidx.viewpager2.widget.ViewPager2

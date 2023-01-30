@@ -21,7 +21,7 @@ class MuscleGroupListFragment : Fragment(), MuscleGroupItemLayout.OnItemClickLis
     private var _binding: FragmentMuscleGroupListBinding? = null
     private val binding get() = _binding!!
     private val viewModel: MainViewmodel by viewModels()
-    private val adapter: MuscleGroupAdapter by lazy {MuscleGroupAdapter(requireContext(), this)}
+    private val adapter: MuscleGroupAdapter by lazy { MuscleGroupAdapter(requireContext(), this) }
 
     override fun onCreateView(
         inflater: LayoutInflater, container: ViewGroup?,
@@ -30,8 +30,53 @@ class MuscleGroupListFragment : Fragment(), MuscleGroupItemLayout.OnItemClickLis
         _binding = FragmentMuscleGroupListBinding.inflate(inflater, container, false)
         val view = binding.root
 
-        binding.toolbar.tvTitle.text = "Muscle Groups"
+        bindViews()
+        loadData()
+        initializeViewModel()
+        setListeners()
+        setupRecyclerView()
 
+        return view
+    }
+
+    private fun setupRecyclerView() {
+        val recyclerView = binding.rvMuscleGroupList
+        recyclerView.adapter = adapter
+        recyclerView.layoutManager = LinearLayoutManager(requireContext())
+        recyclerView.itemAnimator = LandingAnimator().apply { addDuration = 300 }
+
+    }
+
+    private fun initializeViewModel() {
+        viewModel.getAllmuscleGroup.observe(viewLifecycleOwner) {
+            adapter.setData(it)
+        }
+    }
+
+    private fun bindViews() {
+        binding.toolbar.tvTitle.text = "Muscle Groups"
+    }
+
+    private fun setListeners() {
+        binding.scrollView.setOnScrollChangeListener(NestedScrollView.OnScrollChangeListener { v, scrollX, scrollY, oldScrollX, oldScrollY ->
+            if (scrollY > 0) {
+                binding.toolbarDivider.visibility = View.VISIBLE
+            } else {
+                binding.toolbarDivider.visibility = View.GONE
+            }
+
+        })
+    }
+
+    override fun onItemClicked(clickedItem: MuscleGroup) {
+        val action =
+            MuscleGroupListFragmentDirections.actionMuscleGroupListFragmentToExerciseListFragment(
+                clickedItem.title
+            )
+        findNavController().navigate(action)
+    }
+
+    private fun loadData() {
         binding.tvWelcomeMessage.setOnClickListener {
             println("hop: Button is pressed")
             viewModel.getAllmuscleGroup.observe(viewLifecycleOwner) {
@@ -61,34 +106,6 @@ class MuscleGroupListFragment : Fragment(), MuscleGroupItemLayout.OnItemClickLis
             }
 
         }
-        viewModel.getAllmuscleGroup.observe(viewLifecycleOwner){
-            adapter.setData(it)
-        }
-        binding.scrollView.setOnScrollChangeListener(NestedScrollView.OnScrollChangeListener { v, scrollX, scrollY, oldScrollX, oldScrollY ->
-            if (scrollY>0){
-                binding.toolbarDivider.visibility = View.VISIBLE
-            }else{
-                binding.toolbarDivider.visibility = View.GONE
-            }
-
-        })
-
-        setupRecyclerView()
-
-        return view
-    }
-
-    private fun setupRecyclerView(){
-        val recyclerView = binding.rvMuscleGroupList
-        recyclerView.adapter = adapter
-        recyclerView.layoutManager = LinearLayoutManager(requireContext())
-        recyclerView.itemAnimator = LandingAnimator().apply { addDuration = 300 }
-
-    }
-
-    override fun onItemClicked(clickedItem: MuscleGroup) {
-        val action = MuscleGroupListFragmentDirections.actionMuscleGroupListFragmentToExerciseListFragment(clickedItem.title)
-        findNavController().navigate(action)
     }
 
 
@@ -96,7 +113,6 @@ class MuscleGroupListFragment : Fragment(), MuscleGroupItemLayout.OnItemClickLis
         super.onDestroy()
         _binding = null
     }
-
 
 
 }
