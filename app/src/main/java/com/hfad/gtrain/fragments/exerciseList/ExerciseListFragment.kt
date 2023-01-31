@@ -12,6 +12,7 @@ import androidx.recyclerview.widget.RecyclerView
 import androidx.viewpager2.widget.ViewPager2
 import com.hfad.gtrain.R
 import com.hfad.gtrain.databinding.FragmentExerciseListBinding
+import com.hfad.gtrain.fragments.customExerciseFragment.CustomExerciseFragment
 import com.hfad.gtrain.models.Exercise
 import com.hfad.gtrain.models.MuscleGroup
 import com.hfad.gtrain.viewmodels.MainViewmodel
