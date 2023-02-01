@@ -16,136 +16,138 @@
         android:id="@+id/ivAddImage"
         android:layout_width="match_parent"
         android:layout_height="56dp"
+        android:layout_margin="16dp"
         android:src="@drawable/ic_image_place_holder"
         app:layout_constraintTop_toBottomOf="@+id/toolbar"
-        app:tint="@color/light_grey"
-        android:layout_margin="16dp"/>
+        app:tint="@color/light_grey" />
+
     <LinearLayout
         android:id="@+id/exerciseBlock"
-        app:layout_constraintTop_toBottomOf="@+id/ivAddImage"
-        android:orientation="horizontal"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:layout_margin="16dp"
-        >
+        android:orientation="horizontal"
+        app:layout_constraintTop_toBottomOf="@+id/ivAddImage">
+
         <TextView
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:textSize="16sp"
+            android:gravity="right"
             android:text="Exercise Name: "
             android:textColor="@color/light_grey"
-            android:textStyle="bold"
-            android:gravity="right"
-            />
+            android:textSize="16sp"
+            android:textStyle="bold" />
+
         <TextView
             android:id="@+id/tvExerciseName"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
+            android:layout_weight="1"
             android:text="My exercise"
             android:textColor="@color/white"
-            android:textSize="16sp"
-            android:layout_weight="1"/>
+            android:textSize="16sp" />
 
     </LinearLayout>
 
     <LinearLayout
         android:id="@+id/descritionBlock"
-        app:layout_constraintTop_toBottomOf="@+id/exerciseBlock"
-        android:orientation="horizontal"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:layout_margin="16dp"
-        >
+        android:orientation="horizontal"
+        app:layout_constraintTop_toBottomOf="@+id/exerciseBlock">
+
         <TextView
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:textSize="16sp"
+            android:gravity="right"
             android:text="Description: "
             android:textColor="@color/light_grey"
-            android:textStyle="bold"
-            android:gravity="right"
-            />
+            android:textSize="16sp"
+            android:textStyle="bold" />
+
         <TextView
             android:id="@+id/tvDescription"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
+            android:layout_weight="1"
             android:text=""
             android:textColor="@color/white"
-            android:textSize="16sp"
-            android:layout_weight="1"/>
+            android:textSize="16sp" />
 
     </LinearLayout>
+
     <LinearLayout
         android:id="@+id/repsBlock"
-        app:layout_constraintTop_toBottomOf="@+id/descritionBlock"
-        android:orientation="horizontal"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:layout_margin="16dp"
-        >
+        android:orientation="horizontal"
+        app:layout_constraintTop_toBottomOf="@+id/descritionBlock">
+
         <TextView
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:textSize="16sp"
+            android:gravity="right"
             android:text="Repetitions: "
             android:textColor="@color/light_grey"
-            android:textStyle="bold"
-            android:gravity="right"
-            />
-        <EditText
+            android:textSize="16sp"
+            android:textStyle="bold" />
+
+        <TextView
+            android:id="@+id/tvRepetition"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:text=""
+            android:layout_weight="1"
             android:textColor="@color/white"
-            android:textSize="16sp"
-            android:background="@android:color/transparent"
-            android:layout_weight="1"/>
-
+            android:textSize="16sp" />
     </LinearLayout>
+
     <LinearLayout
         android:id="@+id/categoryBlock"
-        app:layout_constraintTop_toBottomOf="@+id/repsBlock"
-        android:orientation="horizontal"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:layout_margin="16dp"
-        >
+        android:orientation="horizontal"
+        app:layout_constraintTop_toBottomOf="@+id/repsBlock">
+
         <TextView
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:textSize="16sp"
+            android:gravity="right"
             android:text="Muscle category: "
             android:textColor="@color/light_grey"
-            android:textStyle="bold"
-            android:gravity="right"
-            />
-        <EditText
+            android:textSize="16sp"
+            android:textStyle="bold" />
+
+        <TextView
+            android:id="@+id/tvMuscleGroup"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:text=""
+            android:layout_weight="1"
             android:textColor="@color/white"
-            android:textSize="16sp"
-            android:background="@android:color/transparent"
-            android:layout_weight="1"/>
+            android:textSize="16sp" />
 
     </LinearLayout>
+
     <Button
         android:id="@+id/btnSave"
-        app:layout_constraintTop_toBottomOf="@+id/categoryBlock"
         android:layout_width="match_parent"
         android:layout_height="40dp"
         android:layout_margin="16dp"
         android:background="@drawable/button_light_blue_bg"
         android:text="Save"
-        android:textColor="@color/dark_grey"/>
+        android:textColor="@color/dark_grey"
+        app:layout_constraintTop_toBottomOf="@+id/categoryBlock" />
+
     <androidx.appcompat.widget.AppCompatButton
         android:id="@+id/btnCancel"
-        app:layout_constraintTop_toBottomOf="@+id/btnSave"
         android:layout_width="match_parent"
         android:layout_height="40dp"
         android:layout_margin="16dp"
         android:background="@drawable/dark_oval_card_bg"
         android:text="Cancel"
-        android:textColor="@color/white"/>
+        android:textColor="@color/white"
+        app:layout_constraintTop_toBottomOf="@+id/btnSave" />
 
 </androidx.constraintlayout.widget.ConstraintLayout>

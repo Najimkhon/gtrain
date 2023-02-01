@@ -17,4 +17,9 @@
     <style name="TextStyle" parent="Widget.AppCompat.TextView">
         <item name="android:fontFamily">@font/sf_pro_rounded_regular</item>
     </style>
+    <style name="AppTheme.Picker" parent="Theme.AppCompat.Light.DarkActionBar">
+        <item name="android:textColorPrimary">@color/white</item>
+        <item name="colorControlNormal">@color/divider_color</item>
+    </style>
+
 </resources>
