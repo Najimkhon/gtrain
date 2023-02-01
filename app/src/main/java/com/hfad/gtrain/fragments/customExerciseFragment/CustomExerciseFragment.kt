@@ -5,11 +5,10 @@ import androidx.fragment.app.Fragment
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
-import android.widget.Toast
+import androidx.navigation.fragment.findNavController
 import com.hfad.gtrain.R
+
 import com.hfad.gtrain.databinding.FragmentCustomExerciseBinding
-import com.hfad.gtrain.databinding.FragmentExerciseListBinding
-import com.hfad.gtrain.ui.dialogs.TextInputDialog
 
 
 class CustomExerciseFragment : Fragment() {
@@ -23,13 +22,12 @@ class CustomExerciseFragment : Fragment() {
         _binding = FragmentCustomExerciseBinding.inflate(inflater, container, false)
         
         binding.btnEdit.setOnClickListener{
-            val dialog = object: TextInputDialog(requireContext()){
 
-            }
-            dialog.show()
+        }
+        binding.btnAdd.setOnClickListener{
+            findNavController().navigate(R.id.action_exerciseListFragment_to_addExerciseFragment)
         }
         // Inflate the layout for this fragment
         return binding.root
     }
-
 }

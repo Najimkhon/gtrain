@@ -37,13 +37,13 @@
             android:textStyle="bold"
             android:gravity="right"
             />
-        <EditText
+        <TextView
+            android:id="@+id/tvExerciseName"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:text="My exercise"
             android:textColor="@color/white"
             android:textSize="16sp"
-            android:background="@android:color/transparent"
             android:layout_weight="1"/>
 
     </LinearLayout>
@@ -65,13 +65,13 @@
             android:textStyle="bold"
             android:gravity="right"
             />
-        <EditText
+        <TextView
+            android:id="@+id/tvDescription"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:text=""
             android:textColor="@color/white"
             android:textSize="16sp"
-            android:background="@android:color/transparent"
             android:layout_weight="1"/>
 
     </LinearLayout>
