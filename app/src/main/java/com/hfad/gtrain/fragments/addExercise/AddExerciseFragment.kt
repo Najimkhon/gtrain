@@ -18,57 +18,56 @@ class AddExerciseFragment : Fragment() {
     private var _binding: FragmentAddExerciseBinding? = null
     private val binding get() = _binding!!
     private val viewModel: MainViewmodel by viewModels()
+    private lateinit var dialogManager: DialogManager
+
     override fun onCreateView(
         inflater: LayoutInflater, container: ViewGroup?,
         savedInstanceState: Bundle?
     ): View {
+        dialogManager = DialogManager(childFragmentManager)
         _binding = FragmentAddExerciseBinding.inflate(inflater, container, false)
-        binding.exerciseBlock.setOnClickListener{
-            DialogManager.showExerciseNameDialog(requireContext(), object : OnDialogClickListener{
+
+        binding.exerciseBlock.setOnClickListener {
+            dialogManager.showExerciseNameDialog(object : OnDialogClickListener {
                 override fun onSaveClicked(input: String) {
                     binding.tvExerciseName.text = input
                 }
-
             })
         }
-        binding.descritionBlock.setOnClickListener{
-            DialogManager.showExerciseDescriptionDialog(requireContext(), object : OnDialogClickListener{
+        binding.descritionBlock.setOnClickListener {
+            dialogManager.showExerciseDescriptionDialog(object : OnDialogClickListener {
                 override fun onSaveClicked(input: String) {
                     binding.tvDescription.text = input
                 }
-
             })
         }
 
-        binding.categoryBlock.setOnClickListener{
-            DialogManager.showMuscleGroupDialog(requireContext(), object :OnDialogClickListener{
+        binding.categoryBlock.setOnClickListener {
+            dialogManager.showMuscleGroupDialog(object : OnDialogClickListener {
                 override fun onSaveClicked(input: String) {
-                   binding.tvMuscleGroup.text = input
+                    binding.tvMuscleGroup.text = input
                 }
-
             })
         }
 
-        binding.repsBlock.setOnClickListener{
-            DialogManager.showRepetitionsDialog(requireContext(), object :OnDialogClickListener{
+        binding.repsBlock.setOnClickListener {
+            dialogManager.showRepetitionsDialog(object : OnDialogClickListener {
                 override fun onSaveClicked(input: String) {
                     binding.tvRepetition.text = input
                 }
-
             })
         }
 
-        viewModel.getAllmuscleGroup.observe(viewLifecycleOwner){
+        viewModel.getAllmuscleGroup.observe(viewLifecycleOwner) {
             muscleGroupList = it
         }
-        // Inflate the layout for this fragment
+        
         return binding.root
     }
 
-    companion object{
+    companion object {
         var muscleGroupList = listOf<MuscleGroup>()
     }
-
 
 
 }
