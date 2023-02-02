@@ -40,10 +40,19 @@ class AddExerciseFragment : Fragment() {
             })
         }
 
-        binding.tvMuscleGroup.setOnClickListener{
+        binding.categoryBlock.setOnClickListener{
             DialogManager.showMuscleGroupDialog(requireContext(), object :OnDialogClickListener{
                 override fun onSaveClicked(input: String) {
                    binding.tvMuscleGroup.text = input
+                }
+
+            })
+        }
+
+        binding.repsBlock.setOnClickListener{
+            DialogManager.showRepetitionsDialog(requireContext(), object :OnDialogClickListener{
+                override fun onSaveClicked(input: String) {
+                    binding.tvRepetition.text = input
                 }
 
             })

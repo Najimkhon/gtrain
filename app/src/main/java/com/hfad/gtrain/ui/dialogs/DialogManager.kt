@@ -5,9 +5,7 @@ import android.content.Context
 import android.graphics.Color
 import android.graphics.drawable.ColorDrawable
 import android.view.LayoutInflater
-import com.hfad.gtrain.databinding.FieldInputDialogBinding
-import com.hfad.gtrain.databinding.MuscleGroupInputDialogBinding
-import com.hfad.gtrain.databinding.TextInputDialogBinding
+import com.hfad.gtrain.databinding.*
 import com.hfad.gtrain.fragments.addExercise.AddExerciseFragment
 
 
@@ -80,6 +78,64 @@ class DialogManager {
             }
             dialog.show()
 
+        }
+
+        fun showRepetitionsDialog(context: Context, listener: OnDialogClickListener) {
+            val dialogBinding =
+                RepsInputDialogBinding.inflate(LayoutInflater.from(context), null, false)
+            val layout = dialogBinding.container
+            var input: String
+            var inputSets = 1
+            var inputReps = ""
+            var repsList = arrayOf(String())
+
+
+            val npSets = dialogBinding.npSets
+            npSets.maxValue = 5
+            npSets.minValue = 0
+
+
+            val dialog = Dialog(context)
+            dialog.setContentView(dialogBinding.root)
+            dialog.setCanceledOnTouchOutside(true)
+            dialog.setCancelable(true)
+            dialog.window?.setBackgroundDrawable(ColorDrawable(Color.TRANSPARENT))
+            npSets.setOnValueChangedListener { _, _, newVal ->
+                inputSets = newVal
+                val repsArray = Array(newVal) { "1" }
+                layout.removeAllViews()
+                for (i in 1..newVal) {
+                    val npViewBinding =
+                        NumberPickerViewBinding.inflate(LayoutInflater.from(context), null, false)
+                    val npReps = npViewBinding.npRep
+                    layout.addView(npViewBinding.root)
+                    npReps.maxValue = 99
+                    npReps.minValue = 1
+                    npReps.id = i
+                    npReps.setOnValueChangedListener { _, _, newVal ->
+                        repsArray[npReps.id - 1] = newVal.toString()
+                        repsList = repsArray
+                    }
+                }
+            }
+
+            dialogBinding.btnSave.setOnClickListener {
+                repsList.forEachIndexed { _, value ->
+                    if (value.isEmpty()) {
+                        inputReps = "0"
+                    } else {
+                        inputReps += "$value/"
+                    }
+                }
+                input = "Sets: $inputSets Reps: $inputReps"
+                listener.onSaveClicked(input)
+                dialog.cancel()
+            }
+
+            dialogBinding.btnCancel.setOnClickListener {
+                dialog.cancel()
+            }
+            dialog.show()
         }
 
 
