@@ -18,6 +18,8 @@ class Converter {
         return Gson().fromJson(setList, Array<Set>::class.java).toList()
     }
 
+
+    // converter for image url list
     @TypeConverter
     fun stringListToJson(list: List<String>):String{
         return Gson().toJson(list)
@@ -26,6 +28,16 @@ class Converter {
     @TypeConverter
     fun jsonToStringList(list: String):List<String>{
         return Gson().fromJson(list, Array<String>::class.java).toList()
+    }
+
+    //converter for reps list
+    @TypeConverter
+    fun intListToJson(list: List<Int>):String{
+        return Gson().toJson(list)
+    }
+    @TypeConverter
+    fun jsonToIntList(list: String):List<Int>{
+        return Gson().fromJson(list, Array<Int>::class.java).toList()
     }
 }
 

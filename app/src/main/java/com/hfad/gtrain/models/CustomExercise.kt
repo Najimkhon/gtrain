@@ -16,5 +16,5 @@ data class CustomExercise(
     val calories: Int,
     val muscleGroup: String,
     val sets: Int = 0,
-    val reps: Array<Int> = emptyArray()
+    val reps: List<Int> = emptyList()
     ):Parcelable

@@ -24,6 +24,11 @@ class DialogManager(private val fragmentManager: FragmentManager) {
         val dialog = RepetitionsDialog(listener)
         dialog.show(fragmentManager, "MuscleGroupDialog")
     }
+
+    fun showCalorieDialog(listener: OnDialogClickListener){
+        val dialog = CalorieDialog(listener)
+        dialog.show(fragmentManager, "CalorieDialog")
+    }
 }
 
 

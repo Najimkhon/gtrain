@@ -7,29 +7,31 @@ import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
 import androidx.fragment.app.DialogFragment
-import androidx.fragment.app.viewModels
-import com.hfad.gtrain.databinding.TextInputDialogBinding
-import com.hfad.gtrain.viewmodels.MainViewmodel
-import dagger.hilt.android.AndroidEntryPoint
+import com.hfad.gtrain.databinding.CalorieInputDialogBinding
 
-class ExerciseNameDialog(private val listener: OnDialogClickListener):DialogFragment() {
+class CalorieDialog(private val listener: OnDialogClickListener) : DialogFragment() {
     override fun onCreateView(
         inflater: LayoutInflater,
         container: ViewGroup?,
         savedInstanceState: Bundle?
     ): View {
         val dialogBinding =
-            TextInputDialogBinding.inflate(layoutInflater, null, false)
+            CalorieInputDialogBinding.inflate(layoutInflater, null, false)
+        val npCalories = dialogBinding.npCalories
+        npCalories.maxValue = 200
+        npCalories.minValue = 1
+
         dialog?.setCanceledOnTouchOutside(true)
         dialog?.setCancelable(true)
         dialog?.window?.setBackgroundDrawable(ColorDrawable(Color.TRANSPARENT))
         dialogBinding.btnSave.setOnClickListener {
-            listener.onSaveClicked(dialogBinding.etInput.text.toString())
+            listener.onSaveClicked(npCalories.value.toString())
             dialog?.cancel()
         }
         dialogBinding.btnCancel.setOnClickListener {
             dialog?.cancel()
         }
+        dialog?.show()
 
         return dialogBinding.root
 
