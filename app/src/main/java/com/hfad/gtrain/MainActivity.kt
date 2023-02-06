@@ -19,6 +19,7 @@ class MainActivity : AppCompatActivity() {
         val navController = navHostFragment.navController
         binding.bottomNavigationView.setupWithNavController(navController)
 
+
 //        navController
 //            .addOnDestinationChangedListener{_, destination, _->
 //                when(destination.id){
