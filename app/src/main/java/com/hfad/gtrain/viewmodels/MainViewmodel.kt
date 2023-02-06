@@ -5,6 +5,7 @@ import androidx.lifecycle.LiveData
 import androidx.lifecycle.MutableLiveData
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
+import com.hfad.gtrain.models.CustomExercise
 import com.hfad.gtrain.models.Exercise
 import com.hfad.gtrain.models.MuscleGroup
 import com.hfad.gtrain.models.Record
@@ -33,6 +34,11 @@ class MainViewmodel @Inject constructor(
     fun insertExercise(exercise: Exercise) {
         viewModelScope.launch(Dispatchers.IO) {
             roomRepository.insertExercise(exercise)
+        }
+    }
+    fun insertCustomExercise(customEx: CustomExercise) {
+        viewModelScope.launch(Dispatchers.IO) {
+            roomRepository.insertCustomExercise(customEx)
         }
     }
     fun insertRecord(record: Record){

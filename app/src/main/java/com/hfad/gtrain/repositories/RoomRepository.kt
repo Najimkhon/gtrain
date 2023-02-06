@@ -2,6 +2,7 @@ package com.hfad.gtrain.repositories
 
 import androidx.lifecycle.LiveData
 import com.hfad.gtrain.data.ExerciseDao
+import com.hfad.gtrain.models.CustomExercise
 import com.hfad.gtrain.models.Exercise
 import com.hfad.gtrain.models.MuscleGroup
 import com.hfad.gtrain.models.Record
@@ -22,6 +23,9 @@ class RoomRepository @Inject constructor(
     }
     suspend fun insertExercise(exercise: Exercise){
         exerciseDao.insertExercise(exercise)
+    }
+    suspend fun insertCustomExercise(customEx: CustomExercise){
+        exerciseDao.insertCustomExercise(customEx)
     }
     suspend fun insertRecord(record: Record){
         exerciseDao.insertRecord(record)

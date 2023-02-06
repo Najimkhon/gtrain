@@ -2,6 +2,7 @@ package com.hfad.gtrain.data
 
 import androidx.lifecycle.LiveData
 import androidx.room.*
+import com.hfad.gtrain.models.CustomExercise
 import com.hfad.gtrain.models.Exercise
 import com.hfad.gtrain.models.MuscleGroup
 import com.hfad.gtrain.models.Record
@@ -18,6 +19,9 @@ interface ExerciseDao {
 
     @Query("SELECT * FROM record")
     fun getAllRecord(): LiveData<List<Record>>
+
+    @Insert(onConflict = OnConflictStrategy.REPLACE)
+    suspend fun insertCustomExercise(customEx: CustomExercise)
 
     @Insert(onConflict = OnConflictStrategy.REPLACE)
     suspend fun insertMuscleGroup(muscleGroup: MuscleGroup)

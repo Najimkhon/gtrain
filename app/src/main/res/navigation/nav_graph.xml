@@ -36,7 +36,11 @@
         android:id="@+id/addExerciseFragment"
         android:name="com.hfad.gtrain.fragments.addExercise.AddExerciseFragment"
         android:label="fragment_add_exercise"
-        tools:layout="@layout/fragment_add_exercise" />
+        tools:layout="@layout/fragment_add_exercise" >
+        <action
+            android:id="@+id/action_addExerciseFragment_to_exerciseListFragment"
+            app:destination="@id/exerciseListFragment" />
+    </fragment>
     <fragment
         android:id="@+id/customExerciseFragment"
         android:name="com.hfad.gtrain.fragments.customExerciseFragment.CustomExerciseFragment"

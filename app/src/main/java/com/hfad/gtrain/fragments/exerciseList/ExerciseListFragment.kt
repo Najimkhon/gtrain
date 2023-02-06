@@ -41,7 +41,7 @@ class ExerciseListFragment : Fragment(), ExsListLayout.OnItemClickListener {
 
     private fun setupViewPager(){
         val vp = binding.vp
-        val vpAdapter = ExerciseListVpAdapter(parentFragmentManager, lifecycle)
+        val vpAdapter = ExerciseListVpAdapter(childFragmentManager, lifecycle)
         vpAdapter.addFragment(ReadyEcercisesFragment(args.muscleGroup!!))
         vpAdapter.addFragment(CustomExerciseFragment())
         vpAdapter.setMuscleGroup(args.muscleGroup!!)

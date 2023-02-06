@@ -33,6 +33,7 @@ class RepetitionsDialog(private val listener: OnDialogClickListener) : DialogFra
         npSets.setOnValueChangedListener { _, _, newVal ->
             inputSets = newVal
             val repsArray = Array(newVal) { "1" }
+            repsList = repsArray
             layout.removeAllViews()
             for (i in 1..newVal) {
                 val npViewBinding =
@@ -57,7 +58,7 @@ class RepetitionsDialog(private val listener: OnDialogClickListener) : DialogFra
                     inputReps += "$value/"
                 }
             }
-            input = "Sets: $inputSets Reps: $inputReps"
+            input = "Sets: $inputSets Reps: $inputReps".dropLast(1)
             listener.onSaveClicked(input)
             dialog?.cancel()
         }

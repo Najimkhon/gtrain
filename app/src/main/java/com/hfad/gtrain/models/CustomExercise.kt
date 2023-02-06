@@ -11,11 +11,11 @@ data class CustomExercise(
     @PrimaryKey(autoGenerate = true)
     val id: Int,
     val name: String,
-    val image: Uri?,
+    var image: Uri?,
     val videoUrl: String = "",
     val description: String = "",
-    val calories: Int=0,
+    var calories: Int=0,
     val muscleGroup: String,
-    val sets: Int = 0,
-    val reps: List<Int> = emptyList()
+    var sets: Int = 0,
+    var reps: List<Int> = emptyList()
     ):Parcelable

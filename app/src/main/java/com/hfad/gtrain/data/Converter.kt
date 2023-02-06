@@ -1,5 +1,6 @@
 package com.hfad.gtrain.data
 
+import android.net.Uri
 import androidx.room.TypeConverter
 import com.google.gson.Gson
 import com.hfad.gtrain.models.Set
@@ -16,6 +17,17 @@ class Converter {
     @TypeConverter
     fun jsonToSetList(setList: String):List<Set>{
         return Gson().fromJson(setList, Array<Set>::class.java).toList()
+    }
+
+    //converter for uri
+    @TypeConverter
+    fun fromString(value: String?): Uri? {
+        return if (value == null) null else Uri.parse(value)
+    }
+
+    @TypeConverter
+    fun toString(uri: Uri?): String? {
+        return uri?.toString()
     }
 
 
