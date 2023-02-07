@@ -40,6 +40,7 @@ class ExerciseListFragment : Fragment(), ExsListLayout.OnItemClickListener {
         vpAdapter.addFragment(ReadyEcercisesFragment(args.muscleGroup!!))
         vpAdapter.addFragment(CustomExerciseFragment(args.muscleGroup!!))
         vpAdapter.setMuscleGroup(args.muscleGroup!!)
+        vp.isUserInputEnabled = false
         vp.adapter = vpAdapter
         vp.orientation = ViewPager2.ORIENTATION_HORIZONTAL
     }
@@ -49,6 +50,7 @@ class ExerciseListFragment : Fragment(), ExsListLayout.OnItemClickListener {
             binding.btnSwitchToExercises.setBackgroundDrawable(resources.getDrawable(R.drawable.dark_oval_card_bg))
             binding.btnSwitchToCustom.setBackgroundDrawable(resources.getDrawable(R.drawable.button_light_blue_bg))
             binding.vp.setCurrentItem(1, true)
+
         }else{
             binding.btnSwitchToExercises.setBackgroundDrawable(resources.getDrawable(R.drawable.button_light_blue_bg))
             binding.btnSwitchToCustom.setBackgroundDrawable(resources.getDrawable(R.drawable.dark_oval_card_bg))

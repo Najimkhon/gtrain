@@ -1,6 +1,8 @@
 package com.hfad.gtrain.repositories
 
 import androidx.lifecycle.LiveData
+import androidx.room.Delete
+import androidx.room.Update
 import com.hfad.gtrain.data.ExerciseDao
 import com.hfad.gtrain.models.CustomExercise
 import com.hfad.gtrain.models.Exercise
@@ -39,6 +41,14 @@ class RoomRepository @Inject constructor(
     }
     fun getExerciseWithRecords(exerciseId: Int):LiveData<List<ExerciseWithRecords>> {
         return exerciseDao.getExerciseWithRecords(exerciseId)
+    }
+
+    suspend fun deleteCustomExercise(customEx: CustomExercise){
+        exerciseDao.deleteCustomExercise(customEx)
+    }
+
+    suspend fun updateCustomExercise(customEx: CustomExercise){
+        exerciseDao.updateCustomExercise(customEx)
     }
 
 

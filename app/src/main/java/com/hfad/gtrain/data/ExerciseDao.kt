@@ -45,6 +45,12 @@ interface ExerciseDao {
     @Query("SELECT * FROM muscleGroup WHERE title = :muscleGroup")
     fun getMuscleGroupWithExercises(muscleGroup: String):LiveData<List<MuscleGroupWithExercises>>
 
+    @Delete
+    suspend fun deleteCustomExercise(customEx: CustomExercise)
+
+    @Update
+    suspend fun updateCustomExercise(customEx: CustomExercise)
+
 
 
 }

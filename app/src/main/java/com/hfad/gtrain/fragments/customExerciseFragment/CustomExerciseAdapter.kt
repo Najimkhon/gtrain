@@ -11,7 +11,7 @@ class CustomExerciseAdapter(
     private val listener: CustomExListLayout.OnItemClickListener
 ):RecyclerView.Adapter<CustomExerciseAdapter.CustomExerciseViewHolder>() {
 
-    private var customExList = emptyList<CustomExercise>()
+    var customExList = emptyList<CustomExercise>()
 
     override fun onCreateViewHolder(parent: ViewGroup, viewType: Int): CustomExerciseViewHolder {
         return CustomExerciseViewHolder(CustomExListLayout(context, listener))

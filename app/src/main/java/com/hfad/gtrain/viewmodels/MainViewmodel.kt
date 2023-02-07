@@ -59,4 +59,15 @@ class MainViewmodel @Inject constructor(
     fun getExerciseWithRecords(exerciseId: Int):LiveData<List<ExerciseWithRecords>> {
         return roomRepository.getExerciseWithRecords(exerciseId)
     }
+    fun deleteCustomExercise(customEx: CustomExercise){
+        viewModelScope.launch(Dispatchers.IO) {
+            roomRepository.deleteCustomExercise(customEx)
+        }
+    }
+
+    fun updateCustomExercise(customEx: CustomExercise){
+        viewModelScope.launch(Dispatchers.IO) {
+            roomRepository.updateCustomExercise(customEx)
+        }
+    }
 }
