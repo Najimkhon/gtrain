@@ -7,6 +7,7 @@ import com.hfad.gtrain.models.Exercise
 import com.hfad.gtrain.models.MuscleGroup
 import com.hfad.gtrain.models.Record
 import com.hfad.gtrain.models.relations.ExerciseWithRecords
+import com.hfad.gtrain.models.relations.MuscleGroupWithCustomExercises
 import com.hfad.gtrain.models.relations.MuscleGroupWithExercises
 import javax.inject.Inject
 
@@ -32,6 +33,9 @@ class RoomRepository @Inject constructor(
     }
     fun getMuscleGroupWithExercises(muscleGroup: String):LiveData<List<MuscleGroupWithExercises>>{
         return exerciseDao.getMuscleGroupWithExercises(muscleGroup)
+    }
+    fun getMuscleGroupWithCustomExercises(muscleGroup: String):LiveData<List<MuscleGroupWithCustomExercises>>{
+        return exerciseDao.getMuscleGroupWithCustomExercises(muscleGroup)
     }
     fun getExerciseWithRecords(exerciseId: Int):LiveData<List<ExerciseWithRecords>> {
         return exerciseDao.getExerciseWithRecords(exerciseId)

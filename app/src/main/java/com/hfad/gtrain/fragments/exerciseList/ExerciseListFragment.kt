@@ -5,19 +5,13 @@ import androidx.fragment.app.Fragment
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
-import androidx.fragment.app.viewModels
 import androidx.navigation.fragment.navArgs
-import androidx.recyclerview.widget.LinearLayoutManager
-import androidx.recyclerview.widget.RecyclerView
 import androidx.viewpager2.widget.ViewPager2
 import com.hfad.gtrain.R
 import com.hfad.gtrain.databinding.FragmentExerciseListBinding
 import com.hfad.gtrain.fragments.customExerciseFragment.CustomExerciseFragment
 import com.hfad.gtrain.models.Exercise
-import com.hfad.gtrain.models.MuscleGroup
-import com.hfad.gtrain.viewmodels.MainViewmodel
 import dagger.hilt.android.AndroidEntryPoint
-import jp.wasabeef.recyclerview.animators.LandingAnimator
 
 @AndroidEntryPoint
 class ExerciseListFragment : Fragment(), ExsListLayout.OnItemClickListener {
@@ -43,7 +37,7 @@ class ExerciseListFragment : Fragment(), ExsListLayout.OnItemClickListener {
         val vp = binding.vp
         val vpAdapter = ExerciseListVpAdapter(childFragmentManager, lifecycle)
         vpAdapter.addFragment(ReadyEcercisesFragment(args.muscleGroup!!))
-        vpAdapter.addFragment(CustomExerciseFragment())
+        vpAdapter.addFragment(CustomExerciseFragment(args.muscleGroup!!))
         vpAdapter.setMuscleGroup(args.muscleGroup!!)
         vp.adapter = vpAdapter
         vp.orientation = ViewPager2.ORIENTATION_HORIZONTAL

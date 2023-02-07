@@ -21,7 +21,7 @@ class ExerciseListVpAdapter(fragmentManager: FragmentManager, lifecycle: Lifecyc
                 ReadyEcercisesFragment(muscleGroup)
             }
             1->{
-                CustomExerciseFragment()
+                CustomExerciseFragment(muscleGroup)
             }else->{
                 ReadyEcercisesFragment(muscleGroup)
             }

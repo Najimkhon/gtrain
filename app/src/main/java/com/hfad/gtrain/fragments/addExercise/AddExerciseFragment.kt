@@ -44,7 +44,6 @@ class AddExerciseFragment : Fragment() {
             muscleGroupList = it
         }
 
-
         return binding.root
     }
 

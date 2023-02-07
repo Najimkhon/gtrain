@@ -7,6 +7,7 @@ import com.hfad.gtrain.models.Exercise
 import com.hfad.gtrain.models.MuscleGroup
 import com.hfad.gtrain.models.Record
 import com.hfad.gtrain.models.relations.ExerciseWithRecords
+import com.hfad.gtrain.models.relations.MuscleGroupWithCustomExercises
 import com.hfad.gtrain.models.relations.MuscleGroupWithExercises
 
 @Dao
@@ -35,6 +36,10 @@ interface ExerciseDao {
     @Transaction
     @Query("SELECT * FROM exercise WHERE id = :id")
     fun getExerciseWithRecords(id: Int):LiveData<List<ExerciseWithRecords>>
+
+    @Transaction
+    @Query("SELECT * FROM muscleGroup WHERE title = :muscleGroup")
+    fun getMuscleGroupWithCustomExercises(muscleGroup: String):LiveData<List<MuscleGroupWithCustomExercises>>
 
     @Transaction
     @Query("SELECT * FROM muscleGroup WHERE title = :muscleGroup")

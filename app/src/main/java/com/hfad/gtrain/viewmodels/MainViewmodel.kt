@@ -10,6 +10,7 @@ import com.hfad.gtrain.models.Exercise
 import com.hfad.gtrain.models.MuscleGroup
 import com.hfad.gtrain.models.Record
 import com.hfad.gtrain.models.relations.ExerciseWithRecords
+import com.hfad.gtrain.models.relations.MuscleGroupWithCustomExercises
 import com.hfad.gtrain.models.relations.MuscleGroupWithExercises
 import com.hfad.gtrain.repositories.RoomRepository
 import dagger.hilt.android.lifecycle.HiltViewModel
@@ -46,6 +47,9 @@ class MainViewmodel @Inject constructor(
             roomRepository.insertRecord(record)
         }
 
+    }
+    fun getMuscleGroupWithCustomExercises(muscleGroupTitle: String): LiveData<List<MuscleGroupWithCustomExercises>> {
+        return roomRepository.getMuscleGroupWithCustomExercises(muscleGroupTitle)
     }
 
     fun getMuscleGroupWithExercises(muscleGroupTitle: String): LiveData<List<MuscleGroupWithExercises>> {
