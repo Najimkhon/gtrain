@@ -15,6 +15,7 @@ import androidx.fragment.app.Fragment
 import androidx.fragment.app.viewModels
 import androidx.navigation.fragment.findNavController
 import com.hfad.gtrain.databinding.FragmentAddExerciseBinding
+import com.hfad.gtrain.fragments.exerciseList.ExerciseListFragment
 import com.hfad.gtrain.models.CustomExercise
 import com.hfad.gtrain.models.MuscleGroup
 import com.hfad.gtrain.ui.dialogs.DialogManager
@@ -178,6 +179,7 @@ class AddExerciseFragment : Fragment() {
     private fun addCustomExercise(customEx: CustomExercise) {
         viewModel.insertCustomExercise(customEx)
         findNavController().popBackStack()
+        ExerciseListFragment.isCustomExerciseView = true
     }
 
     override fun onActivityResult(requestCode: Int, resultCode: Int, data: Intent?) {

@@ -27,6 +27,7 @@ class ExerciseListFragment : Fragment(), ExsListLayout.OnItemClickListener {
         _binding = FragmentExerciseListBinding.inflate(inflater, container, false)
 
         setListeners()
+        pageTurner()
         setupViewPager()
 
         return binding.root
@@ -43,16 +44,26 @@ class ExerciseListFragment : Fragment(), ExsListLayout.OnItemClickListener {
         vp.orientation = ViewPager2.ORIENTATION_HORIZONTAL
     }
 
-    private fun setListeners(){
-        binding.btnSwitchToCustom.setOnClickListener{
+    private fun pageTurner(){
+        if (isCustomExerciseView){
             binding.btnSwitchToExercises.setBackgroundDrawable(resources.getDrawable(R.drawable.dark_oval_card_bg))
             binding.btnSwitchToCustom.setBackgroundDrawable(resources.getDrawable(R.drawable.button_light_blue_bg))
             binding.vp.setCurrentItem(1, true)
-        }
-        binding.btnSwitchToExercises.setOnClickListener{
+        }else{
             binding.btnSwitchToExercises.setBackgroundDrawable(resources.getDrawable(R.drawable.button_light_blue_bg))
             binding.btnSwitchToCustom.setBackgroundDrawable(resources.getDrawable(R.drawable.dark_oval_card_bg))
             binding.vp.setCurrentItem(0, true)
+        }
+    }
+
+    private fun setListeners(){
+        binding.btnSwitchToCustom.setOnClickListener{
+            isCustomExerciseView = true
+            pageTurner()
+        }
+        binding.btnSwitchToExercises.setOnClickListener{
+            isCustomExerciseView =false
+            pageTurner()
         }
     }
 
@@ -63,5 +74,9 @@ class ExerciseListFragment : Fragment(), ExsListLayout.OnItemClickListener {
     override fun onDestroy() {
         super.onDestroy()
         _binding = null
+    }
+
+    companion object{
+        var isCustomExerciseView = false
     }
 }
