@@ -53,7 +53,7 @@ class RepetitionsDialog(private val listener: OnDialogClickListener) : DialogFra
         dialogBinding.btnSave.setOnClickListener {
             repsList.forEachIndexed { _, value ->
                 if (value.isEmpty()) {
-                    inputReps = "0"
+                    inputReps = "1/"
                 } else {
                     inputReps += "$value/"
                 }

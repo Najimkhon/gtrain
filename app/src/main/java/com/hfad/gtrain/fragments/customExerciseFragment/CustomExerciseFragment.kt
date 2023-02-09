@@ -13,6 +13,8 @@ import androidx.recyclerview.widget.RecyclerView
 import com.google.android.material.snackbar.Snackbar
 import com.hfad.gtrain.R
 import com.hfad.gtrain.databinding.FragmentCustomExerciseBinding
+import com.hfad.gtrain.fragments.exerciseList.ExerciseListFragmentDirections
+import com.hfad.gtrain.fragments.muscleGroupList.MuscleGroupListFragmentDirections
 import com.hfad.gtrain.models.CustomExercise
 import com.hfad.gtrain.ui.utils.SwipeToDelete
 import com.hfad.gtrain.viewmodels.MainViewmodel
@@ -88,7 +90,11 @@ class CustomExerciseFragment(val muscleGroup: String) : Fragment(),
     }
 
     override fun onItemClicked(clickedItem: CustomExercise) {
-        TODO("Not yet implemented")
+        val action =
+            ExerciseListFragmentDirections.actionExerciseListFragmentToUpdateExerciseFragment(
+                clickedItem
+            )
+        findNavController().navigate(action)
     }
 
     override fun onDestroy() {

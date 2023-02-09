@@ -1,9 +1,10 @@
-package com.hfad.gtrain.fragments.addExercise
+package com.hfad.gtrain.fragments.updateExercise
 
-import android.app.Activity.RESULT_OK
+import android.app.Activity
 import android.content.Context
 import android.content.Intent
 import android.graphics.Bitmap
+import android.graphics.BitmapFactory
 import android.net.Uri
 import android.os.Bundle
 import android.provider.MediaStore
@@ -13,39 +14,60 @@ import android.view.ViewGroup
 import android.widget.Toast
 import androidx.fragment.app.Fragment
 import androidx.fragment.app.viewModels
+import androidx.lifecycle.lifecycleScope
 import androidx.navigation.fragment.findNavController
-import com.hfad.gtrain.databinding.FragmentAddExerciseBinding
+import androidx.navigation.fragment.navArgs
+import com.hfad.gtrain.databinding.FragmentUpdateExerciseBinding
 import com.hfad.gtrain.fragments.exerciseList.ExerciseListFragment
 import com.hfad.gtrain.models.CustomExercise
-import com.hfad.gtrain.models.MuscleGroup
 import com.hfad.gtrain.ui.dialogs.DialogManager
 import com.hfad.gtrain.ui.dialogs.OnDialogClickListener
 import com.hfad.gtrain.viewmodels.MainViewmodel
 import dagger.hilt.android.AndroidEntryPoint
+import kotlinx.coroutines.Dispatchers
+import kotlinx.coroutines.launch
+import kotlinx.coroutines.withContext
 import java.io.IOException
 
+
 @AndroidEntryPoint
-class AddExerciseFragment : Fragment() {
-    private var _binding: FragmentAddExerciseBinding? = null
+class UpdateExerciseFragment : Fragment() {
+
+    private val args by navArgs<UpdateExerciseFragmentArgs>()
+    private var _binding: FragmentUpdateExerciseBinding? = null
     private val binding get() = _binding!!
     private val viewModel: MainViewmodel by viewModels()
-    private lateinit var dialogManager: DialogManager
     private var imageUri: Uri? = null
     private var imageName: String = ""
+    private lateinit var dialogManager: DialogManager
+
 
     override fun onCreateView(
         inflater: LayoutInflater, container: ViewGroup?,
         savedInstanceState: Bundle?
     ): View {
-        _binding = FragmentAddExerciseBinding.inflate(inflater, container, false)
+        _binding = FragmentUpdateExerciseBinding.inflate(inflater, container, false)
+
         dialogManager = DialogManager(childFragmentManager)
         setListeners()
-
-        viewModel.getAllmuscleGroup.observe(viewLifecycleOwner) {
-            muscleGroupList = it
-        }
+        bindViews()
 
         return binding.root
+    }
+
+    private fun bindViews() {
+        lifecycleScope.launch {
+            val photos = loadPhotos(args.currentExercise.image, requireContext())
+            if (photos.isNotEmpty()) {
+                binding.ivAddImage.setImageBitmap(photos[0])
+            }
+        }
+        binding.tvExerciseName.text = args.currentExercise.name
+        binding.tvDescription.text = args.currentExercise.description
+        binding.tvRepetition.text =
+            makeRepetitionsString(args.currentExercise.sets, args.currentExercise.reps)
+        binding.tvMuscleGroup.text = args.currentExercise.muscleGroup
+        binding.tvCalories.text = args.currentExercise.calories.toString()
     }
 
     private fun setListeners() {
@@ -60,6 +82,7 @@ class AddExerciseFragment : Fragment() {
                 }
             })
         }
+
         binding.descritionBlock.setOnClickListener {
             dialogManager.showExerciseDescriptionDialog(object : OnDialogClickListener {
                 override fun onSaveClicked(input: String) {
@@ -68,18 +91,18 @@ class AddExerciseFragment : Fragment() {
             })
         }
 
-        binding.categoryBlock.setOnClickListener {
-            dialogManager.showMuscleGroupDialog(object : OnDialogClickListener {
-                override fun onSaveClicked(input: String) {
-                    binding.tvMuscleGroup.text = input
-                }
-            })
-        }
-
         binding.repsBlock.setOnClickListener {
             dialogManager.showRepetitionsDialog(object : OnDialogClickListener {
                 override fun onSaveClicked(input: String) {
                     binding.tvRepetition.text = input
+                }
+            })
+        }
+
+        binding.categoryBlock.setOnClickListener {
+            dialogManager.showMuscleGroupDialog(object : OnDialogClickListener {
+                override fun onSaveClicked(input: String) {
+                    binding.tvMuscleGroup.text = input
                 }
             })
         }
@@ -93,11 +116,32 @@ class AddExerciseFragment : Fragment() {
         }
 
         binding.btnSave.setOnClickListener {
-            saveCustomExercise()
+            updateExercise()
+        }
+        binding.btnCancel.setOnClickListener {
+            findNavController().popBackStack()
         }
     }
 
-    private fun saveCustomExercise(){
+    private fun makeRepetitionsString(sets: Int, reps: List<Int>): String {
+        var repetitions = "Sets: $sets Reps: "
+        reps.forEach {
+            repetitions += "$it/"
+        }
+        return repetitions.dropLast(1)
+    }
+
+    private suspend fun loadPhotos(imageName: String, context: Context): List<Bitmap> {
+        return withContext(Dispatchers.IO) {
+            val files = context.filesDir.listFiles()
+            files.filter { it.canRead() && it.isFile && it.name.contentEquals(imageName) }.map {
+                val bytes = it.readBytes()
+                BitmapFactory.decodeByteArray(bytes, 0, bytes.size)
+            }
+        }
+    }
+
+    private fun updateExercise() {
         val exName = binding.tvExerciseName.text.toString()
         val muscleGroup = binding.tvMuscleGroup.text.toString()
         val description = binding.tvDescription.text.toString()
@@ -108,7 +152,7 @@ class AddExerciseFragment : Fragment() {
             val setsInt = getSets(repetitionsInput)
             val repsList = getReps(repetitionsInput)
             val newExercise = CustomExercise(
-                0,
+                args.currentExercise.id,
                 exName,
                 imageName,
                 "",
@@ -118,11 +162,12 @@ class AddExerciseFragment : Fragment() {
                 setsInt,
                 repsList
             )
-            viewModel.insertCustomExercise(newExercise)
+            viewModel.updateCustomExercise(newExercise)
             findNavController().popBackStack()
             ExerciseListFragment.isCustomExerciseView = true
         } else {
-            Toast.makeText(requireContext(), "Please, fill all the fields!", Toast.LENGTH_SHORT).show()
+            Toast.makeText(requireContext(), "Please, fill all the fields!", Toast.LENGTH_SHORT)
+                .show()
         }
     }
 
@@ -142,12 +187,6 @@ class AddExerciseFragment : Fragment() {
         return sets[6].digitToInt()
     }
 
-    private fun launchGallery() {
-        val intent = Intent(Intent.ACTION_PICK)
-        intent.type = "image/*"
-        startActivityForResult(intent, IMAGE_PICK_CODE)
-    }
-
     private fun saveBitmapToInternalStorage(filename: String, bmp: Bitmap): Boolean {
         return try {
             requireActivity().openFileOutput(filename, Context.MODE_PRIVATE).use { stream ->
@@ -163,9 +202,15 @@ class AddExerciseFragment : Fragment() {
         }
     }
 
+    private fun launchGallery() {
+        val intent = Intent(Intent.ACTION_PICK)
+        intent.type = "image/*"
+        startActivityForResult(intent, IMAGE_PICK_CODE)
+    }
+
     override fun onActivityResult(requestCode: Int, resultCode: Int, data: Intent?) {
         super.onActivityResult(requestCode, resultCode, data)
-        if (requestCode == IMAGE_PICK_CODE && resultCode == RESULT_OK) {
+        if (requestCode == IMAGE_PICK_CODE && resultCode == Activity.RESULT_OK) {
             imageUri = data?.data!!
             val bitmap: Bitmap = MediaStore.Images.Media.getBitmap(
                 requireContext().contentResolver, Uri.parse(
@@ -179,8 +224,6 @@ class AddExerciseFragment : Fragment() {
 
     companion object {
         private const val IMAGE_PICK_CODE = 999
-        var muscleGroupList = listOf<MuscleGroup>()
     }
-
 
 }

@@ -18,7 +18,7 @@ class MainActivity : AppCompatActivity() {
         val navHostFragment = supportFragmentManager.findFragmentById(R.id.navHostFragment) as NavHostFragment
         val navController = navHostFragment.navController
         binding.bottomNavigationView.setupWithNavController(navController)
-
+        val files = filesDir.listFiles()
 
 //        navController
 //            .addOnDestinationChangedListener{_, destination, _->

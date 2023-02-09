@@ -1,6 +1,5 @@
 package com.hfad.gtrain.models
 
-import android.net.Uri
 import android.os.Parcelable
 import androidx.room.Entity
 import androidx.room.PrimaryKey
@@ -11,7 +10,7 @@ data class CustomExercise(
     @PrimaryKey(autoGenerate = true)
     val id: Int,
     val name: String,
-    var image: Uri?,
+    var image: String ="",
     val videoUrl: String = "",
     val description: String = "",
     var calories: Int=0,
