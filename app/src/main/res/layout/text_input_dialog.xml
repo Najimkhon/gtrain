@@ -27,7 +27,8 @@
             android:layout_marginTop="16dp"
             android:background="@android:color/transparent"
             android:gravity="center"
-            android:text="My exercise"
+            android:hint="Bench Press..."
+            android:textColorHint="@color/light_grey"
             android:textColor="@color/white"
             android:inputType="text"
             android:textSize="16sp" />
