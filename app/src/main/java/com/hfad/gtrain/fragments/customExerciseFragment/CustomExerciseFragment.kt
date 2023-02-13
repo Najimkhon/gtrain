@@ -1,10 +1,14 @@
 package com.hfad.gtrain.fragments.customExerciseFragment
 
+import android.content.Context
+import android.graphics.Color
 import android.os.Bundle
-import androidx.fragment.app.Fragment
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
+import android.widget.Toast
+import androidx.appcompat.content.res.AppCompatResources
+import androidx.fragment.app.Fragment
 import androidx.fragment.app.viewModels
 import androidx.navigation.fragment.findNavController
 import androidx.recyclerview.widget.ItemTouchHelper
@@ -14,11 +18,12 @@ import com.google.android.material.snackbar.Snackbar
 import com.hfad.gtrain.R
 import com.hfad.gtrain.databinding.FragmentCustomExerciseBinding
 import com.hfad.gtrain.fragments.exerciseList.ExerciseListFragmentDirections
-import com.hfad.gtrain.fragments.muscleGroupList.MuscleGroupListFragmentDirections
 import com.hfad.gtrain.models.CustomExercise
+import com.hfad.gtrain.ui.utils.SwipeHelper
 import com.hfad.gtrain.ui.utils.SwipeToDelete
 import com.hfad.gtrain.viewmodels.MainViewmodel
 import dagger.hilt.android.AndroidEntryPoint
+
 
 @AndroidEntryPoint
 class CustomExerciseFragment(val muscleGroup: String) : Fragment(),
@@ -52,6 +57,8 @@ class CustomExerciseFragment(val muscleGroup: String) : Fragment(),
             println("Test" + it.size)
         }
         setupRecyclerView()
+
+
         // Inflate the layout for this fragment
         return binding.root
     }
@@ -59,21 +66,59 @@ class CustomExerciseFragment(val muscleGroup: String) : Fragment(),
     private fun setupRecyclerView() {
         val recyclerView = binding.rvCustom
         recyclerView.adapter = adapter
-        swipeToDelete(recyclerView)
+        //swipeToDelete(recyclerView)
         recyclerView.layoutManager = LinearLayoutManager(requireContext())
+        swipeHelper(recyclerView, requireContext())
     }
 
-    private fun swipeToDelete(recyclerView: RecyclerView) {
-        val swipeToDeleteCallback = object : SwipeToDelete() {
-            override fun onSwiped(viewHolder: RecyclerView.ViewHolder, direction: Int) {
-                val itemToDelete = adapter.customExList[viewHolder.adapterPosition]
-                viewModel.deleteCustomExercise(itemToDelete)
-                adapter.notifyItemChanged(viewHolder.adapterPosition)
-                restoreDeletedData(viewHolder.itemView, itemToDelete, viewHolder.adapterPosition)
+    private fun swipeHelper(recyclerView: RecyclerView, context: Context){
+        object : SwipeHelper(context, recyclerView, false) {
+            override fun instantiateUnderlayButton(
+                viewHolder: RecyclerView.ViewHolder?,
+                underlayButtons: MutableList<UnderlayButton>?
+            ) {
+
+                underlayButtons?.add(UnderlayButton(
+                    "Delete",
+                    AppCompatResources.getDrawable(
+                        context,
+                        R.drawable.ic_delete
+                    ),
+                    Color.TRANSPARENT, Color.parseColor("#ffffff")
+                ) { pos: Int ->
+                    val itemToDelete = adapter.customExList[viewHolder!!.adapterPosition]
+                    viewModel.deleteCustomExercise(itemToDelete)
+                    adapter.notifyItemChanged(viewHolder!!.adapterPosition)
+                    restoreDeletedData(viewHolder.itemView, itemToDelete, viewHolder.adapterPosition)
+                    Toast.makeText(
+                        context,
+                        "Flag Button Clicked at Position: $pos",
+                        Toast.LENGTH_SHORT
+                    ).show()
+                    adapter.notifyItemChanged(pos)
+                })
+
+                underlayButtons?.add(UnderlayButton(
+                    "Edit",
+                    AppCompatResources.getDrawable(
+                        context,
+                        R.drawable.ic_edit
+                    ),
+                    Color.TRANSPARENT, Color.parseColor("#ffffff")
+                ) { pos: Int ->
+                    val action =
+                        ExerciseListFragmentDirections.actionExerciseListFragmentToUpdateExerciseFragment(adapter.item!!)
+                    findNavController().navigate(action)
+                    Toast.makeText(
+                        context,
+                        "Delete clicked at $pos",
+                        Toast.LENGTH_SHORT
+                    ).show()
+                    adapter.notifyItemRemoved(pos)
+                })
             }
+
         }
-        val itemTouchHelper = ItemTouchHelper(swipeToDeleteCallback)
-        itemTouchHelper.attachToRecyclerView(recyclerView)
     }
 
     private fun restoreDeletedData(view: View, deletedItem: CustomExercise, position: Int) {

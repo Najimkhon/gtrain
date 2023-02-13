@@ -12,6 +12,7 @@ class CustomExerciseAdapter(
 ):RecyclerView.Adapter<CustomExerciseAdapter.CustomExerciseViewHolder>() {
 
     var customExList = emptyList<CustomExercise>()
+    var item: CustomExercise? = null
 
     override fun onCreateViewHolder(parent: ViewGroup, viewType: Int): CustomExerciseViewHolder {
         return CustomExerciseViewHolder(CustomExListLayout(context, listener))
@@ -19,6 +20,7 @@ class CustomExerciseAdapter(
 
     override fun onBindViewHolder(holder: CustomExerciseViewHolder, position: Int) {
         val customExercise = customExList[position]
+        item = customExercise
         holder.layout.fillContent(customExercise)
     }
 
@@ -30,6 +32,7 @@ class CustomExerciseAdapter(
         this.customExList = customExerciseList
         notifyDataSetChanged()
     }
+
 
     inner class CustomExerciseViewHolder(itemView: View):RecyclerView.ViewHolder(itemView){
         val layout = itemView as CustomExListLayout
