@@ -249,7 +249,7 @@ public abstract class SwipeHelper extends ItemTouchHelper.SimpleCallback {
                 canvas.drawText(text, rect.left + x, rect.top + y, p);
 
                 if (imageResId != null) {
-                    imageResId.setBounds((int) (rect.left + 50), (int) (rect.top + (cHeight / 2f)), (int) (rect.right - 50), (int) (rect.bottom - ((cHeight / 10f))));
+                    imageResId.setBounds((int) (rect.left + 50), (int) (rect.top + (cHeight / 2f)), (int) (rect.right - 60), (int) (rect.bottom - ((cHeight / 10f))));
                     imageResId.draw(canvas);
                 }
 
