@@ -23,13 +23,14 @@ import com.hfad.gtrain.ui.dialogs.OnDialogClickListener
 import com.hfad.gtrain.viewmodels.MainViewmodel
 import dagger.hilt.android.AndroidEntryPoint
 import java.io.IOException
+import javax.inject.Inject
 
 @AndroidEntryPoint
 class AddExerciseFragment : Fragment() {
     private var _binding: FragmentAddExerciseBinding? = null
     private val binding get() = _binding!!
     private val viewModel: MainViewmodel by viewModels()
-    private lateinit var dialogManager: DialogManager
+    @Inject lateinit var dialogManager: DialogManager
     private var imageUri: Uri? = null
     private var imageName: String = ""
 
@@ -38,7 +39,6 @@ class AddExerciseFragment : Fragment() {
         savedInstanceState: Bundle?
     ): View {
         _binding = FragmentAddExerciseBinding.inflate(inflater, container, false)
-        dialogManager = DialogManager(childFragmentManager)
         setListeners()
 
         viewModel.getAllmuscleGroup.observe(viewLifecycleOwner) {

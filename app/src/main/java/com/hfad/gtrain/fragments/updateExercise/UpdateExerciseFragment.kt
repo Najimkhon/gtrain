@@ -28,6 +28,7 @@ import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.launch
 import kotlinx.coroutines.withContext
 import java.io.IOException
+import javax.inject.Inject
 
 
 @AndroidEntryPoint
@@ -39,7 +40,7 @@ class UpdateExerciseFragment : Fragment() {
     private val viewModel: MainViewmodel by viewModels()
     private var imageUri: Uri? = null
     private var imageName: String = ""
-    private lateinit var dialogManager: DialogManager
+    @Inject lateinit var dialogManager: DialogManager
 
 
     override fun onCreateView(
@@ -47,8 +48,6 @@ class UpdateExerciseFragment : Fragment() {
         savedInstanceState: Bundle?
     ): View {
         _binding = FragmentUpdateExerciseBinding.inflate(inflater, container, false)
-
-        dialogManager = DialogManager(childFragmentManager)
         setListeners()
         bindViews()
 

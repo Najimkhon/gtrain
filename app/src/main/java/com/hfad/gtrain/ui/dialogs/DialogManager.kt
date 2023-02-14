@@ -1,9 +1,10 @@
 package com.hfad.gtrain.ui.dialogs
 
 import androidx.fragment.app.FragmentManager
+import javax.inject.Inject
 
 
-class DialogManager(private val fragmentManager: FragmentManager) {
+class DialogManager @Inject constructor(private val fragmentManager: FragmentManager) {
 
     fun showExerciseNameDialog(listener: OnDialogClickListener) {
         val dialog = ExerciseNameDialog(listener)
