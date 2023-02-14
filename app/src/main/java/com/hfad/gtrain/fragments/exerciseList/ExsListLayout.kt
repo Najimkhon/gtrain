@@ -13,13 +13,6 @@ class ExsListLayout(context: Context, private val listener: OnItemClickListener)
 
     private val binding =
         ExerciseItemLayoutBinding.inflate(LayoutInflater.from(context), this, true)
-    private lateinit var currentExercise: Exercise
-
-    init {
-        binding.cvExercise.setOnClickListener {
-            listener.onItemClicked(currentExercise)
-        }
-    }
 
     fun fillContent(currentExercise: Exercise) {
         binding.tvExTitle.text = currentExercise.name
@@ -29,8 +22,9 @@ class ExsListLayout(context: Context, private val listener: OnItemClickListener)
             .load(imageUri)
             .placeholder(R.drawable.img_benchpress_1)
             .into(binding.ivImage)
-
-
+        binding.cvExercise.setOnClickListener {
+            listener.onItemClicked(currentExercise)
+        }
     }
 
     interface OnItemClickListener {

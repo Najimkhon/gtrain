@@ -6,12 +6,10 @@ import android.os.Bundle
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
-import android.widget.Toast
 import androidx.appcompat.content.res.AppCompatResources
 import androidx.fragment.app.Fragment
 import androidx.fragment.app.viewModels
 import androidx.navigation.fragment.findNavController
-import androidx.recyclerview.widget.ItemTouchHelper
 import androidx.recyclerview.widget.LinearLayoutManager
 import androidx.recyclerview.widget.RecyclerView
 import com.google.android.material.snackbar.Snackbar
@@ -20,7 +18,6 @@ import com.hfad.gtrain.databinding.FragmentCustomExerciseBinding
 import com.hfad.gtrain.fragments.exerciseList.ExerciseListFragmentDirections
 import com.hfad.gtrain.models.CustomExercise
 import com.hfad.gtrain.ui.utils.SwipeHelper
-import com.hfad.gtrain.ui.utils.SwipeToDelete
 import com.hfad.gtrain.viewmodels.MainViewmodel
 import dagger.hilt.android.AndroidEntryPoint
 
@@ -90,11 +87,6 @@ class CustomExerciseFragment(val muscleGroup: String) : Fragment(),
                     viewModel.deleteCustomExercise(itemToDelete)
                     adapter.notifyItemChanged(viewHolder!!.adapterPosition)
                     restoreDeletedData(viewHolder.itemView, itemToDelete, viewHolder.adapterPosition)
-                    Toast.makeText(
-                        context,
-                        "Flag Button Clicked at Position: $pos",
-                        Toast.LENGTH_SHORT
-                    ).show()
                     adapter.notifyItemChanged(pos)
                 })
 
@@ -109,12 +101,6 @@ class CustomExerciseFragment(val muscleGroup: String) : Fragment(),
                     val action =
                         ExerciseListFragmentDirections.actionExerciseListFragmentToUpdateExerciseFragment(adapter.item!!)
                     findNavController().navigate(action)
-                    Toast.makeText(
-                        context,
-                        "Delete clicked at $pos",
-                        Toast.LENGTH_SHORT
-                    ).show()
-                    adapter.notifyItemRemoved(pos)
                 })
             }
 

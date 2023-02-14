@@ -9,7 +9,7 @@
         android:id="@+id/muscleGroupListFragment"
         android:name="com.hfad.gtrain.fragments.muscleGroupList.MuscleGroupListFragment"
         android:label="fragment_category_list"
-        tools:layout="@layout/fragment_muscle_group_list" >
+        tools:layout="@layout/fragment_muscle_group_list">
         <action
             android:id="@+id/action_muscleGroupListFragment_to_exerciseListFragment"
             app:destination="@id/exerciseListFragment" />
@@ -18,7 +18,7 @@
         android:id="@+id/exerciseListFragment"
         android:name="com.hfad.gtrain.fragments.exerciseList.ExerciseListFragment"
         android:label="fragment_exercise_list"
-        tools:layout="@layout/fragment_exercise_list" >
+        tools:layout="@layout/fragment_exercise_list">
         <argument
             android:name="muscleGroup"
             app:argType="string"
@@ -29,27 +29,30 @@
         <action
             android:id="@+id/action_exerciseListFragment_to_updateExerciseFragment"
             app:destination="@id/updateExerciseFragment" />
+        <action
+            android:id="@+id/action_exerciseListFragment_to_exerciseDetailFragment"
+            app:destination="@id/exerciseDetailFragment" />
+
     </fragment>
     <fragment
         android:id="@+id/exerciseDetailFragment"
         android:name="com.hfad.gtrain.fragments.exerciseDetail.ExerciseDetailFragment"
         android:label="fragment_exercise_detail"
-        tools:layout="@layout/fragment_exercise_detail" />
+        tools:layout="@layout/fragment_exercise_detail">
+        <argument
+            android:name="currentExercise"
+            app:argType="com.hfad.gtrain.models.Exercise" />
+    </fragment>
     <fragment
         android:id="@+id/addExerciseFragment"
         android:name="com.hfad.gtrain.fragments.addExercise.AddExerciseFragment"
         android:label="fragment_add_exercise"
         tools:layout="@layout/fragment_add_exercise" />
     <fragment
-        android:id="@+id/customExerciseFragment"
-        android:name="com.hfad.gtrain.fragments.customExerciseFragment.CustomExerciseFragment"
-        android:label="fragment_custom_exercise"
-        tools:layout="@layout/fragment_custom_exercise" />
-    <fragment
         android:id="@+id/updateExerciseFragment"
         android:name="com.hfad.gtrain.fragments.updateExercise.UpdateExerciseFragment"
         android:label="fragment_update_exercise"
-        tools:layout="@layout/fragment_update_exercise" >
+        tools:layout="@layout/fragment_update_exercise">
         <argument
             android:name="CurrentExercise"
             app:argType="com.hfad.gtrain.models.CustomExercise" />

@@ -6,11 +6,8 @@ import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
 import androidx.fragment.app.viewModels
-import androidx.navigation.fragment.navArgs
+import androidx.navigation.fragment.findNavController
 import androidx.recyclerview.widget.LinearLayoutManager
-import androidx.recyclerview.widget.RecyclerView
-import com.hfad.gtrain.R
-import com.hfad.gtrain.databinding.FragmentExerciseListBinding
 import com.hfad.gtrain.databinding.FragmentReadyEcercisesBinding
 import com.hfad.gtrain.models.Exercise
 import com.hfad.gtrain.viewmodels.MainViewmodel
@@ -55,7 +52,9 @@ class ReadyEcercisesFragment(val muscleGroup: String) : Fragment(),
     }
 
     override fun onItemClicked(clickedItem: Exercise) {
-        TODO("Not yet implemented")
+        val action =
+            ExerciseListFragmentDirections.actionExerciseListFragmentToExerciseDetailFragment(clickedItem)
+        findNavController().navigate(action)
     }
 
     override fun onDestroy() {
