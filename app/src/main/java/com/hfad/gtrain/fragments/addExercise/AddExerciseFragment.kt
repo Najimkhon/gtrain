@@ -95,6 +95,9 @@ class AddExerciseFragment : Fragment() {
         binding.btnSave.setOnClickListener {
             saveCustomExercise()
         }
+        binding.btnCancel.setOnClickListener {
+            findNavController().popBackStack()
+        }
     }
 
     private fun saveCustomExercise(){
