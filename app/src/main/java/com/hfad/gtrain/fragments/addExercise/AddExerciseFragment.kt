@@ -12,6 +12,7 @@ import android.view.View
 import android.view.ViewGroup
 import android.widget.Toast
 import androidx.fragment.app.Fragment
+import androidx.fragment.app.activityViewModels
 import androidx.fragment.app.viewModels
 import androidx.navigation.fragment.findNavController
 import com.hfad.gtrain.databinding.FragmentAddExerciseBinding
@@ -29,8 +30,10 @@ import javax.inject.Inject
 class AddExerciseFragment : Fragment() {
     private var _binding: FragmentAddExerciseBinding? = null
     private val binding get() = _binding!!
-    private val viewModel: MainViewmodel by viewModels()
-    @Inject lateinit var dialogManager: DialogManager
+    private val viewModel: MainViewmodel by activityViewModels()
+
+    @Inject
+    lateinit var dialogManager: DialogManager
     private var imageUri: Uri? = null
     private var imageName: String = ""
 
@@ -100,7 +103,7 @@ class AddExerciseFragment : Fragment() {
         }
     }
 
-    private fun saveCustomExercise(){
+    private fun saveCustomExercise() {
         val exName = binding.tvExerciseName.text.toString()
         val muscleGroup = binding.tvMuscleGroup.text.toString()
         val description = binding.tvDescription.text.toString()
@@ -125,7 +128,8 @@ class AddExerciseFragment : Fragment() {
             findNavController().popBackStack()
             ExerciseListFragment.isCustomExerciseView = true
         } else {
-            Toast.makeText(requireContext(), "Please, fill all the fields!", Toast.LENGTH_SHORT).show()
+            Toast.makeText(requireContext(), "Please, fill all the fields!", Toast.LENGTH_SHORT)
+                .show()
         }
     }
 

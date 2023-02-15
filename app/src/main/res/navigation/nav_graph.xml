@@ -42,6 +42,9 @@
         <argument
             android:name="currentExercise"
             app:argType="com.hfad.gtrain.models.Exercise" />
+        <action
+            android:id="@+id/action_exerciseDetailFragment_to_videoPlayerFragment"
+            app:destination="@id/videoPlayerFragment" />
     </fragment>
     <fragment
         android:id="@+id/addExerciseFragment"
@@ -56,5 +59,14 @@
         <argument
             android:name="CurrentExercise"
             app:argType="com.hfad.gtrain.models.CustomExercise" />
+    </fragment>
+    <fragment
+        android:id="@+id/videoPlayerFragment"
+        android:name="com.hfad.gtrain.fragments.exerciseDetail.VideoPlayerFragment"
+        android:label="fragment_video_player"
+        tools:layout="@layout/fragment_video_player" >
+        <argument
+            android:name="currentExercise"
+            app:argType="com.hfad.gtrain.models.Exercise" />
     </fragment>
 </navigation>

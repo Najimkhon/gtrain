@@ -5,23 +5,25 @@ import androidx.fragment.app.Fragment
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
+import androidx.fragment.app.activityViewModels
 import androidx.fragment.app.viewModels
 import androidx.navigation.fragment.findNavController
 import androidx.recyclerview.widget.LinearLayoutManager
 import com.hfad.gtrain.databinding.FragmentReadyEcercisesBinding
 import com.hfad.gtrain.models.Exercise
+import com.hfad.gtrain.models.MuscleGroup
 import com.hfad.gtrain.viewmodels.MainViewmodel
 import dagger.hilt.android.AndroidEntryPoint
 import jp.wasabeef.recyclerview.animators.LandingAnimator
 
 @AndroidEntryPoint
-class ReadyEcercisesFragment(val muscleGroup: String) : Fragment(),
+class ReadyEcercisesFragment(private val muscleGroup: String) : Fragment(),
     ExsListLayout.OnItemClickListener {
 
     // private val args by navArgs<ExerciseListFragmentArgs>()
     private var _binding: FragmentReadyEcercisesBinding? = null
     private val binding get() = _binding!!
-    private val viewModel: MainViewmodel by viewModels()
+    private val viewModel: MainViewmodel by activityViewModels()
     private val adapter: ExsListAdapter by lazy { ExsListAdapter(requireContext(), this) }
 
     override fun onCreateView(

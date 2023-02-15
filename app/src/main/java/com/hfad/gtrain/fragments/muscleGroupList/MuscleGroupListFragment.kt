@@ -6,6 +6,7 @@ import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
 import androidx.core.widget.NestedScrollView
+import androidx.fragment.app.activityViewModels
 import androidx.fragment.app.viewModels
 import androidx.navigation.fragment.findNavController
 import androidx.recyclerview.widget.LinearLayoutManager
@@ -20,7 +21,7 @@ import jp.wasabeef.recyclerview.animators.LandingAnimator
 class MuscleGroupListFragment : Fragment(), MuscleGroupItemLayout.OnItemClickListener {
     private var _binding: FragmentMuscleGroupListBinding? = null
     private val binding get() = _binding!!
-    private val viewModel: MainViewmodel by viewModels()
+    private val viewModel: MainViewmodel by activityViewModels()
     private val adapter: MuscleGroupAdapter by lazy { MuscleGroupAdapter(requireContext(), this) }
 
     override fun onCreateView(

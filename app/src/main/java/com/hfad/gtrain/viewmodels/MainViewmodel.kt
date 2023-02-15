@@ -22,7 +22,12 @@ import javax.inject.Inject
 class MainViewmodel @Inject constructor(
     val roomRepository: RoomRepository
 ):ViewModel() {
-    val testString = "Dagger works!"
+    init {
+        println("VM is created")
+
+    }
+
+    var muscleGroup = ""
     val getAllmuscleGroup: LiveData<List<MuscleGroup>> = roomRepository.getAllmuscleGroup
     val getAllExercise: LiveData<List<Exercise>> = roomRepository.getAllExercise
     val getAllRecord: LiveData<List<Record>> = roomRepository.getAllRecord
@@ -59,6 +64,7 @@ class MainViewmodel @Inject constructor(
     fun getExerciseWithRecords(exerciseId: Int):LiveData<List<ExerciseWithRecords>> {
         return roomRepository.getExerciseWithRecords(exerciseId)
     }
+
     fun deleteCustomExercise(customEx: CustomExercise){
         viewModelScope.launch(Dispatchers.IO) {
             roomRepository.deleteCustomExercise(customEx)

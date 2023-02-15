@@ -13,6 +13,7 @@ import android.view.View
 import android.view.ViewGroup
 import android.widget.Toast
 import androidx.fragment.app.Fragment
+import androidx.fragment.app.activityViewModels
 import androidx.fragment.app.viewModels
 import androidx.lifecycle.lifecycleScope
 import androidx.navigation.fragment.findNavController
@@ -37,10 +38,12 @@ class UpdateExerciseFragment : Fragment() {
     private val args by navArgs<UpdateExerciseFragmentArgs>()
     private var _binding: FragmentUpdateExerciseBinding? = null
     private val binding get() = _binding!!
-    private val viewModel: MainViewmodel by viewModels()
+    private val viewModel: MainViewmodel by activityViewModels()
     private var imageUri: Uri? = null
     private var imageName: String = ""
-    @Inject lateinit var dialogManager: DialogManager
+
+    @Inject
+    lateinit var dialogManager: DialogManager
 
 
     override fun onCreateView(

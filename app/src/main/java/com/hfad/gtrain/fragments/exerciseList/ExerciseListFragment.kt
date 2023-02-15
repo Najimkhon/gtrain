@@ -5,6 +5,9 @@ import androidx.fragment.app.Fragment
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
+import android.widget.Toast
+import androidx.fragment.app.activityViewModels
+import androidx.fragment.app.viewModels
 import androidx.navigation.fragment.findNavController
 import androidx.navigation.fragment.navArgs
 import androidx.viewpager2.widget.ViewPager2
@@ -12,6 +15,7 @@ import com.hfad.gtrain.R
 import com.hfad.gtrain.databinding.FragmentExerciseListBinding
 import com.hfad.gtrain.fragments.customExerciseFragment.CustomExerciseFragment
 import com.hfad.gtrain.models.Exercise
+import com.hfad.gtrain.viewmodels.MainViewmodel
 import dagger.hilt.android.AndroidEntryPoint
 
 @AndroidEntryPoint
@@ -20,6 +24,7 @@ class ExerciseListFragment : Fragment(), ExsListLayout.OnItemClickListener {
     private val args by navArgs<ExerciseListFragmentArgs>()
     private var _binding: FragmentExerciseListBinding? = null
     private val binding get() = _binding!!
+    private val viewModel: MainViewmodel by viewModels()
 
     override fun onCreateView(
         inflater: LayoutInflater, container: ViewGroup?,
@@ -37,10 +42,7 @@ class ExerciseListFragment : Fragment(), ExsListLayout.OnItemClickListener {
 
     private fun setupViewPager(){
         val vp = binding.vp
-        val vpAdapter = ExerciseListVpAdapter(childFragmentManager, lifecycle)
-        vpAdapter.addFragment(ReadyEcercisesFragment(args.muscleGroup!!))
-        vpAdapter.addFragment(CustomExerciseFragment(args.muscleGroup!!))
-        vpAdapter.setMuscleGroup(args.muscleGroup!!)
+        val vpAdapter = ExerciseListVpAdapter(childFragmentManager, lifecycle, args.muscleGroup!!)
         vp.isUserInputEnabled = false
         vp.adapter = vpAdapter
         vp.orientation = ViewPager2.ORIENTATION_HORIZONTAL
