@@ -9,7 +9,6 @@ import androidx.fragment.app.activityViewModels
 import androidx.navigation.fragment.findNavController
 import androidx.recyclerview.widget.LinearLayoutManager
 import com.hfad.gtrain.databinding.FragmentReadyEcercisesBinding
-import com.hfad.gtrain.fragments.BlankFragment
 import com.hfad.gtrain.models.Exercise
 import com.hfad.gtrain.viewmodels.MainViewmodel
 import dagger.hilt.android.AndroidEntryPoint
@@ -40,7 +39,7 @@ class ReadyEcercisesFragment : Fragment(),
     override fun onCreateView(
         inflater: LayoutInflater, container: ViewGroup?,
         savedInstanceState: Bundle?
-    ): View? {
+    ): View {
         _binding = FragmentReadyEcercisesBinding.inflate(inflater, container, false)
 
         initializeViewModel()

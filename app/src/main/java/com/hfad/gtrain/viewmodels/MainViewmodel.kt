@@ -24,9 +24,8 @@ class MainViewmodel @Inject constructor(
 ):ViewModel() {
     init {
         println("VM is created")
-
     }
-
+    var isLandscape: MutableLiveData<Boolean> = MutableLiveData(false)
     var muscleGroup = ""
     val getAllmuscleGroup: LiveData<List<MuscleGroup>> = roomRepository.getAllmuscleGroup
     val getAllExercise: LiveData<List<Exercise>> = roomRepository.getAllExercise
@@ -51,8 +50,8 @@ class MainViewmodel @Inject constructor(
         viewModelScope.launch(Dispatchers.IO) {
             roomRepository.insertRecord(record)
         }
-
     }
+
     fun getMuscleGroupWithCustomExercises(muscleGroupTitle: String): LiveData<List<MuscleGroupWithCustomExercises>> {
         return roomRepository.getMuscleGroupWithCustomExercises(muscleGroupTitle)
     }

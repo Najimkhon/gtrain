@@ -24,7 +24,7 @@ class ExerciseListFragment : Fragment(), ExsListLayout.OnItemClickListener {
     private val args by navArgs<ExerciseListFragmentArgs>()
     private var _binding: FragmentExerciseListBinding? = null
     private val binding get() = _binding!!
-    private val viewModel: MainViewmodel by viewModels()
+
 
     override fun onCreateView(
         inflater: LayoutInflater, container: ViewGroup?,
