@@ -5,7 +5,7 @@ import androidx.fragment.app.FragmentManager
 import androidx.lifecycle.Lifecycle
 import androidx.viewpager2.adapter.FragmentStateAdapter
 import com.hfad.gtrain.fragments.customExerciseFragment.CustomExerciseFragment
-import com.hfad.gtrain.models.MuscleGroup
+
 
 class ExerciseListVpAdapter(
     fragmentManager: FragmentManager,
@@ -21,13 +21,13 @@ class ExerciseListVpAdapter(
     override fun createFragment(position: Int): Fragment {
         return when (position) {
             0 -> {
-                ReadyEcercisesFragment(muscleGroup)
+                ReadyEcercisesFragment.newInstance(muscleGroup)
             }
             1 -> {
-                CustomExerciseFragment(muscleGroup)
+                CustomExerciseFragment.newInstance(muscleGroup)
             }
             else -> {
-                ReadyEcercisesFragment(muscleGroup)
+                ReadyEcercisesFragment.newInstance(muscleGroup)
             }
         }
     }

@@ -9,7 +9,6 @@ import android.view.ViewGroup
 import androidx.appcompat.content.res.AppCompatResources
 import androidx.fragment.app.Fragment
 import androidx.fragment.app.activityViewModels
-import androidx.fragment.app.viewModels
 import androidx.navigation.fragment.findNavController
 import androidx.recyclerview.widget.LinearLayoutManager
 import androidx.recyclerview.widget.RecyclerView
@@ -17,14 +16,16 @@ import com.google.android.material.snackbar.Snackbar
 import com.hfad.gtrain.R
 import com.hfad.gtrain.databinding.FragmentCustomExerciseBinding
 import com.hfad.gtrain.fragments.exerciseList.ExerciseListFragmentDirections
+import com.hfad.gtrain.fragments.exerciseList.ReadyEcercisesFragment
 import com.hfad.gtrain.models.CustomExercise
 import com.hfad.gtrain.ui.utils.SwipeHelper
 import com.hfad.gtrain.viewmodels.MainViewmodel
 import dagger.hilt.android.AndroidEntryPoint
 
+private const val MUSCLE_GROUP = ""
 
 @AndroidEntryPoint
-class CustomExerciseFragment(val muscleGroup: String) : Fragment(),
+class CustomExerciseFragment : Fragment(),
     CustomExListLayout.OnItemClickListener {
 
     private var _binding: FragmentCustomExerciseBinding? = null
@@ -36,6 +37,15 @@ class CustomExerciseFragment(val muscleGroup: String) : Fragment(),
         )
     }
     private val viewModel: MainViewmodel by activityViewModels()
+
+    private var muscleGroup: String? = null
+
+    override fun onCreate(savedInstanceState: Bundle?) {
+        super.onCreate(savedInstanceState)
+        arguments?.let {
+            muscleGroup = it.getString(MUSCLE_GROUP)
+        }
+    }
 
     override fun onCreateView(
         inflater: LayoutInflater, container: ViewGroup?,
@@ -49,7 +59,7 @@ class CustomExerciseFragment(val muscleGroup: String) : Fragment(),
         binding.btnAdd.setOnClickListener {
             findNavController().navigate(R.id.action_exerciseListFragment_to_addExerciseFragment)
         }
-        val customExercises = viewModel.getMuscleGroupWithCustomExercises(muscleGroup)
+        val customExercises = viewModel.getMuscleGroupWithCustomExercises(muscleGroup!!)
         customExercises.observe(viewLifecycleOwner) {
             adapter.setData(it[0].customExercises)
             println("Test" + it.size)
@@ -86,7 +96,7 @@ class CustomExerciseFragment(val muscleGroup: String) : Fragment(),
                 ) { pos: Int ->
                     val itemToDelete = adapter.customExList[viewHolder!!.adapterPosition]
                     viewModel.deleteCustomExercise(itemToDelete)
-                    adapter.notifyItemChanged(viewHolder!!.adapterPosition)
+                    adapter.notifyItemChanged(viewHolder.adapterPosition)
                     restoreDeletedData(viewHolder.itemView, itemToDelete, viewHolder.adapterPosition)
                     adapter.notifyItemChanged(pos)
                 })
@@ -98,7 +108,7 @@ class CustomExerciseFragment(val muscleGroup: String) : Fragment(),
                         R.drawable.ic_edit
                     ),
                     Color.TRANSPARENT, Color.parseColor("#ffffff")
-                ) { pos: Int ->
+                ) {
                     val action =
                         ExerciseListFragmentDirections.actionExerciseListFragmentToUpdateExerciseFragment(adapter.item!!)
                     findNavController().navigate(action)
@@ -127,6 +137,16 @@ class CustomExerciseFragment(val muscleGroup: String) : Fragment(),
                 clickedItem
             )
         findNavController().navigate(action)
+    }
+
+    companion object {
+        @JvmStatic
+        fun newInstance(param1: String) =
+            CustomExerciseFragment().apply {
+                arguments = Bundle().apply {
+                    putString(MUSCLE_GROUP, param1)
+                }
+            }
     }
 
     override fun onDestroy() {

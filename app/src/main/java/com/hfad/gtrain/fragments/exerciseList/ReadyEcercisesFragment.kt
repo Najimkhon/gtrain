@@ -6,25 +6,36 @@ import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
 import androidx.fragment.app.activityViewModels
-import androidx.fragment.app.viewModels
 import androidx.navigation.fragment.findNavController
 import androidx.recyclerview.widget.LinearLayoutManager
 import com.hfad.gtrain.databinding.FragmentReadyEcercisesBinding
+import com.hfad.gtrain.fragments.BlankFragment
 import com.hfad.gtrain.models.Exercise
-import com.hfad.gtrain.models.MuscleGroup
 import com.hfad.gtrain.viewmodels.MainViewmodel
 import dagger.hilt.android.AndroidEntryPoint
 import jp.wasabeef.recyclerview.animators.LandingAnimator
 
+private const val MUSCLE_GROUP = ""
+
+
 @AndroidEntryPoint
-class ReadyEcercisesFragment(private val muscleGroup: String) : Fragment(),
+class ReadyEcercisesFragment : Fragment(),
     ExsListLayout.OnItemClickListener {
 
-    // private val args by navArgs<ExerciseListFragmentArgs>()
+
     private var _binding: FragmentReadyEcercisesBinding? = null
     private val binding get() = _binding!!
     private val viewModel: MainViewmodel by activityViewModels()
     private val adapter: ExsListAdapter by lazy { ExsListAdapter(requireContext(), this) }
+
+    private var muscleGroup: String? = null
+
+    override fun onCreate(savedInstanceState: Bundle?) {
+        super.onCreate(savedInstanceState)
+        arguments?.let {
+            muscleGroup = it.getString(MUSCLE_GROUP)
+        }
+    }
 
     override fun onCreateView(
         inflater: LayoutInflater, container: ViewGroup?,
@@ -32,14 +43,14 @@ class ReadyEcercisesFragment(private val muscleGroup: String) : Fragment(),
     ): View? {
         _binding = FragmentReadyEcercisesBinding.inflate(inflater, container, false)
 
-        initializeViewmodel()
+        initializeViewModel()
         setupRecyclerView()
 
         return binding.root
     }
 
-    private fun initializeViewmodel() {
-        val exercises = viewModel.getMuscleGroupWithExercises(muscleGroup)
+    private fun initializeViewModel() {
+        val exercises = viewModel.getMuscleGroupWithExercises(muscleGroup!!)
         exercises.observe(viewLifecycleOwner) {
             adapter.setData(it[0].exercises)
         }
@@ -57,6 +68,16 @@ class ReadyEcercisesFragment(private val muscleGroup: String) : Fragment(),
         val action =
             ExerciseListFragmentDirections.actionExerciseListFragmentToExerciseDetailFragment(clickedItem)
         findNavController().navigate(action)
+    }
+
+    companion object {
+        @JvmStatic
+        fun newInstance(param1: String) =
+            ReadyEcercisesFragment().apply {
+                arguments = Bundle().apply {
+                    putString(MUSCLE_GROUP, param1)
+                }
+            }
     }
 
     override fun onDestroy() {
