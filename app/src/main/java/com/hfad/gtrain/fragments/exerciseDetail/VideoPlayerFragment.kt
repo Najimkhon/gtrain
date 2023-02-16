@@ -29,44 +29,11 @@ class VideoPlayerFragment : Fragment() {
         savedInstanceState: Bundle?
     ): View {
         _binding = FragmentVideoPlayerBinding.inflate(inflater, container, false)
+
         bindViews()
-
-
-        bottomNav = requireActivity().findViewById(com.hfad.gtrain.R.id.bottomNavigationView)
-
-//        binding.youtubePlayer.getYouTubePlayerWhenReady(object : YouTubePlayerCallback {
-//            override fun onYouTubePlayer(youTubePlayer: YouTubePlayer) {
-//                youTubePlayer.loadVideo(args.currentExercise.videoUrl, 1F)
-//            }
-//        })
-
-        binding.youtubePlayer.addYouTubePlayerListener(object : AbstractYouTubePlayerListener() {
-            override fun onReady(youTubePlayer: YouTubePlayer) {
-                super.onReady(youTubePlayer)
-                youTubePlayer.loadVideo(args.currentExercise.videoUrl, 1F)
-            }
-        })
-
-
-        viewModel.isLandscape.observe(viewLifecycleOwner) {
-            if (it) {
-                binding.tvTitle.visibility = View.GONE
-                binding.tvDescription.visibility = View.GONE
-                bottomNav.visibility = View.GONE
-                println(it)
-            } else {
-                binding.tvTitle.visibility = View.VISIBLE
-                binding.tvDescription.visibility = View.VISIBLE
-                bottomNav.visibility = View.VISIBLE
-                println(it)
-            }
-        }
-        binding.tvTitle.setOnClickListener {
-            viewModel.isLandscape.value = true
-        }
-
-
-
+        setupYouTubePlayer()
+        fullScreenHandler()
+        
         return binding.root
     }
 
@@ -91,6 +58,32 @@ class VideoPlayerFragment : Fragment() {
         }
     }
 
+    private fun fullScreenHandler() {
+        bottomNav = requireActivity().findViewById(com.hfad.gtrain.R.id.bottomNavigationView)
+        viewModel.isLandscape.observe(viewLifecycleOwner) {
+            if (it) {
+                binding.tvTitle.visibility = View.GONE
+                binding.tvDescription.visibility = View.GONE
+                bottomNav.visibility = View.GONE
+                println(it)
+            } else {
+                binding.tvTitle.visibility = View.VISIBLE
+                binding.tvDescription.visibility = View.VISIBLE
+                bottomNav.visibility = View.VISIBLE
+                println(it)
+            }
+        }
+    }
+
+    private fun setupYouTubePlayer() {
+        binding.youtubePlayer.addYouTubePlayerListener(object : AbstractYouTubePlayerListener() {
+            override fun onReady(youTubePlayer: YouTubePlayer) {
+                super.onReady(youTubePlayer)
+                youTubePlayer.loadVideo(args.currentExercise.videoUrl, 1F)
+            }
+        })
+    }
+
     private fun bindViews() {
         binding.tvTitle.text = args.currentExercise.name
         binding.tvDescription.text = args.currentExercise.description
@@ -109,7 +102,7 @@ class VideoPlayerFragment : Fragment() {
         }
     }
 
-    private fun showStatusBar(){
+    private fun showStatusBar() {
         val window: Window = requireActivity().window
         WindowCompat.setDecorFitsSystemWindows(window, true)
         WindowInsetsControllerCompat(window, window.decorView).apply {
