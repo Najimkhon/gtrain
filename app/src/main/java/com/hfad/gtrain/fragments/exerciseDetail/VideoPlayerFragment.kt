@@ -33,7 +33,7 @@ class VideoPlayerFragment : Fragment() {
         bindViews()
         setupYouTubePlayer()
         fullScreenHandler()
-        
+
         return binding.root
     }
 

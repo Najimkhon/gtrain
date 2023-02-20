@@ -97,15 +97,6 @@ class MuscleGroupListFragment : Fragment(), MuscleGroupItemLayout.OnItemClickLis
                 }
             }
 
-            viewModel.getAllRecord.observe(viewLifecycleOwner) {
-                if (it.isEmpty()) {
-                    DummyData.records.forEach { record ->
-                        viewModel.insertRecord(record)
-                        println("hop: Record is added")
-                    }
-                }
-            }
-
         }
     }
 

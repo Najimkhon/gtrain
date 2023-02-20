@@ -9,8 +9,7 @@ import kotlinx.parcelize.Parcelize
 @Parcelize
 data class Record (
     @PrimaryKey(autoGenerate = true)
-    val id:Int,
     val date: Long,
     val exerciseId: Int,
-    val sets: List<Set>
+    val setList: List<Set>
         ):Parcelable
