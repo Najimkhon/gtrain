@@ -1,8 +1,6 @@
 package com.hfad.gtrain.repositories
 
 import androidx.lifecycle.LiveData
-import androidx.room.Delete
-import androidx.room.Update
 import com.hfad.gtrain.data.ExerciseDao
 import com.hfad.gtrain.models.CustomExercise
 import com.hfad.gtrain.models.Exercise
@@ -33,6 +31,11 @@ class RoomRepository @Inject constructor(
     suspend fun insertRecord(record: Record){
         exerciseDao.insertRecord(record)
     }
+
+    fun getRecord(date: Long):LiveData<Record>{
+        return exerciseDao.getRecord(date)
+    }
+
     fun getMuscleGroupWithExercises(muscleGroup: String):LiveData<List<MuscleGroupWithExercises>>{
         return exerciseDao.getMuscleGroupWithExercises(muscleGroup)
     }
@@ -51,5 +54,12 @@ class RoomRepository @Inject constructor(
         exerciseDao.updateCustomExercise(customEx)
     }
 
+    suspend fun updateRecord(record: Record){
+        exerciseDao.updateRecord(record)
+    }
+
+    suspend fun isRecordExist(date: Long) : Boolean{
+        return exerciseDao.isRecordExist(date)
+    }
 
 }

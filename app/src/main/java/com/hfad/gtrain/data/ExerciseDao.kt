@@ -33,17 +33,20 @@ interface ExerciseDao {
     @Insert(onConflict = OnConflictStrategy.REPLACE)
     suspend fun insertRecord(record: Record)
 
+    @Query("SELECT * FROM record WHERE date = :date")
+    fun getRecord(date: Long): LiveData<Record>
+
     @Transaction
     @Query("SELECT * FROM exercise WHERE id = :id")
-    fun getExerciseWithRecords(id: Int):LiveData<List<ExerciseWithRecords>>
+    fun getExerciseWithRecords(id: Int): LiveData<List<ExerciseWithRecords>>
 
     @Transaction
     @Query("SELECT * FROM muscleGroup WHERE title = :muscleGroup")
-    fun getMuscleGroupWithCustomExercises(muscleGroup: String):LiveData<List<MuscleGroupWithCustomExercises>>
+    fun getMuscleGroupWithCustomExercises(muscleGroup: String): LiveData<List<MuscleGroupWithCustomExercises>>
 
     @Transaction
     @Query("SELECT * FROM muscleGroup WHERE title = :muscleGroup")
-    fun getMuscleGroupWithExercises(muscleGroup: String):LiveData<List<MuscleGroupWithExercises>>
+    fun getMuscleGroupWithExercises(muscleGroup: String): LiveData<List<MuscleGroupWithExercises>>
 
     @Delete
     suspend fun deleteCustomExercise(customEx: CustomExercise)
@@ -51,6 +54,9 @@ interface ExerciseDao {
     @Update
     suspend fun updateCustomExercise(customEx: CustomExercise)
 
+    @Update
+    suspend fun updateRecord(record: Record)
 
-
+    @Query("SELECT EXISTS(SELECT * FROM record WHERE date = :date)")
+    suspend fun isRecordExist(date: Long): Boolean
 }

@@ -11,5 +11,5 @@ data class Record (
     @PrimaryKey(autoGenerate = true)
     val date: Long,
     val exerciseId: Int,
-    val setList: List<Set>
+    val set: List<Set>
         ):Parcelable

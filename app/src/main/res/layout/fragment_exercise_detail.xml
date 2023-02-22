@@ -340,6 +340,7 @@
             </LinearLayout>
 
             <androidx.cardview.widget.CardView
+                android:id="@+id/btnAddRecord"
                 android:layout_width="72dp"
                 android:layout_height="72dp"
                 app:cardBackgroundColor="@color/light_blue"
