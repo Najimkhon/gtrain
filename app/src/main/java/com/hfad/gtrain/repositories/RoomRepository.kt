@@ -36,6 +36,10 @@ class RoomRepository @Inject constructor(
         return exerciseDao.getRecord(date)
     }
 
+    suspend fun getRecordByDate(date: Long): Record{
+        return exerciseDao.getRecordByDate(date)
+    }
+
     fun getMuscleGroupWithExercises(muscleGroup: String):LiveData<List<MuscleGroupWithExercises>>{
         return exerciseDao.getMuscleGroupWithExercises(muscleGroup)
     }

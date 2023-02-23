@@ -33,7 +33,6 @@ class ExerciseDetailFragment : Fragment(), DatePickerDialog.OnDateSetListener {
     private val binding get() = _binding!!
     private val adapter: VpImagesAdapter by lazy { VpImagesAdapter(requireContext()) }
     private val viewModel: MainViewmodel by activityViewModels()
-    private lateinit var newRecord: Record
     private val calendar = Calendar.getInstance()
     private val formatter = SimpleDateFormat("MMM dd yyyy", Locale.US)
 
@@ -78,7 +77,7 @@ class ExerciseDetailFragment : Fragment(), DatePickerDialog.OnDateSetListener {
         }
 
         binding.btnAddRecord.setOnClickListener {
-            addNewRecord()
+            addRecord()
         }
     }
 
@@ -92,30 +91,35 @@ class ExerciseDetailFragment : Fragment(), DatePickerDialog.OnDateSetListener {
         adapter.setData(args.currentExercise.image)
     }
 
-    private fun addNewRecord() {
+    private fun addRecord() {
         var date = calendar.timeInMillis
         val set =
             Set(binding.etWeight.text.toString().toInt(), binding.etReps.text.toString().toInt())
         val exerciseId = args.currentExercise.id
-        val record = Record(
+        val newRecord = Record(
             date,
             exerciseId,
-            listOf(set)
+            mutableListOf(set)
         )
 
         viewLifecycleOwner.lifecycleScope.launch {
             if (viewModel.checkRecordExistence(date)) {
-                viewModel.updateRecord(record)
-                Toast.makeText(requireContext(), "This record exists", Toast.LENGTH_SHORT)
-                    .show()
-                println("It exists!")
+                var currentRecord = viewModel.getRecordByDate(date)
+                    val sets =currentRecord.set
+                    sets.add(set)
+                    val updatedRecord = Record(
+                        currentRecord.date,
+                        currentRecord.exerciseId,
+                        sets
+                    )
+                    viewModel.updateRecord(updatedRecord)
+                    Toast.makeText(requireContext(), "Updated", Toast.LENGTH_SHORT).show()
+                    println("existing record updated!")
             } else {
-                viewModel.insertRecord(record)
-                Toast.makeText(requireContext(), "It works", Toast.LENGTH_SHORT).show()
-                println("It works!")
-
+                viewModel.insertRecord(newRecord)
+                Toast.makeText(requireContext(), "Record Created", Toast.LENGTH_SHORT).show()
+                println("new record created")
             }
-
         }
     }
 

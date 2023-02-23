@@ -60,6 +60,10 @@ class MainViewmodel @Inject constructor(
         return roomRepository.getRecord(date)
     }
 
+    suspend fun getRecordByDate(date: Long): Record{
+        return roomRepository.getRecordByDate(date)
+    }
+
     fun getMuscleGroupWithCustomExercises(muscleGroupTitle: String): LiveData<List<MuscleGroupWithCustomExercises>> {
         return roomRepository.getMuscleGroupWithCustomExercises(muscleGroupTitle)
     }

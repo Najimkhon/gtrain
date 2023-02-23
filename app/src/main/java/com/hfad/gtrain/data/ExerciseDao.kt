@@ -36,6 +36,9 @@ interface ExerciseDao {
     @Query("SELECT * FROM record WHERE date = :date")
     fun getRecord(date: Long): LiveData<Record>
 
+    @Query("SELECT * FROM record WHERE date = :date")
+    suspend fun getRecordByDate(date: Long): Record
+
     @Transaction
     @Query("SELECT * FROM exercise WHERE id = :id")
     fun getExerciseWithRecords(id: Int): LiveData<List<ExerciseWithRecords>>
