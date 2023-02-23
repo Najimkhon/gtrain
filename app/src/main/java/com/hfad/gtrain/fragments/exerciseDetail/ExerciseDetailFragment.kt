@@ -18,10 +18,7 @@ import com.hfad.gtrain.models.Record
 import com.hfad.gtrain.models.Set
 import com.hfad.gtrain.viewmodels.MainViewmodel
 import dagger.hilt.android.AndroidEntryPoint
-import kotlinx.coroutines.CoroutineScope
-import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.launch
-import kotlinx.coroutines.withContext
 import java.text.SimpleDateFormat
 import java.util.*
 
@@ -92,7 +89,7 @@ class ExerciseDetailFragment : Fragment(), DatePickerDialog.OnDateSetListener {
     }
 
     private fun addRecord() {
-        var date = calendar.timeInMillis
+        val date = calendar.timeInMillis
         val set =
             Set(binding.etWeight.text.toString().toInt(), binding.etReps.text.toString().toInt())
         val exerciseId = args.currentExercise.id
@@ -104,7 +101,7 @@ class ExerciseDetailFragment : Fragment(), DatePickerDialog.OnDateSetListener {
 
         viewLifecycleOwner.lifecycleScope.launch {
             if (viewModel.checkRecordExistence(date)) {
-                var currentRecord = viewModel.getRecordByDate(date)
+                val currentRecord = viewModel.getRecordByDate(date)
                     val sets =currentRecord.set
                     sets.add(set)
                     val updatedRecord = Record(
