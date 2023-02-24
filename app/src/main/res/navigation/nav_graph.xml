@@ -69,4 +69,9 @@
             android:name="currentExercise"
             app:argType="com.hfad.gtrain.models.Exercise" />
     </fragment>
+    <fragment
+        android:id="@+id/logListFragment"
+        android:name="com.hfad.gtrain.fragments.logList.LogListFragment"
+        android:label="fragment_log_list"
+        tools:layout="@layout/fragment_log_list" />
 </navigation>

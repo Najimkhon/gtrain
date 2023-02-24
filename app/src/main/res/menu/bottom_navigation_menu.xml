@@ -12,7 +12,7 @@
         android:title="Programs" />
 
     <item
-        android:id="@+id/exerciseDetailFragment"
+        android:id="@+id/logListFragment"
         android:icon="@drawable/ic_logs"
         android:title="Logs" />
 
