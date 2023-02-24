@@ -7,9 +7,10 @@ import kotlinx.parcelize.Parcelize
 
 @Entity
 @Parcelize
-data class Record (
+data class Record(
     @PrimaryKey(autoGenerate = true)
+    val id: Int,
     val date: Long,
     val exerciseId: Int,
     val set: MutableList<Set> = mutableListOf()
-        ):Parcelable
+) : Parcelable

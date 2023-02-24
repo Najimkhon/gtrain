@@ -5,7 +5,6 @@ import android.view.View
 import android.view.ViewGroup
 import androidx.recyclerview.widget.RecyclerView
 import com.hfad.gtrain.models.Exercise
-import com.hfad.gtrain.models.relations.MuscleGroupWithExercises
 
 class ExsListAdapter(
     val context: Context,

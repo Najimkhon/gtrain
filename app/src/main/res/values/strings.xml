@@ -6,4 +6,15 @@
     <string name="start_workout">Start workout</string>
     <string name="exercise">Exercise</string>
     <string name="exercises">Exercises</string>
+    <string name="weight_kg">WEIGHT(KG)</string>
+    <string name="repetitions">REPETITIONS</string>
+    <string name="info">info</string>
+    <string name="playicon">playIcon</string>
+    <string name="swipe_to_see_next">Swipe to see next</string>
+    <string name="today">TODAY</string>
+    <string name="calendar_icon">calendar_icon</string>
+    <string name="cancel">CANCEL</string>
+    <string name="weight">WEIGHT</string>
+    <string name="reps">REPS</string>
+    <string name="add_button">add_button</string>
 </resources>

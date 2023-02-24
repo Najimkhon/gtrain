@@ -12,7 +12,9 @@ import androidx.fragment.app.activityViewModels
 import androidx.lifecycle.lifecycleScope
 import androidx.navigation.fragment.findNavController
 import androidx.navigation.fragment.navArgs
+import androidx.recyclerview.widget.LinearLayoutManager
 import com.hfad.gtrain.databinding.FragmentExerciseDetailBinding
+import com.hfad.gtrain.fragments.exerciseDetail.adapters.RecordAdapter
 import com.hfad.gtrain.fragments.exerciseDetail.adapters.VpImagesAdapter
 import com.hfad.gtrain.models.Record
 import com.hfad.gtrain.models.Set
@@ -29,6 +31,7 @@ class ExerciseDetailFragment : Fragment(), DatePickerDialog.OnDateSetListener {
     private var _binding: FragmentExerciseDetailBinding? = null
     private val binding get() = _binding!!
     private val adapter: VpImagesAdapter by lazy { VpImagesAdapter(requireContext()) }
+    private val recordAdapter: RecordAdapter by lazy { RecordAdapter(requireContext()) }
     private val viewModel: MainViewmodel by activityViewModels()
     private val calendar = Calendar.getInstance()
     private val formatter = SimpleDateFormat("MMM dd yyyy", Locale.US)
@@ -39,12 +42,22 @@ class ExerciseDetailFragment : Fragment(), DatePickerDialog.OnDateSetListener {
     ): View {
         _binding = FragmentExerciseDetailBinding.inflate(inflater, container, false)
 
+        setupLogsRecyclerView()
         setupViewPager()
         setListeners()
         bindViews()
         setCalendar()
 
         return binding.root
+    }
+
+    private fun setupLogsRecyclerView() {
+        val recyclerView = binding.rvLogs
+        recyclerView.adapter = recordAdapter
+        recyclerView.layoutManager = LinearLayoutManager(requireContext())
+        viewModel.getExerciseWithRecords(args.currentExercise.id).observe(viewLifecycleOwner) {
+            recordAdapter.setData(it[0])
+        }
     }
 
     private fun setCalendar() {
@@ -94,24 +107,26 @@ class ExerciseDetailFragment : Fragment(), DatePickerDialog.OnDateSetListener {
             Set(binding.etWeight.text.toString().toInt(), binding.etReps.text.toString().toInt())
         val exerciseId = args.currentExercise.id
         val newRecord = Record(
+            0,
             date,
             exerciseId,
             mutableListOf(set)
         )
 
         viewLifecycleOwner.lifecycleScope.launch {
-            if (viewModel.checkRecordExistence(date)) {
-                val currentRecord = viewModel.getRecordByDate(date)
-                    val sets =currentRecord.set
-                    sets.add(set)
-                    val updatedRecord = Record(
-                        currentRecord.date,
-                        currentRecord.exerciseId,
-                        sets
-                    )
-                    viewModel.updateRecord(updatedRecord)
-                    Toast.makeText(requireContext(), "Updated", Toast.LENGTH_SHORT).show()
-                    println("existing record updated!")
+            if (viewModel.checkRecordExistence(date, exerciseId)) {
+                val currentRecord = viewModel.getRecordByDate(date, exerciseId)
+                val sets = currentRecord.set
+                sets.add(set)
+                val updatedRecord = Record(
+                    currentRecord.id,
+                    currentRecord.date,
+                    currentRecord.exerciseId,
+                    sets
+                )
+                viewModel.updateRecord(updatedRecord)
+                Toast.makeText(requireContext(), "Updated", Toast.LENGTH_SHORT).show()
+                println("existing record updated!")
             } else {
                 viewModel.insertRecord(newRecord)
                 Toast.makeText(requireContext(), "Record Created", Toast.LENGTH_SHORT).show()

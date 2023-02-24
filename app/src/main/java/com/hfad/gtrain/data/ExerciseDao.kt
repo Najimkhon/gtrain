@@ -36,8 +36,8 @@ interface ExerciseDao {
     @Query("SELECT * FROM record WHERE date = :date")
     fun getRecord(date: Long): LiveData<Record>
 
-    @Query("SELECT * FROM record WHERE date = :date")
-    suspend fun getRecordByDate(date: Long): Record
+    @Query("SELECT * FROM record WHERE date = :date AND exerciseId = :exerciseId")
+    suspend fun getRecordByDate(date: Long,  exerciseId: Int): Record
 
     @Transaction
     @Query("SELECT * FROM exercise WHERE id = :id")
@@ -60,6 +60,6 @@ interface ExerciseDao {
     @Update
     suspend fun updateRecord(record: Record)
 
-    @Query("SELECT EXISTS(SELECT * FROM record WHERE date = :date)")
-    suspend fun isRecordExist(date: Long): Boolean
+    @Query("SELECT EXISTS(SELECT * FROM record WHERE date = :date AND exerciseId = :exerciseId)")
+    suspend fun isRecordExist(date: Long, exerciseId: Int): Boolean
 }

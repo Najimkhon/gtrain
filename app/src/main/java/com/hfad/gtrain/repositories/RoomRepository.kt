@@ -12,58 +12,63 @@ import com.hfad.gtrain.models.relations.MuscleGroupWithExercises
 import javax.inject.Inject
 
 class RoomRepository @Inject constructor(
-   val exerciseDao: ExerciseDao
+    val exerciseDao: ExerciseDao
 ) {
     val testString = "Dagger works!"
     val getAllmuscleGroup: LiveData<List<MuscleGroup>> = exerciseDao.getAllMuscleGroup()
     val getAllExercise: LiveData<List<Exercise>> = exerciseDao.getAllExercise()
     val getAllRecord: LiveData<List<Record>> = exerciseDao.getAllRecord()
 
-    suspend fun insertMuscleGroup(muscleGroup: MuscleGroup){
+    suspend fun insertMuscleGroup(muscleGroup: MuscleGroup) {
         exerciseDao.insertMuscleGroup(muscleGroup)
     }
-    suspend fun insertExercise(exercise: Exercise){
+
+    suspend fun insertExercise(exercise: Exercise) {
         exerciseDao.insertExercise(exercise)
     }
-    suspend fun insertCustomExercise(customEx: CustomExercise){
+
+    suspend fun insertCustomExercise(customEx: CustomExercise) {
         exerciseDao.insertCustomExercise(customEx)
     }
-    suspend fun insertRecord(record: Record){
+
+    suspend fun insertRecord(record: Record) {
         exerciseDao.insertRecord(record)
     }
 
-    fun getRecord(date: Long):LiveData<Record>{
+    fun getRecord(date: Long): LiveData<Record> {
         return exerciseDao.getRecord(date)
     }
 
-    suspend fun getRecordByDate(date: Long): Record{
-        return exerciseDao.getRecordByDate(date)
+    suspend fun getRecordByDate(date: Long, exerciseId: Int): Record {
+        return exerciseDao.getRecordByDate(date, exerciseId)
     }
 
-    fun getMuscleGroupWithExercises(muscleGroup: String):LiveData<List<MuscleGroupWithExercises>>{
+    fun getMuscleGroupWithExercises(muscleGroup: String): LiveData<List<MuscleGroupWithExercises>> {
         return exerciseDao.getMuscleGroupWithExercises(muscleGroup)
     }
-    fun getMuscleGroupWithCustomExercises(muscleGroup: String):LiveData<List<MuscleGroupWithCustomExercises>>{
+
+    fun getMuscleGroupWithCustomExercises(muscleGroup: String): LiveData<List<MuscleGroupWithCustomExercises>> {
         return exerciseDao.getMuscleGroupWithCustomExercises(muscleGroup)
     }
-    fun getExerciseWithRecords(exerciseId: Int):LiveData<List<ExerciseWithRecords>> {
+
+    fun getExerciseWithRecords(exerciseId: Int): LiveData<List<ExerciseWithRecords>> {
         return exerciseDao.getExerciseWithRecords(exerciseId)
     }
 
-    suspend fun deleteCustomExercise(customEx: CustomExercise){
+    suspend fun deleteCustomExercise(customEx: CustomExercise) {
         exerciseDao.deleteCustomExercise(customEx)
     }
 
-    suspend fun updateCustomExercise(customEx: CustomExercise){
+    suspend fun updateCustomExercise(customEx: CustomExercise) {
         exerciseDao.updateCustomExercise(customEx)
     }
 
-    suspend fun updateRecord(record: Record){
+    suspend fun updateRecord(record: Record) {
         exerciseDao.updateRecord(record)
     }
 
-    suspend fun isRecordExist(date: Long) : Boolean{
-        return exerciseDao.isRecordExist(date)
+    suspend fun isRecordExist(date: Long, exerciseId: Int): Boolean {
+        return exerciseDao.isRecordExist(date, exerciseId)
     }
 
 }

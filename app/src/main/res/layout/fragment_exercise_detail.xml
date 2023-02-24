@@ -21,140 +21,13 @@
             android:layout_width="match_parent"
             android:layout_height="match_parent">
 
-            <androidx.cardview.widget.CardView
-                android:id="@+id/cvLogs"
+
+            <androidx.recyclerview.widget.RecyclerView
+                android:id="@+id/rvLogs"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
-                android:layout_margin="16dp"
-                app:cardBackgroundColor="@color/dark_grey"
-                app:cardCornerRadius="16dp"
-                app:layout_constraintTop_toTopOf="parent">
-
-                <LinearLayout
-                    android:layout_width="match_parent"
-                    android:layout_height="140dp"
-                    android:orientation="horizontal">
-
-                    <androidx.cardview.widget.CardView
-                        android:id="@+id/cvDateBlock"
-                        android:layout_width="80dp"
-                        android:layout_height="match_parent"
-                        app:cardBackgroundColor="@color/black"
-                        app:layout_constraintLeft_toLeftOf="parent">
-
-                        <androidx.constraintlayout.widget.ConstraintLayout
-                            android:layout_width="match_parent"
-                            android:layout_height="match_parent">
-
-                            <TextView
-                                android:id="@+id/tvDay"
-                                android:layout_width="wrap_content"
-                                android:layout_height="wrap_content"
-                                android:text="16"
-                                android:textColor="@color/light_blue"
-                                android:textSize="32sp"
-                                android:textStyle="bold"
-                                app:layout_constraintBottom_toTopOf="@+id/tvMonth"
-                                app:layout_constraintLeft_toLeftOf="parent"
-                                app:layout_constraintRight_toRightOf="parent"
-
-                                />
-
-                            <TextView
-                                android:id="@+id/tvMonth"
-                                android:layout_width="wrap_content"
-                                android:layout_height="wrap_content"
-                                android:text="JAN"
-                                android:textColor="@color/light_blue"
-                                android:textSize="18sp"
-                                app:layout_constraintBottom_toBottomOf="parent"
-                                app:layout_constraintLeft_toLeftOf="@+id/tvDay"
-                                app:layout_constraintRight_toRightOf="@+id/tvDay"
-                                app:layout_constraintTop_toTopOf="parent" />
-
-                            <TextView
-                                android:id="@+id/tvYear"
-                                android:layout_width="wrap_content"
-                                android:layout_height="wrap_content"
-                                android:text="2023"
-                                android:textColor="@color/light_blue"
-                                android:textSize="18sp"
-                                app:layout_constraintLeft_toLeftOf="@+id/tvMonth"
-                                app:layout_constraintRight_toRightOf="@+id/tvMonth"
-                                app:layout_constraintTop_toBottomOf="@+id/tvMonth"
-
-                                />
-
-
-                        </androidx.constraintlayout.widget.ConstraintLayout>
-                    </androidx.cardview.widget.CardView>
-
-                    <androidx.constraintlayout.widget.ConstraintLayout
-                        android:layout_width="match_parent"
-                        android:layout_height="match_parent">
-
-                        <androidx.constraintlayout.widget.Guideline
-                            android:id="@+id/guideline2"
-                            android:layout_width="wrap_content"
-                            android:layout_height="wrap_content"
-                            android:orientation="vertical"
-                            app:layout_constraintGuide_percent="0.5" />
-
-                        <TextView
-                            android:id="@+id/tvWeight"
-                            android:layout_width="wrap_content"
-                            android:layout_height="wrap_content"
-                            android:text="50"
-                            android:textColor="@color/light_blue"
-                            android:textSize="32sp"
-                            android:textStyle="bold"
-                            app:layout_constraintBottom_toBottomOf="parent"
-                            app:layout_constraintLeft_toLeftOf="parent"
-                            app:layout_constraintRight_toLeftOf="@+id/guideline2"
-                            app:layout_constraintTop_toTopOf="parent" />
-
-                        <TextView
-                            android:id="@+id/tvReps"
-                            android:layout_width="wrap_content"
-                            android:layout_height="wrap_content"
-                            android:text="12"
-                            android:textColor="@color/light_blue"
-                            android:textSize="32sp"
-                            android:textStyle="bold"
-                            app:layout_constraintBottom_toBottomOf="parent"
-                            app:layout_constraintLeft_toRightOf="@+id/guideline2"
-                            app:layout_constraintRight_toRightOf="parent"
-                            app:layout_constraintTop_toTopOf="parent" />
-
-                        <TextView
-                            android:id="@+id/tvWeightLabel"
-                            android:layout_width="wrap_content"
-                            android:layout_height="wrap_content"
-                            android:text="WEIGHT(KG)"
-                            android:textColor="@color/light_grey"
-                            android:textSize="18sp"
-                            app:layout_constraintBottom_toTopOf="@+id/tvWeight"
-                            app:layout_constraintLeft_toLeftOf="@+id/tvWeight"
-                            app:layout_constraintRight_toRightOf="@+id/tvWeight"
-                            app:layout_constraintTop_toTopOf="parent" />
-
-                        <TextView
-                            android:id="@+id/tvRepsLabel"
-                            android:layout_width="wrap_content"
-                            android:layout_height="wrap_content"
-                            android:text="REPETITIONS"
-                            android:textColor="@color/light_grey"
-                            android:textSize="18sp"
-                            app:layout_constraintBottom_toTopOf="@+id/tvReps"
-                            app:layout_constraintLeft_toLeftOf="@+id/tvReps"
-                            app:layout_constraintRight_toRightOf="@+id/tvReps"
-                            app:layout_constraintTop_toTopOf="parent" />
-
-                    </androidx.constraintlayout.widget.ConstraintLayout>
-
-
-                </LinearLayout>
-            </androidx.cardview.widget.CardView>
+                android:orientation="horizontal"
+                app:layout_constraintTop_toTopOf="parent" />
 
             <LinearLayout
                 android:id="@+id/vpBlock"
@@ -162,7 +35,7 @@
                 android:layout_height="300dp"
                 app:layout_constraintLeft_toLeftOf="parent"
                 app:layout_constraintRight_toRightOf="parent"
-                app:layout_constraintTop_toBottomOf="@+id/cvLogs">
+                app:layout_constraintTop_toBottomOf="@+id/rvLogs">
 
                 <androidx.viewpager2.widget.ViewPager2
                     android:id="@+id/vpImages"
@@ -179,6 +52,7 @@
                 android:layout_width="24dp"
                 android:layout_height="24dp"
                 android:layout_margin="16dp"
+                android:contentDescription="@string/info"
                 android:src="@drawable/ic_info"
                 app:layout_constraintLeft_toLeftOf="parent"
                 app:layout_constraintTop_toBottomOf="@+id/vpBlock"
@@ -189,6 +63,7 @@
                 android:layout_width="24dp"
                 android:layout_height="24dp"
                 android:layout_margin="16dp"
+                android:contentDescription="@string/playicon"
                 android:src="@drawable/ic_play"
                 app:layout_constraintRight_toRightOf="parent"
                 app:layout_constraintTop_toBottomOf="@+id/vpBlock" />
@@ -198,7 +73,7 @@
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:layout_margin="16dp"
-                android:text="Swipe to see next"
+                android:text="@string/swipe_to_see_next"
                 android:textColor="@color/light_grey"
                 app:layout_constraintLeft_toLeftOf="parent"
                 app:layout_constraintRight_toRightOf="parent"
@@ -244,6 +119,7 @@
                 android:id="@+id/ivCalendar"
                 android:layout_width="48dp"
                 android:layout_height="48dp"
+                android:contentDescription="@string/calendar_icon"
                 android:src="@drawable/ic_calendar"
                 app:layout_constraintLeft_toLeftOf="parent"
                 app:layout_constraintTop_toTopOf="parent" />
@@ -254,7 +130,7 @@
                 android:layout_height="wrap_content"
                 android:layout_margin="8dp"
                 android:fontFamily="@font/main_title_font_2"
-                android:text="TODAY"
+                android:text="@string/today"
                 android:textColor="@color/light_blue"
                 android:textSize="24sp"
                 app:layout_constraintBottom_toBottomOf="@id/ivCalendar"
@@ -267,7 +143,7 @@
                 android:layout_height="wrap_content"
                 android:layout_margin="8dp"
                 android:fontFamily="@font/main_title_font_2"
-                android:text="CANCEL"
+                android:text="@string/cancel"
                 android:textColor="@color/light_blue"
                 android:textSize="24sp"
                 app:layout_constraintBottom_toBottomOf="@+id/tvSelectedDate"
@@ -289,7 +165,7 @@
                     android:layout_width="match_parent"
                     android:layout_height="20dp"
                     android:gravity="center"
-                    android:text="WEIGHT"
+                    android:text="@string/weight"
                     android:textColor="@color/light_blue"
                     android:textStyle="bold" />
 
@@ -299,7 +175,7 @@
                     android:layout_height="match_parent"
                     android:background="@null"
                     android:gravity="center"
-                    android:text="60"
+                    android:inputType="number"
                     android:textColor="@color/light_blue"
                     android:textSize="32sp"
                     android:textStyle="bold" />
@@ -322,7 +198,7 @@
                     android:layout_width="match_parent"
                     android:layout_height="20dp"
                     android:gravity="center"
-                    android:text="REPS"
+                    android:text="@string/reps"
                     android:textColor="@color/light_blue"
                     android:textStyle="bold" />
 
@@ -332,7 +208,7 @@
                     android:layout_height="match_parent"
                     android:background="@null"
                     android:gravity="center"
-                    android:text="12"
+                    android:inputType="number"
                     android:textColor="@color/light_blue"
                     android:textSize="32sp"
                     android:textStyle="bold" />
@@ -352,6 +228,7 @@
                 <ImageView
                     android:layout_width="match_parent"
                     android:layout_height="match_parent"
+                    android:contentDescription="@string/add_button"
                     android:src="@drawable/ic_plus"
                     app:tint="@color/black" />
             </androidx.cardview.widget.CardView>

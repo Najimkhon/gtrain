@@ -60,8 +60,8 @@ class MainViewmodel @Inject constructor(
         return roomRepository.getRecord(date)
     }
 
-    suspend fun getRecordByDate(date: Long): Record{
-        return roomRepository.getRecordByDate(date)
+    suspend fun getRecordByDate(date: Long, exerciseId: Int): Record {
+        return roomRepository.getRecordByDate(date, exerciseId)
     }
 
     fun getMuscleGroupWithCustomExercises(muscleGroupTitle: String): LiveData<List<MuscleGroupWithCustomExercises>> {
@@ -88,14 +88,14 @@ class MainViewmodel @Inject constructor(
         }
     }
 
-    fun updateRecord(record: Record){
+    fun updateRecord(record: Record) {
         viewModelScope.launch(Dispatchers.IO) {
             roomRepository.updateRecord(record)
         }
     }
 
-    suspend fun checkRecordExistence(date: Long): Boolean {
-        return roomRepository.isRecordExist(date)
+    suspend fun checkRecordExistence(date: Long, exerciseId: Int): Boolean {
+        return roomRepository.isRecordExist(date, exerciseId)
     }
 
 }
