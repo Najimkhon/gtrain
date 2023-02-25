@@ -30,7 +30,9 @@ class MainViewmodel @Inject constructor(
     val getAllmuscleGroup: LiveData<List<MuscleGroup>> = roomRepository.getAllmuscleGroup
     val getAllExercise: LiveData<List<Exercise>> = roomRepository.getAllExercise
     val getAllRecord: LiveData<List<Record>> = roomRepository.getAllRecord
-    var recordExists: Boolean = true
+    val getLogs: LiveData<List<Record>> = roomRepository.getLogs
+    val getLogDays: LiveData<List<Long>> = roomRepository.getLogDays
+
 
     fun insertMuscleGroup(muscleGroup: MuscleGroup) {
         viewModelScope.launch(Dispatchers.IO) {

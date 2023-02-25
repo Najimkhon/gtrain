@@ -62,4 +62,10 @@ interface ExerciseDao {
 
     @Query("SELECT EXISTS(SELECT * FROM record WHERE date = :date AND exerciseId = :exerciseId)")
     suspend fun isRecordExist(date: Long, exerciseId: Int): Boolean
+
+    @Query("SELECT * FROM record ORDER BY date ASC")
+    fun getLogs():LiveData<List<Record>>
+
+    @Query("SELECT DISTINCT date FROM record ORDER BY date DESC")
+    fun getLogDays():LiveData<List<Long>>
 }

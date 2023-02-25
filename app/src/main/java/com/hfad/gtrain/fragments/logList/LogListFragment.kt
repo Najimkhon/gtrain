@@ -5,15 +5,34 @@ import androidx.fragment.app.Fragment
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
-import com.hfad.gtrain.R
+import androidx.fragment.app.activityViewModels
+import androidx.recyclerview.widget.LinearLayoutManager
+import com.hfad.gtrain.databinding.FragmentLogListBinding
+import com.hfad.gtrain.viewmodels.MainViewmodel
 
 class LogListFragment : Fragment() {
+
+    private var _binding: FragmentLogListBinding? = null
+    private val binding get() = _binding!!
+    private val adapter: LogsAdapter by lazy { LogsAdapter(requireContext()) }
+    private val viewModel: MainViewmodel by activityViewModels()
 
     override fun onCreateView(
         inflater: LayoutInflater, container: ViewGroup?,
         savedInstanceState: Bundle?
-    ): View? {
-        // Inflate the layout for this fragment
-        return inflater.inflate(R.layout.fragment_log_list, container, false)
+    ): View {
+        _binding = FragmentLogListBinding.inflate(inflater, container, false)
+        setupRecyclerView()
+
+        return binding.root
+    }
+
+    private fun setupRecyclerView(){
+        val recyclerView = binding.rvLogs
+        recyclerView.adapter = adapter
+        recyclerView.layoutManager = LinearLayoutManager(requireContext())
+        viewModel.getLogDays.observe(viewLifecycleOwner){
+            adapter.setData(it)
+        }
     }
 }
