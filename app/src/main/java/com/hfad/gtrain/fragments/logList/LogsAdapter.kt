@@ -6,14 +6,15 @@ import android.view.ViewGroup
 import androidx.recyclerview.widget.RecyclerView
 
 class LogsAdapter(
-    val context: Context
+    val context: Context,
+    private val listener: LogsItemLayout.OnItemClickListener
 ) : RecyclerView.Adapter<LogsAdapter.LogsViewHolder>() {
 
     private var logDateList = emptyList<Long>()
 
 
     override fun onCreateViewHolder(parent: ViewGroup, viewType: Int): LogsViewHolder {
-        return LogsViewHolder(LogsItemLayout(context))
+        return LogsViewHolder(LogsItemLayout(context, listener))
     }
 
     override fun onBindViewHolder(holder: LogsViewHolder, position: Int) {

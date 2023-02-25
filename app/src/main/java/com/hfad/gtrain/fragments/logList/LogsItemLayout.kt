@@ -8,11 +8,18 @@ import java.text.SimpleDateFormat
 import java.util.*
 
 
-class LogsItemLayout(context: Context) : RelativeLayout(context) {
+class LogsItemLayout(context: Context, private val listener: OnItemClickListener) : RelativeLayout(context) {
     private val binding = LogsItemLayoutBinding.inflate(LayoutInflater.from(context), this, true)
     private val formatter = SimpleDateFormat("MMM dd yyyy", Locale.US)
 
     fun fillContent(logDate: Long) {
         binding.tvDate.text = formatter.format(logDate)
+        binding.tvDate.setOnClickListener{
+            listener.onItemClicked(logDate)
+        }
+    }
+
+    interface OnItemClickListener {
+        fun onItemClicked(logDate: Long)
     }
 }

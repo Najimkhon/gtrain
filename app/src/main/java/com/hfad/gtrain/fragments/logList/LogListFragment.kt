@@ -6,15 +6,16 @@ import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
 import androidx.fragment.app.activityViewModels
+import androidx.navigation.fragment.findNavController
 import androidx.recyclerview.widget.LinearLayoutManager
 import com.hfad.gtrain.databinding.FragmentLogListBinding
 import com.hfad.gtrain.viewmodels.MainViewmodel
 
-class LogListFragment : Fragment() {
+class LogListFragment : Fragment(), LogsItemLayout.OnItemClickListener {
 
     private var _binding: FragmentLogListBinding? = null
     private val binding get() = _binding!!
-    private val adapter: LogsAdapter by lazy { LogsAdapter(requireContext()) }
+    private val adapter: LogsAdapter by lazy { LogsAdapter(requireContext(), this) }
     private val viewModel: MainViewmodel by activityViewModels()
 
     override fun onCreateView(
@@ -27,12 +28,20 @@ class LogListFragment : Fragment() {
         return binding.root
     }
 
-    private fun setupRecyclerView(){
+    private fun setupRecyclerView() {
         val recyclerView = binding.rvLogs
         recyclerView.adapter = adapter
         recyclerView.layoutManager = LinearLayoutManager(requireContext())
-        viewModel.getLogDays.observe(viewLifecycleOwner){
+        viewModel.getLogDays.observe(viewLifecycleOwner) {
             adapter.setData(it)
         }
+    }
+
+    override fun onItemClicked(logDate: Long) {
+        val action =
+            LogListFragmentDirections.actionLogListFragmentToSessionFragment(
+                logDate
+            )
+        findNavController().navigate(action)
     }
 }

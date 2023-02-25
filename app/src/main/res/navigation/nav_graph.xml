@@ -73,5 +73,18 @@
         android:id="@+id/logListFragment"
         android:name="com.hfad.gtrain.fragments.logList.LogListFragment"
         android:label="fragment_log_list"
-        tools:layout="@layout/fragment_log_list" />
+        tools:layout="@layout/fragment_log_list" >
+        <action
+            android:id="@+id/action_logListFragment_to_sessionFragment"
+            app:destination="@id/sessionFragment" />
+    </fragment>
+    <fragment
+        android:id="@+id/sessionFragment"
+        android:name="com.hfad.gtrain.fragments.sessionFragment.SessionFragment"
+        android:label="fragment_session"
+        tools:layout="@layout/fragment_session" >
+        <argument
+            android:name="logDate"
+            app:argType="long" />
+    </fragment>
 </navigation>
