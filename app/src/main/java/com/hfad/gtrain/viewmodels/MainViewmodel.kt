@@ -29,8 +29,6 @@ class MainViewmodel @Inject constructor(
     var muscleGroup = ""
     val getAllmuscleGroup: LiveData<List<MuscleGroup>> = roomRepository.getAllmuscleGroup
     val getAllExercise: LiveData<List<Exercise>> = roomRepository.getAllExercise
-    val getAllRecord: LiveData<List<Record>> = roomRepository.getAllRecord
-    val getLogs: LiveData<List<Record>> = roomRepository.getLogs
     val getLogDays: LiveData<List<Long>> = roomRepository.getLogDays
 
 
@@ -56,14 +54,6 @@ class MainViewmodel @Inject constructor(
         viewModelScope.launch(Dispatchers.IO) {
             roomRepository.insertRecord(record)
         }
-    }
-
-    fun getRecord(date: Long): LiveData<Record> {
-        return roomRepository.getRecord(date)
-    }
-
-    suspend fun getRecordByDate(date: Long, exerciseId: Int): Record {
-        return roomRepository.getRecordByDate(date, exerciseId)
     }
 
     fun getMuscleGroupWithCustomExercises(muscleGroupTitle: String): LiveData<List<MuscleGroupWithCustomExercises>> {
@@ -98,6 +88,17 @@ class MainViewmodel @Inject constructor(
 
     suspend fun checkRecordExistence(date: Long, exerciseId: Int): Boolean {
         return roomRepository.isRecordExist(date, exerciseId)
+    }
+
+    fun getAllRecordsByDate(date: Long):LiveData<List<Record>>{
+        return roomRepository.getAllRecordsByDate(date)
+    }
+    fun getRecordListByDay(date: Long):LiveData<List<Record>>{
+        return roomRepository.getRecordListByDay(date)
+    }
+
+    suspend fun getRecordByDate(date: Long, exerciseId: Int): Record{
+        return roomRepository.getRecordByDate(date, exerciseId)
     }
 
 }

@@ -18,9 +18,6 @@ interface ExerciseDao {
     @Query("SELECT * FROM exercise")
     fun getAllExercise(): LiveData<List<Exercise>>
 
-    @Query("SELECT * FROM record")
-    fun getAllRecord(): LiveData<List<Record>>
-
     @Insert(onConflict = OnConflictStrategy.REPLACE)
     suspend fun insertCustomExercise(customEx: CustomExercise)
 
@@ -32,12 +29,6 @@ interface ExerciseDao {
 
     @Insert(onConflict = OnConflictStrategy.REPLACE)
     suspend fun insertRecord(record: Record)
-
-    @Query("SELECT * FROM record WHERE date = :date")
-    fun getRecord(date: Long): LiveData<Record>
-
-    @Query("SELECT * FROM record WHERE date = :date AND exerciseId = :exerciseId")
-    suspend fun getRecordByDate(date: Long,  exerciseId: Int): Record
 
     @Transaction
     @Query("SELECT * FROM exercise WHERE id = :id")
@@ -60,12 +51,21 @@ interface ExerciseDao {
     @Update
     suspend fun updateRecord(record: Record)
 
-    @Query("SELECT EXISTS(SELECT * FROM record WHERE date = :date AND exerciseId = :exerciseId)")
+    @Query("SELECT EXISTS(SELECT * FROM record WHERE strftime('%Y %m %d', date/1000, 'unixepoch') = strftime('%Y %m %d', :date/1000, 'unixepoch') AND exerciseId = :exerciseId)")
     suspend fun isRecordExist(date: Long, exerciseId: Int): Boolean
 
     @Query("SELECT * FROM record ORDER BY date ASC")
-    fun getLogs():LiveData<List<Record>>
+    fun getLogs(): LiveData<List<Record>>
 
-    @Query("SELECT DISTINCT date FROM record ORDER BY date DESC")
-    fun getLogDays():LiveData<List<Long>>
+    @Query("SELECT date FROM record GROUP BY strftime('%Y %m %d', date/1000, 'unixepoch') ORDER BY date DESC")
+    fun getLogDays(): LiveData<List<Long>>
+
+    @Query("SELECT * FROM record WHERE date = :date ORDER BY exerciseId ASC")
+    fun getAllRecordsByDate(date: Long): LiveData<List<Record>>
+
+    @Query("SELECT * FROM record WHERE strftime('%Y %m %d', date/1000, 'unixepoch') = strftime('%Y %m %d', :date/1000, 'unixepoch')")
+    fun getRecordListByDay(date: Long):LiveData<List<Record>>
+
+    @Query("SELECT * FROM record WHERE strftime('%Y %m %d', date/1000, 'unixepoch') = strftime('%Y %m %d', :date/1000, 'unixepoch') AND exerciseId = :exerciseId")
+    suspend fun getRecordByDate(date: Long, exerciseId: Int): Record
 }

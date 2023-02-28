@@ -46,7 +46,6 @@ class ExerciseDetailFragment : Fragment(), DatePickerDialog.OnDateSetListener {
         setupViewPager()
         setListeners()
         bindViews()
-        setCalendar()
 
         return binding.root
     }
@@ -56,15 +55,8 @@ class ExerciseDetailFragment : Fragment(), DatePickerDialog.OnDateSetListener {
         recyclerView.adapter = recordAdapter
         recyclerView.layoutManager = LinearLayoutManager(requireContext())
         viewModel.getExerciseWithRecords(args.currentExercise.id).observe(viewLifecycleOwner) {
-            recordAdapter.setData(it[0])
+            recordAdapter.setData(it[0].records)
         }
-    }
-
-    private fun setCalendar() {
-        calendar.set(Calendar.HOUR, 0)
-        calendar.set(Calendar.MINUTE, 0)
-        calendar.set(Calendar.SECOND, 0)
-        calendar.set(Calendar.MILLISECOND, 0)
     }
 
     private fun setListeners() {

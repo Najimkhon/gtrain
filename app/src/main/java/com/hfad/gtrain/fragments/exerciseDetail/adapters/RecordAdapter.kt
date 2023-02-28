@@ -28,8 +28,8 @@ class RecordAdapter(
         return recordList.size
     }
 
-    fun setData(exerciseWithRecords: ExerciseWithRecords) {
-        recordList = exerciseWithRecords.records
+    fun setData(records: List<Record>) {
+        recordList = records.sortedBy { it.date }
         notifyDataSetChanged()
         println("Set data size: " + recordList.size)
     }

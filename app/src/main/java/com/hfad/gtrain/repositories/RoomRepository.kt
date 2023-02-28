@@ -14,11 +14,8 @@ import javax.inject.Inject
 class RoomRepository @Inject constructor(
     val exerciseDao: ExerciseDao
 ) {
-    val testString = "Dagger works!"
     val getAllmuscleGroup: LiveData<List<MuscleGroup>> = exerciseDao.getAllMuscleGroup()
     val getAllExercise: LiveData<List<Exercise>> = exerciseDao.getAllExercise()
-    val getAllRecord: LiveData<List<Record>> = exerciseDao.getAllRecord()
-    val getLogs: LiveData<List<Record>> = exerciseDao.getLogs()
     val getLogDays: LiveData<List<Long>> = exerciseDao.getLogDays()
 
 
@@ -36,14 +33,6 @@ class RoomRepository @Inject constructor(
 
     suspend fun insertRecord(record: Record) {
         exerciseDao.insertRecord(record)
-    }
-
-    fun getRecord(date: Long): LiveData<Record> {
-        return exerciseDao.getRecord(date)
-    }
-
-    suspend fun getRecordByDate(date: Long, exerciseId: Int): Record {
-        return exerciseDao.getRecordByDate(date, exerciseId)
     }
 
     fun getMuscleGroupWithExercises(muscleGroup: String): LiveData<List<MuscleGroupWithExercises>> {
@@ -72,6 +61,17 @@ class RoomRepository @Inject constructor(
 
     suspend fun isRecordExist(date: Long, exerciseId: Int): Boolean {
         return exerciseDao.isRecordExist(date, exerciseId)
+    }
+
+    fun getAllRecordsByDate(date: Long):LiveData<List<Record>>{
+        return exerciseDao.getAllRecordsByDate(date)
+    }
+    fun getRecordListByDay(date: Long):LiveData<List<Record>>{
+        return exerciseDao.getRecordListByDay(date)
+    }
+
+    suspend fun getRecordByDate(date: Long, exerciseId: Int): Record{
+        return exerciseDao.getRecordByDate(date, exerciseId)
     }
 
 }

@@ -10,6 +10,8 @@ import androidx.navigation.fragment.findNavController
 import androidx.recyclerview.widget.LinearLayoutManager
 import com.hfad.gtrain.databinding.FragmentLogListBinding
 import com.hfad.gtrain.viewmodels.MainViewmodel
+import java.text.SimpleDateFormat
+import java.util.*
 
 class LogListFragment : Fragment(), LogsItemLayout.OnItemClickListener {
 
