@@ -14,7 +14,7 @@
         android:layout_height="wrap_content"
         android:text="@string/exercises"
         android:textColor="@color/light_blue"
-        android:fontFamily="@font/sf_pro_rounded_bold"
+        android:textStyle="bold"
         android:textSize="24sp"
         app:layout_constraintTop_toTopOf="parent"
         app:layout_constraintLeft_toLeftOf="parent"

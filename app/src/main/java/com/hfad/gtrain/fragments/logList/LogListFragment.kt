@@ -25,6 +25,7 @@ class LogListFragment : Fragment(), LogsItemLayout.OnItemClickListener {
         savedInstanceState: Bundle?
     ): View {
         _binding = FragmentLogListBinding.inflate(inflater, container, false)
+        binding.toolbar.tvTitle.text = "Logs"
         setupRecyclerView()
 
         return binding.root
