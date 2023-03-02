@@ -101,4 +101,8 @@ class MainViewmodel @Inject constructor(
         return roomRepository.getRecordByDate(date, exerciseId)
     }
 
+    fun getExerciseById(exerciseId: Int):Exercise{
+        return roomRepository.getExerciseById(exerciseId)
+    }
+
 }

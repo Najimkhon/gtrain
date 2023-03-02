@@ -68,4 +68,7 @@ interface ExerciseDao {
 
     @Query("SELECT * FROM record WHERE strftime('%Y %m %d', date/1000, 'unixepoch') = strftime('%Y %m %d', :date/1000, 'unixepoch') AND exerciseId = :exerciseId")
     suspend fun getRecordByDate(date: Long, exerciseId: Int): Record
+
+    @Query("SELECT * FROM exercise WHERE id = :exerciseId")
+    fun getExerciseById(exerciseId: Int):Exercise
 }

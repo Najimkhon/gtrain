@@ -74,4 +74,8 @@ class RoomRepository @Inject constructor(
         return exerciseDao.getRecordByDate(date, exerciseId)
     }
 
+    fun getExerciseById(exerciseId: Int):Exercise{
+        return exerciseDao.getExerciseById(exerciseId)
+    }
+
 }
