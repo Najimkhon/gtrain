@@ -3,10 +3,9 @@
     xmlns:app="http://schemas.android.com/apk/res-auto"
     android:layout_width="match_parent"
     android:layout_height="wrap_content"
-    android:background="@drawable/card_shape_grey_border"
-    android:padding="8dp"
     android:layout_margin="4dp"
-    >
+    android:background="@drawable/card_shape_grey_border"
+    android:padding="8dp">
 
     <TextView
         android:id="@+id/tvExerciseName"
@@ -35,6 +34,7 @@
         android:textColor="@color/light_blue"
         app:layout_constraintLeft_toRightOf="@+id/guideline"
         app:layout_constraintTop_toTopOf="@+id/tvWeightLabel" />
+
     <TextView
         android:id="@+id/tvRepsLabel"
         android:layout_width="wrap_content"
@@ -52,12 +52,58 @@
         android:textColor="@color/light_blue"
         app:layout_constraintLeft_toRightOf="@+id/guideline"
         app:layout_constraintTop_toTopOf="@+id/tvRepsLabel" />
+
     <androidx.constraintlayout.widget.Guideline
         android:id="@+id/guideline"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:orientation="vertical"
         app:layout_constraintGuide_percent="0.3" />
+
+    <androidx.constraintlayout.widget.Guideline
+        android:id="@+id/guideline2"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:orientation="vertical"
+        app:layout_constraintGuide_percent="0.8"
+        />
+
+    <TextView
+        android:id="@+id/tvAvgWeightLabel"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginLeft="4dp"
+        android:text="AVG:"
+        android:textColor="@color/light_grey"
+        app:layout_constraintLeft_toRightOf="@+id/guideline2"
+        app:layout_constraintTop_toTopOf="@+id/tvWeightLabel" />
+    <TextView
+        android:id="@+id/tvAvgRepsLabel"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginLeft="4dp"
+        android:text="AVG:"
+        android:textColor="@color/light_grey"
+        app:layout_constraintLeft_toRightOf="@+id/guideline2"
+        app:layout_constraintTop_toTopOf="@+id/tvRepsLabel" />
+    <TextView
+        android:id="@+id/tvAvgWeight"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:text="100"
+        app:layout_constraintTop_toTopOf="@+id/tvAvgWeightLabel"
+        app:layout_constraintLeft_toRightOf="@+id/tvAvgWeightLabel"
+        android:textColor="@color/light_blue"
+        />
+    <TextView
+        android:id="@+id/tvAvgReps"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:text="12"
+        app:layout_constraintTop_toTopOf="@+id/tvAvgRepsLabel"
+        app:layout_constraintLeft_toRightOf="@+id/tvAvgRepsLabel"
+        android:textColor="@color/light_blue"
+        />
 
 
 </androidx.constraintlayout.widget.ConstraintLayout>

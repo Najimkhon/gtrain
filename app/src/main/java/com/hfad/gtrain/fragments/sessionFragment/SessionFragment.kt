@@ -30,7 +30,6 @@ class SessionFragment : Fragment() {
         savedInstanceState: Bundle?
     ): View {
         _binding = FragmentSessionBinding.inflate(inflater, container, false)
-        binding.tvTest.text = formatter.format(args.logDate)
         binding.toolbar.tvTitle.text = formatter.format(args.logDate)
         setupLogsRecyclerView()
 

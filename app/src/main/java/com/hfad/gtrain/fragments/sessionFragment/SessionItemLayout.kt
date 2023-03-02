@@ -14,7 +14,6 @@ import java.util.*
 
 class SessionItemLayout(context: Context) : RelativeLayout(context) {
     private val binding = SessionRecordItemViewBinding.inflate(LayoutInflater.from(context), this, true)
-    private val adapter: SetsAdapter by lazy { SetsAdapter(context) }
 
     fun fillContent(record: Record, exercise: Exercise) {
         binding.tvExerciseName.text = exercise.name
@@ -29,7 +28,29 @@ class SessionItemLayout(context: Context) : RelativeLayout(context) {
             reps = reps + " " + it.rep + " |"
         }
         binding.tvReps.text = reps.dropLast(1)
+        binding.tvAvgWeight.text = calculateAvgWeight(record).toString()
+        binding.tvAvgReps.text = calculateAvgReps(record).toString()
     }
+
+    private fun calculateAvgWeight(record: Record):Int{
+        val sets = record.set
+        var sumOfWeights = 0
+        var sumOfReps = 0
+        sets.forEach{
+            sumOfWeights += it.weight
+            sumOfReps += it.rep
+        }
+        return sumOfWeights/sets.size
+    }
+    private fun calculateAvgReps(record: Record):Int{
+        val sets = record.set
+        var sumOfReps = 0
+        sets.forEach{
+            sumOfReps += it.rep
+        }
+        return sumOfReps/sets.size
+    }
+
 
 
 

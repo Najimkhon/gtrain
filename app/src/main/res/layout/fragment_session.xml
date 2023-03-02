@@ -1,26 +1,71 @@
 <?xml version="1.0" encoding="utf-8"?>
 <androidx.constraintlayout.widget.ConstraintLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    xmlns:app="http://schemas.android.com/apk/res-auto"
-    tools:context=".fragments.sessionFragment.SessionFragment"
-    android:background="@color/black">
+    android:background="@color/black"
+    tools:context=".fragments.sessionFragment.SessionFragment">
+
     <include
         android:id="@+id/toolbar"
         layout="@layout/exercise_list_fr_toolbar"
         app:layout_constraintTop_toTopOf="parent" />
-    <TextView
-        android:id="@+id/tvTest"
+    <androidx.core.widget.NestedScrollView
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:text="@string/hello_blank_fragment"
-        app:layout_constraintTop_toBottomOf="@+id/toolbar"/>
-    <androidx.recyclerview.widget.RecyclerView
-        android:id="@+id/rvLogs"
-        android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        app:layout_constraintTop_toBottomOf="@+id/tvTest"/>
+        app:layout_constraintTop_toBottomOf="@+id/toolbar">
+        <androidx.constraintlayout.widget.ConstraintLayout
+            android:layout_width="match_parent"
+            android:layout_height="match_parent">
+            <ImageView
+                android:id="@+id/ivQuote"
+                android:layout_width="match_parent"
+                android:layout_height="250dp"
+                android:src="@drawable/session_fragment_image"
+                app:layout_constraintTop_toTopOf="parent" />
+
+            <TextView
+                android:id="@+id/tvQuote"
+                android:layout_width="0dp"
+                android:layout_height="wrap_content"
+                android:layout_marginLeft="16dp"
+                android:fontFamily="@font/black_thorns"
+                android:text="@string/quote_1"
+                android:textColor="@color/light_blue"
+                android:textSize="18sp"
+                app:layout_constraintBottom_toBottomOf="@+id/ivQuote"
+                app:layout_constraintLeft_toLeftOf="parent"
+                app:layout_constraintRight_toLeftOf="@+id/guideline"
+                app:layout_constraintTop_toTopOf="@+id/ivQuote" />
+
+            <TextView
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_marginTop="8dp"
+                android:text="@string/jay_cutler"
+                android:textColor="@color/light_grey"
+                app:layout_constraintLeft_toLeftOf="@+id/tvQuote"
+                app:layout_constraintTop_toBottomOf="@+id/tvQuote" />
+
+            <androidx.constraintlayout.widget.Guideline
+                android:id="@+id/guideline"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:orientation="vertical"
+                app:layout_constraintGuide_percent="0.6" />
+
+            <androidx.recyclerview.widget.RecyclerView
+                android:id="@+id/rvLogs"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                app:layout_constraintTop_toBottomOf="@+id/ivQuote" />
+
+        </androidx.constraintlayout.widget.ConstraintLayout>
+
+    </androidx.core.widget.NestedScrollView>
+
+
 
 
 </androidx.constraintlayout.widget.ConstraintLayout>

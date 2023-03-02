@@ -17,4 +17,6 @@
     <string name="weight">WEIGHT</string>
     <string name="reps">REPS</string>
     <string name="add_button">add_button</string>
+    <string name="quote_1">‘What hurts today makes you stronger tomorrow.’</string>
+    <string name="jay_cutler">Jay Cutler</string>
 </resources>
