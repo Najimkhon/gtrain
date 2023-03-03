@@ -4,11 +4,13 @@ import android.content.Context
 import android.view.View
 import android.view.ViewGroup
 import androidx.recyclerview.widget.RecyclerView
+import com.hfad.gtrain.fragments.logList.LogsItemLayout
 import com.hfad.gtrain.models.Exercise
 import com.hfad.gtrain.models.Record
 
 class SessionAdapter(
-    val context: Context
+    val context: Context,
+    private val listener: SessionItemLayout.OnItemClickListener
 ) : RecyclerView.Adapter<SessionAdapter.SessionRecordsViewHolder>() {
 
     private var recordList = emptyList<Record>()
@@ -16,7 +18,7 @@ class SessionAdapter(
 
 
     override fun onCreateViewHolder(parent: ViewGroup, viewType: Int): SessionRecordsViewHolder {
-        return SessionRecordsViewHolder(SessionItemLayout(context))
+        return SessionRecordsViewHolder(SessionItemLayout(context, listener))
     }
 
     override fun onBindViewHolder(holder: SessionRecordsViewHolder, position: Int) {

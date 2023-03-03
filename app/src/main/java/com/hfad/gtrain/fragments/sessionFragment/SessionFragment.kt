@@ -6,23 +6,25 @@ import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
 import androidx.fragment.app.activityViewModels
+import androidx.navigation.fragment.findNavController
 import androidx.navigation.fragment.navArgs
 import androidx.recyclerview.widget.LinearLayoutManager
 import com.hfad.gtrain.databinding.FragmentSessionBinding
 import com.hfad.gtrain.fragments.exerciseDetail.adapters.RecordAdapter
+import com.hfad.gtrain.fragments.logList.LogListFragmentDirections
 import com.hfad.gtrain.models.Exercise
 import com.hfad.gtrain.viewmodels.MainViewmodel
 import java.text.SimpleDateFormat
 import java.util.*
 
 
-class SessionFragment : Fragment() {
+class SessionFragment : Fragment(), SessionItemLayout.OnItemClickListener {
 
     private val args by navArgs<SessionFragmentArgs>()
     private var _binding: FragmentSessionBinding? = null
     private val binding get() = _binding!!
     private val viewModel: MainViewmodel by activityViewModels()
-    private val recordAdapter: SessionAdapter by lazy { SessionAdapter(requireContext()) }
+    private val recordAdapter: SessionAdapter by lazy { SessionAdapter(requireContext(), this) }
     private val formatter = SimpleDateFormat("MMM d", Locale.US)
 
     override fun onCreateView(
@@ -43,13 +45,19 @@ class SessionFragment : Fragment() {
         recyclerView.layoutManager = LinearLayoutManager(requireContext())
 
 
-        viewModel.getRecordListByDay(args.logDate).observe(viewLifecycleOwner) { recordList->
-            viewModel.getAllExercise.observe(viewLifecycleOwner){exerciseList->
+        viewModel.getRecordListByDay(args.logDate).observe(viewLifecycleOwner) { recordList ->
+            viewModel.getAllExercise.observe(viewLifecycleOwner) { exerciseList ->
                 recordAdapter.setData(recordList, exerciseList)
                 println("The testing size:" + exerciseList.size)
             }
 
         }
+    }
+
+    override fun onItemClicked(exerciseId: Int) {
+        val action =
+            SessionFragmentDirections.actionSessionFragmentToGraphFragment(exerciseId)
+        findNavController().navigate(action)
     }
 
 

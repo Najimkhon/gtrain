@@ -12,7 +12,7 @@ import com.hfad.gtrain.models.Set
 import java.text.SimpleDateFormat
 import java.util.*
 
-class SessionItemLayout(context: Context) : RelativeLayout(context) {
+class SessionItemLayout(context: Context, private val listener: OnItemClickListener) : RelativeLayout(context) {
     private val binding = SessionRecordItemViewBinding.inflate(LayoutInflater.from(context), this, true)
 
     fun fillContent(record: Record, exercise: Exercise) {
@@ -30,6 +30,10 @@ class SessionItemLayout(context: Context) : RelativeLayout(context) {
         binding.tvReps.text = reps.dropLast(1)
         binding.tvAvgWeight.text = calculateAvgWeight(record).toString()
         binding.tvAvgReps.text = calculateAvgReps(record).toString()
+
+        binding.itemView.setOnClickListener{
+            listener.onItemClicked(record.exerciseId)
+        }
     }
 
     private fun calculateAvgWeight(record: Record):Int{
@@ -51,8 +55,8 @@ class SessionItemLayout(context: Context) : RelativeLayout(context) {
         return sumOfReps/sets.size
     }
 
-
-
-
+    interface OnItemClickListener {
+        fun onItemClicked(exerciseId: Int)
+    }
 
 }

@@ -86,5 +86,17 @@
         <argument
             android:name="logDate"
             app:argType="long" />
+        <action
+            android:id="@+id/action_sessionFragment_to_graphFragment"
+            app:destination="@id/graphFragment" />
+    </fragment>
+    <fragment
+        android:id="@+id/graphFragment"
+        android:name="com.hfad.gtrain.fragments.graphFragment.GraphFragment"
+        android:label="fragment_graph"
+        tools:layout="@layout/fragment_graph" >
+        <argument
+            android:name="exerciseId"
+            app:argType="integer" />
     </fragment>
 </navigation>
