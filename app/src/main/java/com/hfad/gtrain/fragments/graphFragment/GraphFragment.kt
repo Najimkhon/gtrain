@@ -11,6 +11,7 @@ import androidx.recyclerview.widget.LinearLayoutManager
 import com.hfad.gtrain.databinding.FragmentGraphBinding
 import com.hfad.gtrain.fragments.exerciseDetail.adapters.RecordAdapter
 import com.hfad.gtrain.viewmodels.MainViewmodel
+import nl.bryanderidder.themedtogglebuttongroup.ThemedButton
 
 
 class GraphFragment : Fragment() {
@@ -30,9 +31,13 @@ class GraphFragment : Fragment() {
             binding.toolbar.tvTitle.text = it[0].exercise.name
         }
         setupLogsRecyclerView()
-
-
-
+        binding.toggleButton.setOnSelectListener { button: ThemedButton ->
+            if(button == binding.btn1){
+                binding.rvLogs.visibility = View.GONE
+            }else{
+                binding.rvLogs.visibility = View.VISIBLE
+            }
+        }
 
         return binding.root
     }

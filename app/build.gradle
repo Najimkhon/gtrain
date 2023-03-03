@@ -93,4 +93,7 @@ dependencies {
 
     implementation 'com.pierfrancescosoffritti.androidyoutubeplayer:core:11.1.0'
 
+    //Toggle button
+    implementation 'nl.bryanderidder:themed-toggle-button-group:1.4.1'
+
 }
