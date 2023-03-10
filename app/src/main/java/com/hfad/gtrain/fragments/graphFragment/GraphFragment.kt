@@ -8,6 +8,7 @@ import android.view.ViewGroup
 import androidx.core.content.ContextCompat
 import androidx.core.content.res.ResourcesCompat
 import androidx.fragment.app.activityViewModels
+import androidx.lifecycle.MutableLiveData
 import androidx.navigation.fragment.navArgs
 import androidx.recyclerview.widget.LinearLayoutManager
 import com.github.mikephil.charting.data.Entry
@@ -19,6 +20,7 @@ import com.hfad.gtrain.databinding.FragmentGraphBinding
 import com.hfad.gtrain.fragments.exerciseDetail.adapters.RecordAdapter
 import com.hfad.gtrain.models.Record
 import com.hfad.gtrain.utils.ChartDateFormatter
+import com.hfad.gtrain.utils.GraphState
 import com.hfad.gtrain.viewmodels.MainViewmodel
 import nl.bryanderidder.themedtogglebuttongroup.ThemedButton
 
@@ -29,6 +31,7 @@ class GraphFragment : Fragment() {
     private val binding get() = _binding!!
     private val viewModel: MainViewmodel by activityViewModels()
     private val recordAdapter: RecordAdapter by lazy { RecordAdapter(requireContext()) }
+    private var grState: MutableLiveData<GraphState> = MutableLiveData(GraphState.DisplayWeight)
 
 
     override fun onCreateView(
@@ -40,65 +43,113 @@ class GraphFragment : Fragment() {
         bindObjects()
         setupLogsRecyclerView()
         setupListeners()
-        setupLineChart()
 
         return binding.root
     }
 
-    private fun setupListeners(){
+    private fun setupListeners() {
         binding.toggleButton.setOnSelectListener { button: ThemedButton ->
-            if(button == binding.btn1){
-                binding.rvLogs.visibility = View.GONE
-            }else{
-                binding.rvLogs.visibility = View.VISIBLE
+            when (button) {
+                binding.btnWeights -> {
+                    grState.value = GraphState.DisplayWeight
+                }
+                binding.btnReps -> {
+                    grState.value = GraphState.DisplayReps
+                }
+                binding.btnPerformance -> {
+                    grState.value = GraphState.DisplayPerformance
+                }
             }
         }
     }
 
-    private fun bindObjects(){
-        viewModel.getExerciseWithRecords(args.exerciseId).observe(viewLifecycleOwner){
+    private fun bindObjects() {
+        viewModel.getExerciseWithRecords(args.exerciseId).observe(viewLifecycleOwner) {
             binding.toolbar.tvTitle.text = it[0].exercise.name
         }
-    }
-
-    private fun setupLineChart(){
-        viewModel.getExerciseWithRecords(args.exerciseId).observe(viewLifecycleOwner){
-            val lineDataSet = LineDataSet(lineChartDataSet(it[0].records), "data set")
-            val iLineDataSet = ArrayList<ILineDataSet>()
-            iLineDataSet.add(lineDataSet)
-            val lineData = LineData(iLineDataSet)
-            binding.graphBlock.data = lineData
-            binding.graphBlock.invalidate()
-            lineDataSet.color = ResourcesCompat.getColor(resources, R.color.light_blue, null)
-            lineDataSet.setCircleColor(ResourcesCompat.getColor(resources, R.color.light_blue, null))
-            lineDataSet.setDrawCircles(true)
-            lineDataSet.setDrawCircleHole(true)
-            lineDataSet.lineWidth = 3f
-            lineDataSet.circleRadius = 1f
-            lineDataSet.circleHoleRadius = 1f
-            lineDataSet.valueTextSize = 10f
-            lineDataSet.valueTextColor = ResourcesCompat.getColor(resources, R.color.light_grey, null)
-            binding.graphBlock.xAxis.valueFormatter = ChartDateFormatter()
-            binding.graphBlock.xAxis.textColor = ContextCompat.getColor(requireContext(), R.color.light_grey)
-            binding.graphBlock.axisLeft.textColor = ContextCompat.getColor(requireContext(), R.color.light_grey)
-            binding.graphBlock.axisRight.textColor = ContextCompat.getColor(requireContext(), R.color.light_grey)
-            binding.graphBlock.legend.textColor = ContextCompat.getColor(requireContext(), R.color.light_grey)
-
+        grState.observe(viewLifecycleOwner) { graphState ->
+            viewModel.getExerciseWithRecords(args.exerciseId).observe(viewLifecycleOwner) {
+                setupLineChart(it[0].records, graphState.state)
+            }
         }
     }
 
-    private fun lineChartDataSet(logs: List<Record>):ArrayList<Entry>{
+    private fun setupLineChart(recordList: List<Record>, label: String) {
+        val list = recordList.sortedBy { it.date }
+        val lineDataSet = LineDataSet(lineChartDataSet(list), label)
 
+
+        val iLineDataSet = ArrayList<ILineDataSet>()
+        iLineDataSet.add(lineDataSet)
+        val lineData = LineData(iLineDataSet)
+        val chart = binding.graphBlock
+        chart.description.text = ""
+        chart.data = lineData
+        chart.invalidate()
+        chart.xAxis.valueFormatter = ChartDateFormatter()
+        chart.xAxis.textColor = ContextCompat.getColor(requireContext(), R.color.light_grey)
+        chart.axisLeft.textColor = ContextCompat.getColor(requireContext(), R.color.light_grey)
+        chart.axisRight.textColor = ContextCompat.getColor(requireContext(), R.color.light_grey)
+        chart.legend.textColor = ContextCompat.getColor(requireContext(), R.color.light_grey)
+        lineDataSet.color = ResourcesCompat.getColor(resources, R.color.light_blue, null)
+        lineDataSet.setCircleColor(ResourcesCompat.getColor(resources, R.color.light_blue, null))
+        lineDataSet.setDrawCircles(true)
+        lineDataSet.setDrawCircleHole(true)
+        lineDataSet.lineWidth = 3f
+        lineDataSet.circleRadius = 1f
+        lineDataSet.circleHoleRadius = 1f
+        lineDataSet.valueTextSize = 10f
+        lineDataSet.valueTextColor = ResourcesCompat.getColor(resources, R.color.light_grey, null)
+    }
+
+    private fun lineChartDataSet(logs: List<Record>): ArrayList<Entry> {
         val dataSet = ArrayList<Entry>()
-        logs.forEach { record ->
-            val date = record.date
-            record.set.forEach{
-                dataSet.add(
-                    Entry(
-                        (date/1000).toFloat(),
-                        it.rep.toFloat()
-                    )
-                )
+
+        grState.observe(viewLifecycleOwner) { graphState ->
+            when (graphState) {
+                GraphState.DisplayWeight -> {
+                    logs.forEach { record ->
+                        val date = record.date
+                        record.set.forEach {
+                            dataSet.add(
+                                Entry(
+                                    (date / 1000).toFloat(),
+                                    it.weight.toFloat()
+                                )
+                            )
+                        }
+                    }
+                    binding.tvDescription.text = graphState.description
+                }
+                GraphState.DisplayReps -> {
+                    logs.forEach { record ->
+                        val date = record.date
+                        record.set.forEach {
+                            dataSet.add(
+                                Entry(
+                                    (date / 1000).toFloat(),
+                                    it.rep.toFloat()
+                                )
+                            )
+                        }
+                    }
+                    binding.tvDescription.text = graphState.description
+                }
+                GraphState.DisplayPerformance -> {
+                    logs.forEach { record ->
+                        val date = record.date
+                        record.set.forEach {
+                            val value = it.rep * it.weight
+                            dataSet.add(
+                                Entry(
+                                    (date / 1000).toFloat(),
+                                    value.toFloat()
+                                )
+                            )
+                        }
+                    }
+                    binding.tvDescription.text = graphState.description
+                }
             }
         }
 
