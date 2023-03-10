@@ -51,6 +51,10 @@ class RoomRepository @Inject constructor(
         exerciseDao.deleteCustomExercise(customEx)
     }
 
+    suspend fun deleteRecord(record: Record){
+        exerciseDao.deleteRecord(record)
+    }
+
     suspend fun updateCustomExercise(customEx: CustomExercise) {
         exerciseDao.updateCustomExercise(customEx)
     }

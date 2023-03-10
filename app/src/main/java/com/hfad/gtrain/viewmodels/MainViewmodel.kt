@@ -74,6 +74,12 @@ class MainViewmodel @Inject constructor(
         }
     }
 
+    fun deleteRecord(record: Record){
+        viewModelScope.launch(Dispatchers.IO) {
+            roomRepository.deleteRecord(record)
+        }
+    }
+
     fun updateCustomExercise(customEx: CustomExercise) {
         viewModelScope.launch(Dispatchers.IO) {
             roomRepository.updateCustomExercise(customEx)

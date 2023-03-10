@@ -6,13 +6,13 @@ import android.view.ViewGroup
 import androidx.recyclerview.widget.RecyclerView
 import com.hfad.gtrain.fragments.exerciseDetail.itemLayouts.RecordItemLayout
 import com.hfad.gtrain.models.Record
-import com.hfad.gtrain.models.relations.ExerciseWithRecords
 
 class RecordAdapter(
     val context: Context
 ) : RecyclerView.Adapter<RecordAdapter.RecordsViewHolder>() {
 
     private var recordList = emptyList<Record>()
+    lateinit var currentRecord: Record
 
 
     override fun onCreateViewHolder(parent: ViewGroup, viewType: Int): RecordsViewHolder {
@@ -20,8 +20,8 @@ class RecordAdapter(
     }
 
     override fun onBindViewHolder(holder: RecordsViewHolder, position: Int) {
-        val record = recordList[position]
-        holder.layout.fillContent(record)
+        currentRecord = recordList[position]
+        holder.layout.fillContent(currentRecord)
     }
 
     override fun getItemCount(): Int {

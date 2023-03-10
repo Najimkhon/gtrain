@@ -85,7 +85,6 @@ class CustomExerciseFragment : Fragment(),
                 viewHolder: RecyclerView.ViewHolder?,
                 underlayButtons: MutableList<UnderlayButton>?
             ) {
-
                 underlayButtons?.add(UnderlayButton(
                     "Delete",
                     AppCompatResources.getDrawable(
@@ -114,7 +113,6 @@ class CustomExerciseFragment : Fragment(),
                     findNavController().navigate(action)
                 })
             }
-
         }
     }
 

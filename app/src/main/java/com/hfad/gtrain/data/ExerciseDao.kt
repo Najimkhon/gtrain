@@ -45,6 +45,9 @@ interface ExerciseDao {
     @Delete
     suspend fun deleteCustomExercise(customEx: CustomExercise)
 
+    @Delete
+    suspend fun deleteRecord(record: Record)
+
     @Update
     suspend fun updateCustomExercise(customEx: CustomExercise)
 

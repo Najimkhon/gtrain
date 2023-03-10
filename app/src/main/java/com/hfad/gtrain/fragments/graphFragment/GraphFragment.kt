@@ -1,24 +1,33 @@
 package com.hfad.gtrain.fragments.graphFragment
 
+import android.content.Context
+import android.graphics.Color
 import android.os.Bundle
 import androidx.fragment.app.Fragment
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
+import androidx.appcompat.content.res.AppCompatResources
 import androidx.core.content.ContextCompat
 import androidx.core.content.res.ResourcesCompat
 import androidx.fragment.app.activityViewModels
 import androidx.lifecycle.MutableLiveData
+import androidx.navigation.fragment.findNavController
 import androidx.navigation.fragment.navArgs
 import androidx.recyclerview.widget.LinearLayoutManager
+import androidx.recyclerview.widget.RecyclerView
 import com.github.mikephil.charting.data.Entry
 import com.github.mikephil.charting.data.LineData
 import com.github.mikephil.charting.data.LineDataSet
 import com.github.mikephil.charting.interfaces.datasets.ILineDataSet
+import com.google.android.material.snackbar.Snackbar
 import com.hfad.gtrain.R
 import com.hfad.gtrain.databinding.FragmentGraphBinding
 import com.hfad.gtrain.fragments.exerciseDetail.adapters.RecordAdapter
+import com.hfad.gtrain.fragments.exerciseList.ExerciseListFragmentDirections
+import com.hfad.gtrain.models.CustomExercise
 import com.hfad.gtrain.models.Record
+import com.hfad.gtrain.ui.utils.SwipeHelper
 import com.hfad.gtrain.utils.ChartDateFormatter
 import com.hfad.gtrain.utils.GraphState
 import com.hfad.gtrain.viewmodels.MainViewmodel
@@ -163,5 +172,54 @@ class GraphFragment : Fragment() {
         viewModel.getExerciseWithRecords(args.exerciseId).observe(viewLifecycleOwner) {
             recordAdapter.setData(it[0].records)
         }
+        swipeHelper(recyclerView, requireContext(), recordAdapter)
+    }
+
+    private fun swipeHelper(recyclerView: RecyclerView, context: Context, adapter: RecordAdapter){
+        object : SwipeHelper(context, recyclerView, false) {
+            override fun instantiateUnderlayButton(
+                viewHolder: RecyclerView.ViewHolder?,
+                underlayButtons: MutableList<UnderlayButton>?
+            ) {
+                underlayButtons?.add(UnderlayButton(
+                    "Delete",
+                    AppCompatResources.getDrawable(
+                        context,
+                        R.drawable.ic_delete
+                    ),
+                    Color.TRANSPARENT, Color.parseColor("#ffffff")
+                ) { pos: Int ->
+                    val itemToDelete = adapter.currentRecord!!
+                    viewModel.deleteRecord(itemToDelete)
+                    adapter.notifyItemChanged(viewHolder!!.adapterPosition)
+                    restoreDeletedData(viewHolder.itemView, itemToDelete, viewHolder.adapterPosition, adapter)
+                    adapter.notifyItemChanged(pos)
+                })
+
+                underlayButtons?.add(UnderlayButton(
+                    "Edit",
+                    AppCompatResources.getDrawable(
+                        context,
+                        R.drawable.ic_edit
+                    ),
+                    Color.TRANSPARENT, Color.parseColor("#ffffff")
+                ) {
+
+                })
+            }
+        }
+    }
+
+    private fun restoreDeletedData(view: View, deletedItem: Record, position: Int, adapter: RecordAdapter) {
+        val snackbar = Snackbar.make(
+            view,
+            "Record is deleted",
+            Snackbar.LENGTH_LONG
+        )
+        snackbar.setAction("Undo") {
+            viewModel.insertRecord(deletedItem)
+            adapter.notifyItemChanged(position)
+        }
+        snackbar.show()
     }
 }
