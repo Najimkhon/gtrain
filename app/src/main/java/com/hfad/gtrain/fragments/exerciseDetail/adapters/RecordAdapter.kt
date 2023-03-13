@@ -6,9 +6,13 @@ import android.view.ViewGroup
 import androidx.recyclerview.widget.RecyclerView
 import com.hfad.gtrain.fragments.exerciseDetail.itemLayouts.RecordItemLayout
 import com.hfad.gtrain.models.Record
+import github.com.st235.lib_swipetoactionlayout.SwipeAction
+
+typealias OnActionClicked = (record: Record, action: SwipeAction, position: Int) -> Unit
 
 class RecordAdapter(
-    val context: Context
+    val context: Context,
+    private val onActionClicked: OnActionClicked
 ) : RecyclerView.Adapter<RecordAdapter.RecordsViewHolder>() {
 
     private var recordList = emptyList<Record>()
@@ -16,12 +20,12 @@ class RecordAdapter(
 
 
     override fun onCreateViewHolder(parent: ViewGroup, viewType: Int): RecordsViewHolder {
-        return RecordsViewHolder(RecordItemLayout(context))
+        return RecordsViewHolder(RecordItemLayout(context, onActionClicked))
     }
 
     override fun onBindViewHolder(holder: RecordsViewHolder, position: Int) {
         currentRecord = recordList[position]
-        holder.layout.fillContent(currentRecord)
+        holder.layout.fillContent(currentRecord, position)
     }
 
     override fun getItemCount(): Int {

@@ -39,8 +39,15 @@ class GraphFragment : Fragment() {
     private var _binding: FragmentGraphBinding? = null
     private val binding get() = _binding!!
     private val viewModel: MainViewmodel by activityViewModels()
-    private val recordAdapter: RecordAdapter by lazy { RecordAdapter(requireContext()) }
     private var grState: MutableLiveData<GraphState> = MutableLiveData(GraphState.DisplayWeight)
+    private lateinit var recyclerView: RecyclerView
+    private val recordAdapter: RecordAdapter by lazy { RecordAdapter(requireContext()) { record, action, position ->
+        when (action.actionId) {
+            R.id.edit -> println("edit is clicked")
+            R.id.delete -> {deleteRecord(record, position) }
+        }
+    }
+    }
 
 
     override fun onCreateView(
@@ -166,60 +173,34 @@ class GraphFragment : Fragment() {
     }
 
     private fun setupLogsRecyclerView() {
-        val recyclerView = binding.rvLogs
+        recyclerView = binding.rvLogs
         recyclerView.adapter = recordAdapter
         recyclerView.layoutManager = LinearLayoutManager(requireContext())
         viewModel.getExerciseWithRecords(args.exerciseId).observe(viewLifecycleOwner) {
             recordAdapter.setData(it[0].records)
         }
-        swipeHelper(recyclerView, requireContext(), recordAdapter)
+
     }
 
-    private fun swipeHelper(recyclerView: RecyclerView, context: Context, adapter: RecordAdapter){
-        object : SwipeHelper(context, recyclerView, false) {
-            override fun instantiateUnderlayButton(
-                viewHolder: RecyclerView.ViewHolder?,
-                underlayButtons: MutableList<UnderlayButton>?
-            ) {
-                underlayButtons?.add(UnderlayButton(
-                    "Delete",
-                    AppCompatResources.getDrawable(
-                        context,
-                        R.drawable.ic_delete
-                    ),
-                    Color.TRANSPARENT, Color.parseColor("#ffffff")
-                ) { pos: Int ->
-                    val itemToDelete = adapter.currentRecord!!
-                    viewModel.deleteRecord(itemToDelete)
-                    adapter.notifyItemChanged(viewHolder!!.adapterPosition)
-                    restoreDeletedData(viewHolder.itemView, itemToDelete, viewHolder.adapterPosition, adapter)
-                    adapter.notifyItemChanged(pos)
-                })
-
-                underlayButtons?.add(UnderlayButton(
-                    "Edit",
-                    AppCompatResources.getDrawable(
-                        context,
-                        R.drawable.ic_edit
-                    ),
-                    Color.TRANSPARENT, Color.parseColor("#ffffff")
-                ) {
-
-                })
-            }
-        }
+    private fun deleteRecord(record: Record, position: Int){
+        val itemToDelete = record
+        viewModel.deleteRecord(record)
+        recordAdapter.notifyItemChanged(position)
+        restoreDeletedData(binding.root, itemToDelete, position)
+        recordAdapter.notifyItemChanged(position)
     }
 
-    private fun restoreDeletedData(view: View, deletedItem: Record, position: Int, adapter: RecordAdapter) {
+    private fun restoreDeletedData(view: View, deletedItem: Record, position: Int) {
         val snackbar = Snackbar.make(
             view,
-            "Record is deleted",
+            "You deleted a record",
             Snackbar.LENGTH_LONG
         )
         snackbar.setAction("Undo") {
             viewModel.insertRecord(deletedItem)
-            adapter.notifyItemChanged(position)
+            recordAdapter.notifyItemChanged(position)
         }
         snackbar.show()
     }
+
 }

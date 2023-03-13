@@ -18,10 +18,12 @@ class ExsListLayout(context: Context, private val listener: OnItemClickListener)
         binding.tvExTitle.text = currentExercise.name
         binding.tvCalorie.text = currentExercise.calories.toString()
         val imageUri = currentExercise.image[0]
-        Picasso.get()
-            .load(imageUri)
-            .placeholder(R.drawable.img_benchpress_1)
-            .into(binding.ivImage)
+        if(imageUri.isNotEmpty()){
+            Picasso.get()
+                .load(imageUri)
+                .placeholder(R.drawable.img_benchpress_1)
+                .into(binding.ivImage)
+        }
         binding.cvExercise.setOnClickListener {
             listener.onItemClicked(currentExercise)
         }

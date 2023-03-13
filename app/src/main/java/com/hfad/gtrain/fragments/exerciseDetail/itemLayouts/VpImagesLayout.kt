@@ -22,9 +22,11 @@ class VpImagesLayout(context: Context):RelativeLayout(context) {
     fun fillContent(currentImageUrl: String){
         imageUrl = currentImageUrl
         println("image url" + currentImageUrl)
-        Picasso.get()
-            .load(imageUrl)
-            .placeholder(R.drawable.img_benchpress_1)
-            .into(binding.ivImageHolder)
+        if (imageUrl.isNotEmpty()){
+            Picasso.get()
+                .load(imageUrl)
+                .placeholder(R.drawable.img_benchpress_1)
+                .into(binding.ivImageHolder)
+        }
     }
 }

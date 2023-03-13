@@ -13,6 +13,8 @@ import androidx.lifecycle.lifecycleScope
 import androidx.navigation.fragment.findNavController
 import androidx.navigation.fragment.navArgs
 import androidx.recyclerview.widget.LinearLayoutManager
+import com.google.android.material.snackbar.Snackbar
+import com.hfad.gtrain.R
 import com.hfad.gtrain.databinding.FragmentExerciseDetailBinding
 import com.hfad.gtrain.fragments.exerciseDetail.adapters.RecordAdapter
 import com.hfad.gtrain.fragments.exerciseDetail.adapters.VpImagesAdapter
@@ -31,10 +33,16 @@ class ExerciseDetailFragment : Fragment(), DatePickerDialog.OnDateSetListener {
     private var _binding: FragmentExerciseDetailBinding? = null
     private val binding get() = _binding!!
     private val adapter: VpImagesAdapter by lazy { VpImagesAdapter(requireContext()) }
-    private val recordAdapter: RecordAdapter by lazy { RecordAdapter(requireContext()) }
     private val viewModel: MainViewmodel by activityViewModels()
     private val calendar = Calendar.getInstance()
     private val formatter = SimpleDateFormat("MMM dd yyyy", Locale.US)
+    private val recordAdapter: RecordAdapter by lazy { RecordAdapter(requireContext()) { record, action, position ->
+        when (action.actionId) {
+            R.id.edit -> println("edit is clicked")
+            R.id.delete -> {deleteRecord(record, position) }
+        }
+    }
+    }
 
     override fun onCreateView(
         inflater: LayoutInflater, container: ViewGroup?,
@@ -135,5 +143,26 @@ class ExerciseDetailFragment : Fragment(), DatePickerDialog.OnDateSetListener {
     private fun displayFormattedDate(timestamp: Long) {
         binding.tvSelectedDate.text = formatter.format(timestamp)
         println("Formatting: $timestamp")
+    }
+
+    private fun deleteRecord(record: Record, position: Int){
+        val itemToDelete = record
+        viewModel.deleteRecord(record)
+        recordAdapter.notifyItemChanged(position)
+        restoreDeletedData(binding.root, itemToDelete, position)
+        recordAdapter.notifyItemChanged(position)
+    }
+
+    private fun restoreDeletedData(view: View, deletedItem: Record, position: Int) {
+        val snackbar = Snackbar.make(
+            view,
+            "You deleted a record",
+            Snackbar.LENGTH_LONG
+        )
+        snackbar.setAction("Undo") {
+            viewModel.insertRecord(deletedItem)
+            recordAdapter.notifyItemChanged(position)
+        }
+        snackbar.show()
     }
 }

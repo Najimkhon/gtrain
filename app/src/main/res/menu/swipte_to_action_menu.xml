@@ -1,0 +1,18 @@
+<?xml version="1.0" encoding="utf-8"?>
+<menu xmlns:android="http://schemas.android.com/apk/res/android">
+    <item
+        android:id="@+id/edit"
+        android:icon="@drawable/ic_edit"
+        android:iconTint="@color/light_grey"
+        android:title="Edit"
+        android:titleTextColor = "@color/light_grey"
+        />
+
+    <item
+        android:id="@+id/delete"
+        android:icon="@drawable/ic_delete"
+        android:iconTint="@color/light_grey"
+        android:title="Delete"
+        android:titleTextColor = "@color/light_grey"/>
+
+</menu>
