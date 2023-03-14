@@ -36,3 +36,4 @@ class DialogManager @Inject constructor(private val fragmentManager: FragmentMan
 interface OnDialogClickListener {
     fun onSaveClicked(input: String)
 }
+

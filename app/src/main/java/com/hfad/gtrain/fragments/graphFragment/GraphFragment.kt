@@ -23,12 +23,15 @@ import com.hfad.gtrain.databinding.FragmentGraphBinding
 import com.hfad.gtrain.fragments.exerciseDetail.adapters.RecordAdapter
 import com.hfad.gtrain.fragments.exerciseDetail.itemLayouts.SetsItemLayout
 import com.hfad.gtrain.models.Record
+import com.hfad.gtrain.ui.dialogs.DialogManager
 import com.hfad.gtrain.utils.ChartDateFormatter
 import com.hfad.gtrain.utils.GraphState
 import com.hfad.gtrain.viewmodels.MainViewmodel
+import dagger.hilt.android.AndroidEntryPoint
 import nl.bryanderidder.themedtogglebuttongroup.ThemedButton
+import javax.inject.Inject
 
-
+@AndroidEntryPoint
 class GraphFragment : Fragment(), SetsItemLayout.OnSetClickedListener {
     private val args by navArgs<GraphFragmentArgs>()
     private var _binding: FragmentGraphBinding? = null
@@ -37,6 +40,8 @@ class GraphFragment : Fragment(), SetsItemLayout.OnSetClickedListener {
     private var grState: MutableLiveData<GraphState> = MutableLiveData(GraphState.DisplayWeight)
     private lateinit var recyclerView: RecyclerView
     private lateinit var lastSelectedItem: SetsItemLayout
+    @Inject
+    lateinit var dialogManager: DialogManager
 
     private val recordAdapter: RecordAdapter by lazy {
         RecordAdapter(requireContext(), { record, action, position ->
@@ -202,15 +207,12 @@ class GraphFragment : Fragment(), SetsItemLayout.OnSetClickedListener {
         snackbar.show()
     }
 
-    override fun onSetClicked(record: Record, selectedItemLayout: SetsItemLayout) {
+    override fun onSetClicked(record: Record, selectedItemLayout: SetsItemLayout, position: Int) {
         if (this::lastSelectedItem.isInitialized) {
             lastSelectedItem.normalState()
             selectedItemLayout.blinkState()
         }
-
         lastSelectedItem = selectedItemLayout
         println("open bottom dialog")
-
     }
-
 }

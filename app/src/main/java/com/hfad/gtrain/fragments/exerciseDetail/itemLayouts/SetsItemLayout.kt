@@ -23,13 +23,13 @@ class SetsItemLayout(context: Context, private val listener: OnSetClickedListene
         animBlink.setAnimationListener(this)
 
         binding.tvReps.setOnClickListener{
-            listener.onSetClicked(record, this)
+            listener.onSetClicked(record, this, position)
             blinkState()
 
         }
 
         binding.tvWeight.setOnClickListener{
-            listener.onSetClicked(record, this)
+            listener.onSetClicked(record, this, position)
             blinkState()
         }
     }
@@ -45,7 +45,7 @@ class SetsItemLayout(context: Context, private val listener: OnSetClickedListene
     }
 
     interface OnSetClickedListener{
-        fun onSetClicked(record: Record, selectedItemLayout: SetsItemLayout)
+        fun onSetClicked(record: Record, selectedItemLayout: SetsItemLayout, position: Int)
     }
 
     override fun onAnimationStart(animation: Animation?) {

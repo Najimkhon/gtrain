@@ -1,13 +1,16 @@
 package com.hfad.gtrain.fragments.exerciseDetail
 
 import android.app.DatePickerDialog
+import android.content.Context
 import android.os.Bundle
 import androidx.fragment.app.Fragment
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
+import android.view.inputmethod.InputMethodManager
 import android.widget.DatePicker
 import android.widget.Toast
+import androidx.core.content.ContextCompat.getSystemService
 import androidx.fragment.app.activityViewModels
 import androidx.lifecycle.lifecycleScope
 import androidx.navigation.fragment.findNavController
@@ -29,21 +32,27 @@ import java.util.*
 
 
 @AndroidEntryPoint
-class ExerciseDetailFragment : Fragment(), DatePickerDialog.OnDateSetListener, SetsItemLayout.OnSetClickedListener{
+class ExerciseDetailFragment : Fragment(), DatePickerDialog.OnDateSetListener,
+    SetsItemLayout.OnSetClickedListener {
     private val args by navArgs<ExerciseDetailFragmentArgs>()
     private var _binding: FragmentExerciseDetailBinding? = null
     private val binding get() = _binding!!
     private val adapter: VpImagesAdapter by lazy { VpImagesAdapter(requireContext()) }
     private val viewModel: MainViewmodel by activityViewModels()
-    private val calendar = Calendar.getInstance()
+    private var calendar = Calendar.getInstance()
     private val formatter = SimpleDateFormat("MMM dd yyyy", Locale.US)
     private lateinit var lastSelectedItem: SetsItemLayout
-    private val recordAdapter: RecordAdapter by lazy { RecordAdapter(requireContext(), { record, action, position ->
-        when (action.actionId) {
-            R.id.edit -> println("edit is clicked")
-            R.id.delete -> {deleteRecord(record, position) }
-        }
-    }, this)
+    private lateinit var updatedRecord: Record
+    private var updatedRecordPosition = 0
+    private val recordAdapter: RecordAdapter by lazy {
+        RecordAdapter(requireContext(), { record, action, position ->
+            when (action.actionId) {
+                R.id.edit -> println("edit is clicked")
+                R.id.delete -> {
+                    deleteRecord(record, position)
+                }
+            }
+        }, this)
     }
 
     override fun onCreateView(
@@ -89,7 +98,39 @@ class ExerciseDetailFragment : Fragment(), DatePickerDialog.OnDateSetListener, S
         }
 
         binding.btnAddRecord.setOnClickListener {
-            addRecord()
+            if (binding.etWeight.text.isNotEmpty() && binding.etReps.text.isNotEmpty()) {
+                addRecord()
+                closeInputDialog()
+                closeKeyBoard()
+            } else {
+                Toast.makeText(requireContext(), "Fields mustn't be empty!", Toast.LENGTH_SHORT)
+                    .show()
+            }
+        }
+
+        binding.btnUpdateRecord.setOnClickListener {
+            if (binding.etWeight.text.isNotEmpty() && binding.etReps.text.isNotEmpty()) {
+                updateRecord(updatedRecord)
+                defaultMode()
+                closeKeyBoard()
+                closeInputDialog()
+            } else {
+                Toast.makeText(requireContext(), "Fields mustn't be empty!", Toast.LENGTH_SHORT)
+                    .show()
+            }
+        }
+
+        binding.fabAdd.setOnClickListener {
+            openInputDialog()
+        }
+
+        binding.btnCancel.setOnClickListener {
+            closeInputDialog()
+            if (this::lastSelectedItem.isInitialized) {
+                lastSelectedItem.normalState()
+            }
+            defaultMode()
+            closeKeyBoard()
         }
     }
 
@@ -101,6 +142,14 @@ class ExerciseDetailFragment : Fragment(), DatePickerDialog.OnDateSetListener, S
         val viewPager = binding.vpImages
         viewPager.adapter = adapter
         adapter.setData(args.currentExercise.image)
+    }
+
+    private fun updateRecord(record: Record) {
+        println("Prior to update value: " + record.set[0].rep.toString())
+        record.set[updatedRecordPosition].rep = binding.etReps.text.toString().toInt()
+        record.set[updatedRecordPosition].weight = binding.etWeight.text.toString().toInt()
+        println("Post update value: " + record.set[0].rep.toString())
+        viewModel.updateRecord(record)
     }
 
     private fun addRecord() {
@@ -137,6 +186,7 @@ class ExerciseDetailFragment : Fragment(), DatePickerDialog.OnDateSetListener, S
         }
     }
 
+
     override fun onDateSet(view: DatePicker?, year: Int, month: Int, dayOfMonth: Int) {
         calendar.set(year, month, dayOfMonth)
         displayFormattedDate(calendar.timeInMillis)
@@ -147,7 +197,7 @@ class ExerciseDetailFragment : Fragment(), DatePickerDialog.OnDateSetListener, S
         println("Formatting: $timestamp")
     }
 
-    private fun deleteRecord(record: Record, position: Int){
+    private fun deleteRecord(record: Record, position: Int) {
         viewModel.deleteRecord(record)
         recordAdapter.notifyItemChanged(position)
         restoreDeletedData(binding.root, record, position)
@@ -167,13 +217,54 @@ class ExerciseDetailFragment : Fragment(), DatePickerDialog.OnDateSetListener, S
         snackbar.show()
     }
 
-    override fun onSetClicked(record: Record, selectedItemLayout: SetsItemLayout) {
+    override fun onSetClicked(record: Record, selectedItemLayout: SetsItemLayout, position: Int) {
         if (this::lastSelectedItem.isInitialized) {
             lastSelectedItem.normalState()
             selectedItemLayout.blinkState()
         }
+        openInputDialog()
+        updateMode()
+        binding.etReps.setText(record.set[position].rep.toString())
+        binding.etWeight.setText(record.set[position].weight.toString())
+        displayFormattedDate(record.date)
+
+        updatedRecordPosition = position
+        updatedRecord = record
 
         lastSelectedItem = selectedItemLayout
-        println("open bottom dialog")
+
+    }
+
+    private fun updateMode() {
+        binding.btnUpdateRecord.visibility = View.VISIBLE
+        binding.btnAddRecord.visibility = View.GONE
+    }
+
+    private fun defaultMode() {
+        binding.btnUpdateRecord.visibility = View.GONE
+        binding.btnAddRecord.visibility = View.VISIBLE
+    }
+
+    private fun closeKeyBoard() {
+        val view = requireActivity().currentFocus
+        if (view != null) {
+            val imm =
+                requireActivity().getSystemService(Context.INPUT_METHOD_SERVICE) as InputMethodManager
+            imm.hideSoftInputFromWindow(view.windowToken, 0)
+        }
+    }
+
+    private fun openInputDialog() {
+        binding.cvInputDialog.visibility = View.VISIBLE
+        binding.fabAdd.visibility = View.GONE
+    }
+
+    private fun closeInputDialog() {
+        binding.cvInputDialog.visibility = View.GONE
+        binding.fabAdd.visibility = View.VISIBLE
+        binding.etReps.setText("")
+        binding.etWeight.setText("")
+        binding.tvSelectedDate.text = "Today"
+        calendar = Calendar.getInstance()
     }
 }
