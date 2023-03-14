@@ -5,22 +5,25 @@ import android.view.View
 import android.view.ViewGroup
 import androidx.recyclerview.widget.RecyclerView
 import com.hfad.gtrain.fragments.exerciseDetail.itemLayouts.SetsItemLayout
+import com.hfad.gtrain.models.Record
 import com.hfad.gtrain.models.Set
 
 class SetsAdapter(
-    val context: Context
+    val context: Context,
+    private val onSetClickedListener: SetsItemLayout.OnSetClickedListener
 ) : RecyclerView.Adapter<SetsAdapter.SetsViewHolder>() {
 
+    private lateinit var record: Record
     private var sets = emptyList<Set>()
 
 
     override fun onCreateViewHolder(parent: ViewGroup, viewType: Int): SetsViewHolder {
-        return SetsViewHolder(SetsItemLayout(context))
+        return SetsViewHolder(SetsItemLayout(context, onSetClickedListener))
     }
 
     override fun onBindViewHolder(holder: SetsViewHolder, position: Int) {
         val set = sets[position]
-        holder.layout.fillContent(set)
+        holder.layout.fillContent(record, position)
 
     }
 
@@ -28,8 +31,9 @@ class SetsAdapter(
         return sets.size
     }
 
-    fun setData(setList: List<Set>) {
-        sets = setList
+    fun setData(record: Record) {
+        sets = record.set
+        this.record = record
         notifyDataSetChanged()
     }
 

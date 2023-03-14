@@ -18,6 +18,7 @@ import com.hfad.gtrain.R
 import com.hfad.gtrain.databinding.FragmentExerciseDetailBinding
 import com.hfad.gtrain.fragments.exerciseDetail.adapters.RecordAdapter
 import com.hfad.gtrain.fragments.exerciseDetail.adapters.VpImagesAdapter
+import com.hfad.gtrain.fragments.exerciseDetail.itemLayouts.SetsItemLayout
 import com.hfad.gtrain.models.Record
 import com.hfad.gtrain.models.Set
 import com.hfad.gtrain.viewmodels.MainViewmodel
@@ -28,7 +29,7 @@ import java.util.*
 
 
 @AndroidEntryPoint
-class ExerciseDetailFragment : Fragment(), DatePickerDialog.OnDateSetListener {
+class ExerciseDetailFragment : Fragment(), DatePickerDialog.OnDateSetListener, SetsItemLayout.OnSetClickedListener{
     private val args by navArgs<ExerciseDetailFragmentArgs>()
     private var _binding: FragmentExerciseDetailBinding? = null
     private val binding get() = _binding!!
@@ -36,12 +37,13 @@ class ExerciseDetailFragment : Fragment(), DatePickerDialog.OnDateSetListener {
     private val viewModel: MainViewmodel by activityViewModels()
     private val calendar = Calendar.getInstance()
     private val formatter = SimpleDateFormat("MMM dd yyyy", Locale.US)
-    private val recordAdapter: RecordAdapter by lazy { RecordAdapter(requireContext()) { record, action, position ->
+    private lateinit var lastSelectedItem: SetsItemLayout
+    private val recordAdapter: RecordAdapter by lazy { RecordAdapter(requireContext(), { record, action, position ->
         when (action.actionId) {
             R.id.edit -> println("edit is clicked")
             R.id.delete -> {deleteRecord(record, position) }
         }
-    }
+    }, this)
     }
 
     override fun onCreateView(
@@ -146,10 +148,9 @@ class ExerciseDetailFragment : Fragment(), DatePickerDialog.OnDateSetListener {
     }
 
     private fun deleteRecord(record: Record, position: Int){
-        val itemToDelete = record
         viewModel.deleteRecord(record)
         recordAdapter.notifyItemChanged(position)
-        restoreDeletedData(binding.root, itemToDelete, position)
+        restoreDeletedData(binding.root, record, position)
         recordAdapter.notifyItemChanged(position)
     }
 
@@ -164,5 +165,15 @@ class ExerciseDetailFragment : Fragment(), DatePickerDialog.OnDateSetListener {
             recordAdapter.notifyItemChanged(position)
         }
         snackbar.show()
+    }
+
+    override fun onSetClicked(record: Record, selectedItemLayout: SetsItemLayout) {
+        if (this::lastSelectedItem.isInitialized) {
+            lastSelectedItem.normalState()
+            selectedItemLayout.blinkState()
+        }
+
+        lastSelectedItem = selectedItemLayout
+        println("open bottom dialog")
     }
 }

@@ -1,18 +1,15 @@
 package com.hfad.gtrain.fragments.graphFragment
 
-import android.content.Context
-import android.graphics.Color
+
 import android.os.Bundle
 import androidx.fragment.app.Fragment
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
-import androidx.appcompat.content.res.AppCompatResources
 import androidx.core.content.ContextCompat
 import androidx.core.content.res.ResourcesCompat
 import androidx.fragment.app.activityViewModels
 import androidx.lifecycle.MutableLiveData
-import androidx.navigation.fragment.findNavController
 import androidx.navigation.fragment.navArgs
 import androidx.recyclerview.widget.LinearLayoutManager
 import androidx.recyclerview.widget.RecyclerView
@@ -24,29 +21,32 @@ import com.google.android.material.snackbar.Snackbar
 import com.hfad.gtrain.R
 import com.hfad.gtrain.databinding.FragmentGraphBinding
 import com.hfad.gtrain.fragments.exerciseDetail.adapters.RecordAdapter
-import com.hfad.gtrain.fragments.exerciseList.ExerciseListFragmentDirections
-import com.hfad.gtrain.models.CustomExercise
+import com.hfad.gtrain.fragments.exerciseDetail.itemLayouts.SetsItemLayout
 import com.hfad.gtrain.models.Record
-import com.hfad.gtrain.ui.utils.SwipeHelper
 import com.hfad.gtrain.utils.ChartDateFormatter
 import com.hfad.gtrain.utils.GraphState
 import com.hfad.gtrain.viewmodels.MainViewmodel
 import nl.bryanderidder.themedtogglebuttongroup.ThemedButton
 
 
-class GraphFragment : Fragment() {
+class GraphFragment : Fragment(), SetsItemLayout.OnSetClickedListener {
     private val args by navArgs<GraphFragmentArgs>()
     private var _binding: FragmentGraphBinding? = null
     private val binding get() = _binding!!
     private val viewModel: MainViewmodel by activityViewModels()
     private var grState: MutableLiveData<GraphState> = MutableLiveData(GraphState.DisplayWeight)
     private lateinit var recyclerView: RecyclerView
-    private val recordAdapter: RecordAdapter by lazy { RecordAdapter(requireContext()) { record, action, position ->
-        when (action.actionId) {
-            R.id.edit -> println("edit is clicked")
-            R.id.delete -> {deleteRecord(record, position) }
-        }
-    }
+    private lateinit var lastSelectedItem: SetsItemLayout
+
+    private val recordAdapter: RecordAdapter by lazy {
+        RecordAdapter(requireContext(), { record, action, position ->
+            when (action.actionId) {
+                R.id.edit -> println("edit is clicked")
+                R.id.delete -> {
+                    deleteRecord(record, position)
+                }
+            }
+        }, this)
     }
 
 
@@ -182,11 +182,10 @@ class GraphFragment : Fragment() {
 
     }
 
-    private fun deleteRecord(record: Record, position: Int){
-        val itemToDelete = record
+    private fun deleteRecord(record: Record, position: Int) {
         viewModel.deleteRecord(record)
         recordAdapter.notifyItemChanged(position)
-        restoreDeletedData(binding.root, itemToDelete, position)
+        restoreDeletedData(binding.root, record, position)
         recordAdapter.notifyItemChanged(position)
     }
 
@@ -201,6 +200,17 @@ class GraphFragment : Fragment() {
             recordAdapter.notifyItemChanged(position)
         }
         snackbar.show()
+    }
+
+    override fun onSetClicked(record: Record, selectedItemLayout: SetsItemLayout) {
+        if (this::lastSelectedItem.isInitialized) {
+            lastSelectedItem.normalState()
+            selectedItemLayout.blinkState()
+        }
+
+        lastSelectedItem = selectedItemLayout
+        println("open bottom dialog")
+
     }
 
 }

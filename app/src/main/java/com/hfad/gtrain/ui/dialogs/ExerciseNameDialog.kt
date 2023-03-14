@@ -7,12 +7,9 @@ import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
 import androidx.fragment.app.DialogFragment
-import androidx.fragment.app.viewModels
 import com.hfad.gtrain.databinding.TextInputDialogBinding
-import com.hfad.gtrain.viewmodels.MainViewmodel
-import dagger.hilt.android.AndroidEntryPoint
 
-class ExerciseNameDialog(private val listener: OnDialogClickListener):DialogFragment() {
+class ExerciseNameDialog(private val listener: OnDialogClickListener) : DialogFragment() {
     override fun onCreateView(
         inflater: LayoutInflater,
         container: ViewGroup?,
