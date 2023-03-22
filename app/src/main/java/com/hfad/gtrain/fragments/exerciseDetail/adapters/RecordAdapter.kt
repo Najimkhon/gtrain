@@ -3,6 +3,7 @@ package com.hfad.gtrain.fragments.exerciseDetail.adapters
 import android.content.Context
 import android.view.View
 import android.view.ViewGroup
+import androidx.databinding.adapters.ViewBindingAdapter
 import androidx.recyclerview.widget.RecyclerView
 import com.hfad.gtrain.fragments.exerciseDetail.itemLayouts.RecordItemLayout
 import com.hfad.gtrain.fragments.exerciseDetail.itemLayouts.SetsItemLayout
@@ -37,10 +38,10 @@ class RecordAdapter(
     fun setData(records: List<Record>) {
         recordList = records.sortedBy { it.date }
         notifyDataSetChanged()
-        println("Set data size: " + recordList.size)
     }
 
     inner class RecordsViewHolder(itemView: View) : RecyclerView.ViewHolder(itemView) {
         val layout = itemView as RecordItemLayout
     }
+    override fun getItemId(position: Int) = position.toLong()
 }

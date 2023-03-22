@@ -1,7 +1,10 @@
 package com.hfad.gtrain.viewmodels
 
 
-import androidx.lifecycle.*
+import androidx.lifecycle.LiveData
+import androidx.lifecycle.MutableLiveData
+import androidx.lifecycle.ViewModel
+import androidx.lifecycle.viewModelScope
 import com.hfad.gtrain.models.CustomExercise
 import com.hfad.gtrain.models.Exercise
 import com.hfad.gtrain.models.MuscleGroup
@@ -12,9 +15,7 @@ import com.hfad.gtrain.models.relations.MuscleGroupWithExercises
 import com.hfad.gtrain.repositories.RoomRepository
 import dagger.hilt.android.lifecycle.HiltViewModel
 import kotlinx.coroutines.Dispatchers
-import kotlinx.coroutines.async
 import kotlinx.coroutines.launch
-import kotlinx.coroutines.withContext
 import javax.inject.Inject
 
 @HiltViewModel
@@ -74,7 +75,7 @@ class MainViewmodel @Inject constructor(
         }
     }
 
-    fun deleteRecord(record: Record){
+    fun deleteRecord(record: Record) {
         viewModelScope.launch(Dispatchers.IO) {
             roomRepository.deleteRecord(record)
         }
@@ -96,19 +97,11 @@ class MainViewmodel @Inject constructor(
         return roomRepository.isRecordExist(date, exerciseId)
     }
 
-    fun getAllRecordsByDate(date: Long):LiveData<List<Record>>{
-        return roomRepository.getAllRecordsByDate(date)
-    }
-    fun getRecordListByDay(date: Long):LiveData<List<Record>>{
+    fun getRecordListByDay(date: Long): LiveData<List<Record>> {
         return roomRepository.getRecordListByDay(date)
     }
 
-    suspend fun getRecordByDate(date: Long, exerciseId: Int): Record{
+    suspend fun getRecordByDate(date: Long, exerciseId: Int): Record {
         return roomRepository.getRecordByDate(date, exerciseId)
     }
-
-    fun getExerciseById(exerciseId: Int):Exercise{
-        return roomRepository.getExerciseById(exerciseId)
-    }
-
 }

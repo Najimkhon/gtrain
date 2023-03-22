@@ -10,12 +10,12 @@ import android.view.ViewGroup
 import android.view.inputmethod.InputMethodManager
 import android.widget.DatePicker
 import android.widget.Toast
-import androidx.core.content.ContextCompat.getSystemService
 import androidx.fragment.app.activityViewModels
 import androidx.lifecycle.lifecycleScope
 import androidx.navigation.fragment.findNavController
 import androidx.navigation.fragment.navArgs
 import androidx.recyclerview.widget.LinearLayoutManager
+import androidx.recyclerview.widget.RecyclerView
 import com.google.android.material.snackbar.Snackbar
 import com.hfad.gtrain.R
 import com.hfad.gtrain.databinding.FragmentExerciseDetailBinding
@@ -44,10 +44,11 @@ class ExerciseDetailFragment : Fragment(), DatePickerDialog.OnDateSetListener,
     private lateinit var lastSelectedItem: SetsItemLayout
     private lateinit var updatedRecord: Record
     private var updatedRecordPosition = 0
+    private lateinit var recyclerView: RecyclerView
+
     private val recordAdapter: RecordAdapter by lazy {
         RecordAdapter(requireContext(), { record, action, position ->
             when (action.actionId) {
-                R.id.edit -> println("edit is clicked")
                 R.id.delete -> {
                     deleteRecord(record, position)
                 }
@@ -70,11 +71,13 @@ class ExerciseDetailFragment : Fragment(), DatePickerDialog.OnDateSetListener,
     }
 
     private fun setupLogsRecyclerView() {
-        val recyclerView = binding.rvLogs
+        recyclerView = binding.rvLogs
         recyclerView.adapter = recordAdapter
-        recyclerView.layoutManager = LinearLayoutManager(requireContext())
-        viewModel.getExerciseWithRecords(args.currentExercise.id).observe(viewLifecycleOwner) {
-            recordAdapter.setData(it[0].records)
+        recyclerView.layoutManager = LinearLayoutManager(requireContext(), RecyclerView.VERTICAL, false)
+        viewLifecycleOwner.lifecycleScope.launch {
+            viewModel.getExerciseWithRecords(args.currentExercise.id).observe(viewLifecycleOwner) {
+                recordAdapter.setData(it[0].records)
+            }
         }
     }
 
@@ -100,8 +103,8 @@ class ExerciseDetailFragment : Fragment(), DatePickerDialog.OnDateSetListener,
         binding.btnAddRecord.setOnClickListener {
             if (binding.etWeight.text.isNotEmpty() && binding.etReps.text.isNotEmpty()) {
                 addRecord()
-                closeInputDialog()
                 closeKeyBoard()
+                closeInputDialog()
             } else {
                 Toast.makeText(requireContext(), "Fields mustn't be empty!", Toast.LENGTH_SHORT)
                     .show()
@@ -131,6 +134,7 @@ class ExerciseDetailFragment : Fragment(), DatePickerDialog.OnDateSetListener,
             }
             defaultMode()
             closeKeyBoard()
+
         }
     }
 
@@ -145,10 +149,8 @@ class ExerciseDetailFragment : Fragment(), DatePickerDialog.OnDateSetListener,
     }
 
     private fun updateRecord(record: Record) {
-        println("Prior to update value: " + record.set[0].rep.toString())
         record.set[updatedRecordPosition].rep = binding.etReps.text.toString().toInt()
         record.set[updatedRecordPosition].weight = binding.etWeight.text.toString().toInt()
-        println("Post update value: " + record.set[0].rep.toString())
         viewModel.updateRecord(record)
     }
 
@@ -177,11 +179,9 @@ class ExerciseDetailFragment : Fragment(), DatePickerDialog.OnDateSetListener,
                 )
                 viewModel.updateRecord(updatedRecord)
                 Toast.makeText(requireContext(), "Updated", Toast.LENGTH_SHORT).show()
-                println("existing record updated!")
             } else {
                 viewModel.insertRecord(newRecord)
                 Toast.makeText(requireContext(), "Record Created", Toast.LENGTH_SHORT).show()
-                println("new record created")
             }
         }
     }
@@ -194,7 +194,6 @@ class ExerciseDetailFragment : Fragment(), DatePickerDialog.OnDateSetListener,
 
     private fun displayFormattedDate(timestamp: Long) {
         binding.tvSelectedDate.text = formatter.format(timestamp)
-        println("Formatting: $timestamp")
     }
 
     private fun deleteRecord(record: Record, position: Int) {
@@ -227,12 +226,9 @@ class ExerciseDetailFragment : Fragment(), DatePickerDialog.OnDateSetListener,
         binding.etReps.setText(record.set[position].rep.toString())
         binding.etWeight.setText(record.set[position].weight.toString())
         displayFormattedDate(record.date)
-
         updatedRecordPosition = position
         updatedRecord = record
-
         lastSelectedItem = selectedItemLayout
-
     }
 
     private fun updateMode() {

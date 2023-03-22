@@ -7,11 +7,6 @@
         android:title="Exercises" />
 
     <item
-        android:id="@+id/exerciseListFragment"
-        android:icon="@drawable/ic_programs"
-        android:title="Programs" />
-
-    <item
         android:id="@+id/logListFragment"
         android:icon="@drawable/ic_logs"
         android:title="Logs" />

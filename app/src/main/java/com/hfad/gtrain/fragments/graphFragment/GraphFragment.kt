@@ -1,13 +1,16 @@
 package com.hfad.gtrain.fragments.graphFragment
 
 
+import android.content.Context
 import android.os.Bundle
-import androidx.fragment.app.Fragment
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
+import android.view.inputmethod.InputMethodManager
+import android.widget.Toast
 import androidx.core.content.ContextCompat
 import androidx.core.content.res.ResourcesCompat
+import androidx.fragment.app.Fragment
 import androidx.fragment.app.activityViewModels
 import androidx.lifecycle.MutableLiveData
 import androidx.navigation.fragment.navArgs
@@ -29,7 +32,10 @@ import com.hfad.gtrain.utils.GraphState
 import com.hfad.gtrain.viewmodels.MainViewmodel
 import dagger.hilt.android.AndroidEntryPoint
 import nl.bryanderidder.themedtogglebuttongroup.ThemedButton
+import java.text.SimpleDateFormat
+import java.util.*
 import javax.inject.Inject
+
 
 @AndroidEntryPoint
 class GraphFragment : Fragment(), SetsItemLayout.OnSetClickedListener {
@@ -37,16 +43,20 @@ class GraphFragment : Fragment(), SetsItemLayout.OnSetClickedListener {
     private var _binding: FragmentGraphBinding? = null
     private val binding get() = _binding!!
     private val viewModel: MainViewmodel by activityViewModels()
-    private var grState: MutableLiveData<GraphState> = MutableLiveData(GraphState.DisplayWeight)
+    private var graphState: MutableLiveData<GraphState> = MutableLiveData(GraphState.DisplayWeight)
     private lateinit var recyclerView: RecyclerView
     private lateinit var lastSelectedItem: SetsItemLayout
+    private var updatedRecordPosition = 0
+    private lateinit var updatedRecord: Record
+    private val formatter = SimpleDateFormat("MMM dd yyyy", Locale.US)
+    private lateinit var btnWeights: ThemedButton
+
     @Inject
     lateinit var dialogManager: DialogManager
 
     private val recordAdapter: RecordAdapter by lazy {
         RecordAdapter(requireContext(), { record, action, position ->
             when (action.actionId) {
-                R.id.edit -> println("edit is clicked")
                 R.id.delete -> {
                     deleteRecord(record, position)
                 }
@@ -60,10 +70,12 @@ class GraphFragment : Fragment(), SetsItemLayout.OnSetClickedListener {
         savedInstanceState: Bundle?
     ): View {
         _binding = FragmentGraphBinding.inflate(inflater, container, false)
-
+        btnWeights = binding.btnWeights
         bindObjects()
         setupLogsRecyclerView()
         setupListeners()
+
+
 
         return binding.root
     }
@@ -72,15 +84,34 @@ class GraphFragment : Fragment(), SetsItemLayout.OnSetClickedListener {
         binding.toggleButton.setOnSelectListener { button: ThemedButton ->
             when (button) {
                 binding.btnWeights -> {
-                    grState.value = GraphState.DisplayWeight
+                    graphState.value = GraphState.DisplayWeight
                 }
                 binding.btnReps -> {
-                    grState.value = GraphState.DisplayReps
+                    graphState.value = GraphState.DisplayReps
                 }
                 binding.btnPerformance -> {
-                    grState.value = GraphState.DisplayPerformance
+                    graphState.value = GraphState.DisplayPerformance
                 }
             }
+        }
+
+        binding.btnUpdateRecord.setOnClickListener {
+            if (binding.etWeight.text.isNotEmpty() && binding.etReps.text.isNotEmpty()) {
+                updateRecord(updatedRecord)
+                closeKeyBoard()
+                binding.cvInputDialog.visibility = View.GONE
+            } else {
+                Toast.makeText(requireContext(), "Fields mustn't be empty!", Toast.LENGTH_SHORT)
+                    .show()
+            }
+        }
+
+        binding.btnCancel.setOnClickListener {
+            binding.cvInputDialog.visibility = View.GONE
+            if (this::lastSelectedItem.isInitialized) {
+                lastSelectedItem.normalState()
+            }
+            closeKeyBoard()
         }
     }
 
@@ -88,7 +119,7 @@ class GraphFragment : Fragment(), SetsItemLayout.OnSetClickedListener {
         viewModel.getExerciseWithRecords(args.exerciseId).observe(viewLifecycleOwner) {
             binding.toolbar.tvTitle.text = it[0].exercise.name
         }
-        grState.observe(viewLifecycleOwner) { graphState ->
+        graphState.observe(viewLifecycleOwner) { graphState ->
             viewModel.getExerciseWithRecords(args.exerciseId).observe(viewLifecycleOwner) {
                 setupLineChart(it[0].records, graphState.state)
             }
@@ -98,8 +129,6 @@ class GraphFragment : Fragment(), SetsItemLayout.OnSetClickedListener {
     private fun setupLineChart(recordList: List<Record>, label: String) {
         val list = recordList.sortedBy { it.date }
         val lineDataSet = LineDataSet(lineChartDataSet(list), label)
-
-
         val iLineDataSet = ArrayList<ILineDataSet>()
         iLineDataSet.add(lineDataSet)
         val lineData = LineData(iLineDataSet)
@@ -126,7 +155,7 @@ class GraphFragment : Fragment(), SetsItemLayout.OnSetClickedListener {
     private fun lineChartDataSet(logs: List<Record>): ArrayList<Entry> {
         val dataSet = ArrayList<Entry>()
 
-        grState.observe(viewLifecycleOwner) { graphState ->
+        graphState.observe(viewLifecycleOwner) { graphState ->
             when (graphState) {
                 GraphState.DisplayWeight -> {
                     logs.forEach { record ->
@@ -180,11 +209,11 @@ class GraphFragment : Fragment(), SetsItemLayout.OnSetClickedListener {
     private fun setupLogsRecyclerView() {
         recyclerView = binding.rvLogs
         recyclerView.adapter = recordAdapter
-        recyclerView.layoutManager = LinearLayoutManager(requireContext())
+        recyclerView.layoutManager =
+            LinearLayoutManager(requireContext(), RecyclerView.VERTICAL, false)
         viewModel.getExerciseWithRecords(args.exerciseId).observe(viewLifecycleOwner) {
             recordAdapter.setData(it[0].records)
         }
-
     }
 
     private fun deleteRecord(record: Record, position: Int) {
@@ -207,12 +236,40 @@ class GraphFragment : Fragment(), SetsItemLayout.OnSetClickedListener {
         snackbar.show()
     }
 
+    private fun updateRecord(record: Record) {
+        record.set[updatedRecordPosition].rep = binding.etReps.text.toString().toInt()
+        record.set[updatedRecordPosition].weight = binding.etWeight.text.toString().toInt()
+        viewModel.updateRecord(record)
+    }
+
     override fun onSetClicked(record: Record, selectedItemLayout: SetsItemLayout, position: Int) {
         if (this::lastSelectedItem.isInitialized) {
             lastSelectedItem.normalState()
             selectedItemLayout.blinkState()
         }
+        openInputDialog()
+        binding.etReps.setText(record.set[position].rep.toString())
+        binding.etWeight.setText(record.set[position].weight.toString())
+        displayFormattedDate(record.date)
+        updatedRecordPosition = position
+        updatedRecord = record
         lastSelectedItem = selectedItemLayout
-        println("open bottom dialog")
+    }
+
+    private fun openInputDialog() {
+        binding.cvInputDialog.visibility = View.VISIBLE
+    }
+
+    private fun displayFormattedDate(timestamp: Long) {
+        binding.tvSelectedDate.text = formatter.format(timestamp)
+    }
+
+    private fun closeKeyBoard() {
+        val view = requireActivity().currentFocus
+        if (view != null) {
+            val imm =
+                requireActivity().getSystemService(Context.INPUT_METHOD_SERVICE) as InputMethodManager
+            imm.hideSoftInputFromWindow(view.windowToken, 0)
+        }
     }
 }

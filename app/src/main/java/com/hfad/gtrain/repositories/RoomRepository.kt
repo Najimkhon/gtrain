@@ -12,7 +12,7 @@ import com.hfad.gtrain.models.relations.MuscleGroupWithExercises
 import javax.inject.Inject
 
 class RoomRepository @Inject constructor(
-    val exerciseDao: ExerciseDao
+    private val exerciseDao: ExerciseDao
 ) {
     val getAllmuscleGroup: LiveData<List<MuscleGroup>> = exerciseDao.getAllMuscleGroup()
     val getAllExercise: LiveData<List<Exercise>> = exerciseDao.getAllExercise()
@@ -67,9 +67,6 @@ class RoomRepository @Inject constructor(
         return exerciseDao.isRecordExist(date, exerciseId)
     }
 
-    fun getAllRecordsByDate(date: Long):LiveData<List<Record>>{
-        return exerciseDao.getAllRecordsByDate(date)
-    }
     fun getRecordListByDay(date: Long):LiveData<List<Record>>{
         return exerciseDao.getRecordListByDay(date)
     }
@@ -78,8 +75,5 @@ class RoomRepository @Inject constructor(
         return exerciseDao.getRecordByDate(date, exerciseId)
     }
 
-    fun getExerciseById(exerciseId: Int):Exercise{
-        return exerciseDao.getExerciseById(exerciseId)
-    }
 
 }

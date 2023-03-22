@@ -1,13 +1,12 @@
 package com.hfad.gtrain.fragments.muscleGroupList
 
 import android.os.Bundle
-import androidx.fragment.app.Fragment
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
 import androidx.core.widget.NestedScrollView
+import androidx.fragment.app.Fragment
 import androidx.fragment.app.activityViewModels
-import androidx.fragment.app.viewModels
 import androidx.navigation.fragment.findNavController
 import androidx.recyclerview.widget.LinearLayoutManager
 import com.hfad.gtrain.data.DummyData
@@ -78,25 +77,21 @@ class MuscleGroupListFragment : Fragment(), MuscleGroupItemLayout.OnItemClickLis
     }
 
     private fun loadData() {
-        binding.tvWelcomeMessage.setOnClickListener {
-            println("hop: Button is pressed")
-            viewModel.getAllmuscleGroup.observe(viewLifecycleOwner) {
-                if (it.isEmpty()) {
-                    DummyData.muscleGroups.forEach { muscleGroup ->
-                        viewModel.insertMuscleGroup(muscleGroup)
-                        println("hop: MuscleGroup is added")
-                    }
+        viewModel.getAllmuscleGroup.observe(viewLifecycleOwner) {
+            if (it.isEmpty()) {
+                DummyData.muscleGroups.forEach { muscleGroup ->
+                    viewModel.insertMuscleGroup(muscleGroup)
+                    println("hop: MuscleGroup is added")
                 }
             }
-            viewModel.getAllExercise.observe(viewLifecycleOwner) {
-                if (it.isEmpty()) {
-                    DummyData.exercises.forEach { exercise ->
-                        viewModel.insertExercise(exercise)
-                        println("hop: Exercise is added")
-                    }
+        }
+        viewModel.getAllExercise.observe(viewLifecycleOwner) {
+            if (it.isEmpty()) {
+                DummyData.exercises.forEach { exercise ->
+                    viewModel.insertExercise(exercise)
+                    println("hop: Exercise is added")
                 }
             }
-
         }
     }
 

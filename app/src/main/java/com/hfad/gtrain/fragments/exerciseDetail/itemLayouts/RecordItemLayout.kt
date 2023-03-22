@@ -6,10 +6,12 @@ import android.view.View
 import android.widget.RelativeLayout
 import android.widget.Toast
 import androidx.recyclerview.widget.LinearLayoutManager
+import androidx.recyclerview.widget.RecyclerView
 import com.hfad.gtrain.databinding.RecordItemViewBinding
 import com.hfad.gtrain.fragments.exerciseDetail.adapters.OnActionClicked
 import com.hfad.gtrain.fragments.exerciseDetail.adapters.SetsAdapter
 import com.hfad.gtrain.models.Record
+import github.com.st235.lib_swipetoactionlayout.ActionBindHelper
 import github.com.st235.lib_swipetoactionlayout.SwipeAction
 import github.com.st235.lib_swipetoactionlayout.SwipeMenuListener
 import java.text.SimpleDateFormat
@@ -26,13 +28,13 @@ class RecordItemLayout(
     var position = 0
     private val swipeActionLayout = binding.swipeToActionLayout
     private lateinit var currentRecord: Record
+    lateinit var recyclerView: RecyclerView
 
 
     fun fillContent(record: Record, position: Int) {
         swipeActionLayout.menuListener = this
         displayFormattedDate(record.date)
         setupRecyclerView(record)
-        println("Reps in Fill content: " + record.set[0].rep.toString())
         this.position = position
         currentRecord = record
     }
@@ -47,32 +49,24 @@ class RecordItemLayout(
     }
 
     private fun setupRecyclerView(record: Record) {
-        val recyclerView = binding.rvSets
+        recyclerView = binding.rvSets
         recyclerView.adapter = adapter
         recyclerView.layoutManager = LinearLayoutManager(context)
         adapter.setData(record)
     }
 
+
     override fun onActionClicked(view: View, action: SwipeAction) {
-        Toast.makeText(context, "The item position: $position", Toast.LENGTH_SHORT).show()
-        println("pressed at $position")
         onActionClicked(currentRecord, action, position)
         swipeActionLayout.close()
     }
 
     override fun onClosed(view: View) {
-        println("closed")
     }
 
     override fun onFullyOpened(view: View, quickAction: SwipeAction) {
-
     }
 
     override fun onOpened(view: View) {
-        println("opened")
-    }
-
-    interface onItemClickListener {
-        fun onItemClicked(record: Record)
     }
 }

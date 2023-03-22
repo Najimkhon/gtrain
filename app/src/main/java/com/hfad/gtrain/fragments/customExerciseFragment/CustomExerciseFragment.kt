@@ -1,12 +1,9 @@
 package com.hfad.gtrain.fragments.customExerciseFragment
 
-import android.content.Context
-import android.graphics.Color
 import android.os.Bundle
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
-import androidx.appcompat.content.res.AppCompatResources
 import androidx.fragment.app.Fragment
 import androidx.fragment.app.activityViewModels
 import androidx.navigation.fragment.findNavController
@@ -16,9 +13,7 @@ import com.google.android.material.snackbar.Snackbar
 import com.hfad.gtrain.R
 import com.hfad.gtrain.databinding.FragmentCustomExerciseBinding
 import com.hfad.gtrain.fragments.exerciseList.ExerciseListFragmentDirections
-import com.hfad.gtrain.fragments.exerciseList.ReadyEcercisesFragment
 import com.hfad.gtrain.models.CustomExercise
-import com.hfad.gtrain.ui.utils.SwipeHelper
 import com.hfad.gtrain.viewmodels.MainViewmodel
 import dagger.hilt.android.AndroidEntryPoint
 
@@ -34,7 +29,20 @@ class CustomExerciseFragment : Fragment(),
         CustomExerciseAdapter(
             requireContext(),
             this
-        )
+        ) { currentExercise, action, position ->
+            when (action.actionId) {
+                R.id.edit -> {
+                    val action =
+                        ExerciseListFragmentDirections.actionExerciseListFragmentToUpdateExerciseFragment(
+                            currentExercise
+                        )
+                    findNavController().navigate(action)
+                }
+                R.id.delete -> {
+                    deleteExercise(currentExercise, position)
+                }
+            }
+        }
     }
     private val viewModel: MainViewmodel by activityViewModels()
 
@@ -62,7 +70,6 @@ class CustomExerciseFragment : Fragment(),
         val customExercises = viewModel.getMuscleGroupWithCustomExercises(muscleGroup!!)
         customExercises.observe(viewLifecycleOwner) {
             adapter.setData(it[0].customExercises)
-            println("Test" + it.size)
         }
         setupRecyclerView()
 
@@ -74,46 +81,15 @@ class CustomExerciseFragment : Fragment(),
     private fun setupRecyclerView() {
         val recyclerView = binding.rvCustom
         recyclerView.adapter = adapter
-        //swipeToDelete(recyclerView)
-        recyclerView.layoutManager = LinearLayoutManager(requireContext())
-        swipeHelper(recyclerView, requireContext())
+        recyclerView.layoutManager = LinearLayoutManager(requireContext(), RecyclerView.VERTICAL, false)
+
     }
 
-    private fun swipeHelper(recyclerView: RecyclerView, context: Context){
-        object : SwipeHelper(context, recyclerView, false) {
-            override fun instantiateUnderlayButton(
-                viewHolder: RecyclerView.ViewHolder?,
-                underlayButtons: MutableList<UnderlayButton>?
-            ) {
-                underlayButtons?.add(UnderlayButton(
-                    "Delete",
-                    AppCompatResources.getDrawable(
-                        context,
-                        R.drawable.ic_delete
-                    ),
-                    Color.TRANSPARENT, Color.parseColor("#ffffff")
-                ) { pos: Int ->
-                    val itemToDelete = adapter.customExList[viewHolder!!.adapterPosition]
-                    viewModel.deleteCustomExercise(itemToDelete)
-                    adapter.notifyItemChanged(viewHolder.adapterPosition)
-                    restoreDeletedData(viewHolder.itemView, itemToDelete, viewHolder.adapterPosition)
-                    adapter.notifyItemChanged(pos)
-                })
-
-                underlayButtons?.add(UnderlayButton(
-                    "Edit",
-                    AppCompatResources.getDrawable(
-                        context,
-                        R.drawable.ic_edit
-                    ),
-                    Color.TRANSPARENT, Color.parseColor("#ffffff")
-                ) {
-                    val action =
-                        ExerciseListFragmentDirections.actionExerciseListFragmentToUpdateExerciseFragment(adapter.item!!)
-                    findNavController().navigate(action)
-                })
-            }
-        }
+    private fun deleteExercise(customExercise: CustomExercise, position: Int) {
+        viewModel.deleteCustomExercise(customExercise)
+        adapter.notifyItemChanged(position)
+        restoreDeletedData(binding.root, customExercise, position)
+        adapter.notifyItemChanged(position)
     }
 
     private fun restoreDeletedData(view: View, deletedItem: CustomExercise, position: Int) {
