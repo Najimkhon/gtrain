@@ -1,10 +1,12 @@
 package com.hfad.gtrain.fragments.exerciseList
 
 import android.os.Bundle
-import androidx.fragment.app.Fragment
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
+import androidx.activity.OnBackPressedCallback
+import androidx.fragment.app.Fragment
+import androidx.navigation.fragment.findNavController
 import androidx.navigation.fragment.navArgs
 import androidx.viewpager2.widget.ViewPager2
 import com.hfad.gtrain.R
@@ -29,12 +31,32 @@ class ExerciseListFragment : Fragment(), ExsListLayout.OnItemClickListener {
         setListeners()
         pageTurner()
         setupViewPager()
-
+        onBackPressedHandler()
+        
         return binding.root
 
     }
 
-    private fun setupViewPager(){
+    private fun onBackPressedHandler() {
+        requireActivity().onBackPressedDispatcher.addCallback(
+            viewLifecycleOwner,
+            object : OnBackPressedCallback(true) {
+                override fun handleOnBackPressed() {
+                    if (isCustomExerciseView) {
+                        binding.btnSwitchToExercises.setBackgroundDrawable(resources.getDrawable(R.drawable.dark_oval_card_bg))
+                        binding.btnSwitchToCustom.setBackgroundDrawable(resources.getDrawable(R.drawable.button_light_blue_bg))
+                        binding.vp.setCurrentItem(1, true)
+                        isCustomExerciseView =
+                            false // Set to false when switching back to the exercises view
+                        findNavController().navigateUp()
+                    } else {
+                        findNavController().navigateUp() // Navigate back to the previous fragment
+                    }
+                }
+            })
+    }
+
+    private fun setupViewPager() {
         val vp = binding.vp
         val vpAdapter = ExerciseListVpAdapter(childFragmentManager, lifecycle, args.muscleGroup!!)
         vp.isUserInputEnabled = false
@@ -42,26 +64,26 @@ class ExerciseListFragment : Fragment(), ExsListLayout.OnItemClickListener {
         vp.orientation = ViewPager2.ORIENTATION_HORIZONTAL
     }
 
-    private fun pageTurner(){
-        if (isCustomExerciseView){
+    private fun pageTurner() {
+        if (isCustomExerciseView) {
             binding.btnSwitchToExercises.setBackgroundDrawable(resources.getDrawable(R.drawable.dark_oval_card_bg))
             binding.btnSwitchToCustom.setBackgroundDrawable(resources.getDrawable(R.drawable.button_light_blue_bg))
             binding.vp.setCurrentItem(1, true)
 
-        }else{
+        } else {
             binding.btnSwitchToExercises.setBackgroundDrawable(resources.getDrawable(R.drawable.button_light_blue_bg))
             binding.btnSwitchToCustom.setBackgroundDrawable(resources.getDrawable(R.drawable.dark_oval_card_bg))
             binding.vp.setCurrentItem(0, true)
         }
     }
 
-    private fun setListeners(){
-        binding.btnSwitchToCustom.setOnClickListener{
+    private fun setListeners() {
+        binding.btnSwitchToCustom.setOnClickListener {
             isCustomExerciseView = true
             pageTurner()
         }
-        binding.btnSwitchToExercises.setOnClickListener{
-            isCustomExerciseView =false
+        binding.btnSwitchToExercises.setOnClickListener {
+            isCustomExerciseView = false
             pageTurner()
         }
     }
@@ -75,7 +97,7 @@ class ExerciseListFragment : Fragment(), ExsListLayout.OnItemClickListener {
         _binding = null
     }
 
-    companion object{
+    companion object {
         var isCustomExerciseView = false
     }
 }
