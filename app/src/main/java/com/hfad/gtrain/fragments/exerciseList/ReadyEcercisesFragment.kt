@@ -49,8 +49,8 @@ class ReadyEcercisesFragment : Fragment(),
     }
 
     private fun initializeViewModel() {
-        val exercises = viewModel.getMuscleGroupWithExercises(muscleGroup!!)
-        exercises.observe(viewLifecycleOwner) {
+        viewModel.getMuscleGroupWithExercises(muscleGroup!!)
+        viewModel.muscleGroupWithExercises.observe(viewLifecycleOwner) {
             adapter.setData(it[0].exercises)
         }
     }

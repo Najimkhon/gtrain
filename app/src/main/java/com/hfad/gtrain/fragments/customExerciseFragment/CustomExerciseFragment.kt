@@ -67,14 +67,12 @@ class CustomExerciseFragment : Fragment(),
         binding.btnAdd.setOnClickListener {
             findNavController().navigate(R.id.action_exerciseListFragment_to_addExerciseFragment)
         }
-        val customExercises = viewModel.getMuscleGroupWithCustomExercises(muscleGroup!!)
-        customExercises.observe(viewLifecycleOwner) {
+        viewModel.getMuscleGroupWithCustomExercises(muscleGroup!!)
+        viewModel.muscleGroupWithCustomExercises.observe(viewLifecycleOwner) {
             adapter.setData(it[0].customExercises)
         }
         setupRecyclerView()
 
-
-        // Inflate the layout for this fragment
         return binding.root
     }
 

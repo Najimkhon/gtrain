@@ -5,10 +5,8 @@ import androidx.lifecycle.LiveData
 import androidx.lifecycle.MutableLiveData
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
-import com.hfad.gtrain.models.CustomExercise
-import com.hfad.gtrain.models.Exercise
-import com.hfad.gtrain.models.MuscleGroup
-import com.hfad.gtrain.models.Record
+import com.hfad.gtrain.models.*
+import com.hfad.gtrain.models.Set
 import com.hfad.gtrain.models.relations.ExerciseWithRecords
 import com.hfad.gtrain.models.relations.MuscleGroupWithCustomExercises
 import com.hfad.gtrain.models.relations.MuscleGroupWithExercises
@@ -27,11 +25,22 @@ class MainViewmodel @Inject constructor(
     }
 
     var isLandscape: MutableLiveData<Boolean> = MutableLiveData(false)
-    var muscleGroup = ""
+    var muscleGroup = "" 
     val getAllmuscleGroup: LiveData<List<MuscleGroup>> = roomRepository.getAllmuscleGroup
     val getAllExercise: LiveData<List<Exercise>> = roomRepository.getAllExercise
     val getLogDays: LiveData<List<Long>> = roomRepository.getLogDays
 
+    private val _recordListByDay = MutableLiveData<List<Record>>()
+    val recordListByDay: LiveData<List<Record>> = _recordListByDay
+
+    private val _muscleGroupWithExercises = MutableLiveData<List<MuscleGroupWithExercises>>()
+    val muscleGroupWithExercises = _muscleGroupWithExercises
+
+    private val _muscleGroupWithCustomExercises = MutableLiveData<List<MuscleGroupWithCustomExercises>>()
+    val muscleGroupWithCustomExercises = _muscleGroupWithCustomExercises
+
+    private val _exerciseWithRecords = MutableLiveData<List<ExerciseWithRecords>>()
+    val exerciseWithRecords = _exerciseWithRecords
 
     fun insertMuscleGroup(muscleGroup: MuscleGroup) {
         viewModelScope.launch(Dispatchers.IO) {
@@ -57,16 +66,25 @@ class MainViewmodel @Inject constructor(
         }
     }
 
-    fun getMuscleGroupWithCustomExercises(muscleGroupTitle: String): LiveData<List<MuscleGroupWithCustomExercises>> {
-        return roomRepository.getMuscleGroupWithCustomExercises(muscleGroupTitle)
+    fun getMuscleGroupWithCustomExercises(muscleGroupTitle: String) {
+        viewModelScope.launch(Dispatchers.IO) {
+            val muscleGroupList = roomRepository.getMuscleGroupWithCustomExercises(muscleGroupTitle)
+            _muscleGroupWithCustomExercises.postValue(muscleGroupList)
+        }
     }
 
-    fun getMuscleGroupWithExercises(muscleGroupTitle: String): LiveData<List<MuscleGroupWithExercises>> {
-        return roomRepository.getMuscleGroupWithExercises(muscleGroupTitle)
+    fun getMuscleGroupWithExercises(muscleGroupTitle: String){
+        viewModelScope.launch(Dispatchers.IO) {
+            val muscleGroupList = roomRepository.getMuscleGroupWithExercises(muscleGroupTitle)
+            _muscleGroupWithExercises.postValue(muscleGroupList)
+        }
     }
 
-    fun getExerciseWithRecords(exerciseId: Int): LiveData<List<ExerciseWithRecords>> {
-        return roomRepository.getExerciseWithRecords(exerciseId)
+    fun getExerciseWithRecords(exerciseId: Int){
+        viewModelScope.launch(Dispatchers.IO) {
+            val exercises = roomRepository.getExerciseWithRecords(exerciseId)
+            _exerciseWithRecords.postValue(exercises)
+        }
     }
 
     fun deleteCustomExercise(customEx: CustomExercise) {
@@ -93,15 +111,27 @@ class MainViewmodel @Inject constructor(
         }
     }
 
-    suspend fun checkRecordExistence(date: Long, exerciseId: Int): Boolean {
-        return roomRepository.isRecordExist(date, exerciseId)
-    }
-
-    fun getRecordListByDay(date: Long): LiveData<List<Record>> {
-        return roomRepository.getRecordListByDay(date)
+    fun getRecordListByDay(date: Long) {
+        viewModelScope.launch(Dispatchers.IO) {
+            val recordList = roomRepository.getRecordListByDay(date)
+            _recordListByDay.postValue(recordList)
+        }
     }
 
     suspend fun getRecordByDate(date: Long, exerciseId: Int): Record {
         return roomRepository.getRecordByDate(date, exerciseId)
+    }
+
+    fun addRecord(date: Long, exerciseId: Int, set: Set) {
+        viewModelScope.launch {
+            val existingRecord = getRecordByDate(date, exerciseId)
+            if (existingRecord != null) {
+                existingRecord.set.add(set)
+                updateRecord(existingRecord)
+            } else {
+                val newRecord = Record(0, date, exerciseId, mutableListOf(set))
+                insertRecord(newRecord)
+            }
+        }
     }
 }

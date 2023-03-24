@@ -75,8 +75,6 @@ class GraphFragment : Fragment(), SetsItemLayout.OnSetClickedListener {
         setupLogsRecyclerView()
         setupListeners()
 
-
-
         return binding.root
     }
 
@@ -116,11 +114,13 @@ class GraphFragment : Fragment(), SetsItemLayout.OnSetClickedListener {
     }
 
     private fun bindObjects() {
-        viewModel.getExerciseWithRecords(args.exerciseId).observe(viewLifecycleOwner) {
+        viewModel.getExerciseWithRecords(args.exerciseId)
+        viewModel.exerciseWithRecords.observe(viewLifecycleOwner) {
             binding.toolbar.tvTitle.text = it[0].exercise.name
         }
         graphState.observe(viewLifecycleOwner) { graphState ->
-            viewModel.getExerciseWithRecords(args.exerciseId).observe(viewLifecycleOwner) {
+            viewModel.getExerciseWithRecords(args.exerciseId)
+            viewModel.exerciseWithRecords.observe(viewLifecycleOwner) {
                 setupLineChart(it[0].records, graphState.state)
             }
         }
@@ -211,7 +211,8 @@ class GraphFragment : Fragment(), SetsItemLayout.OnSetClickedListener {
         recyclerView.adapter = recordAdapter
         recyclerView.layoutManager =
             LinearLayoutManager(requireContext(), RecyclerView.VERTICAL, false)
-        viewModel.getExerciseWithRecords(args.exerciseId).observe(viewLifecycleOwner) {
+        viewModel.getExerciseWithRecords(args.exerciseId)
+        viewModel.exerciseWithRecords.observe(viewLifecycleOwner) {
             recordAdapter.setData(it[0].records)
         }
     }

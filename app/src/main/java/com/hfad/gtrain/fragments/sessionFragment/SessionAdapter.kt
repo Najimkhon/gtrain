@@ -23,7 +23,7 @@ class SessionAdapter(
 
     override fun onBindViewHolder(holder: SessionRecordsViewHolder, position: Int) {
         val record = recordList[position]
-        holder.layout.fillContent(record, exercise[position])
+        holder.layout.fillContent(record, exercise[record.exerciseId])
     }
 
     override fun getItemCount(): Int {
@@ -34,7 +34,6 @@ class SessionAdapter(
         recordList = records.sortedBy { it.date }
         exercise = exercises
         notifyDataSetChanged()
-        println("Set data size: " + recordList.size)
     }
 
     inner class SessionRecordsViewHolder(itemView: View) : RecyclerView.ViewHolder(itemView) {

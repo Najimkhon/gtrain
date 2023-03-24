@@ -32,15 +32,15 @@ interface ExerciseDao {
 
     @Transaction
     @Query("SELECT * FROM exercise WHERE id = :id")
-    fun getExerciseWithRecords(id: Int): LiveData<List<ExerciseWithRecords>>
+    fun getExerciseWithRecords(id: Int): List<ExerciseWithRecords>
 
     @Transaction
     @Query("SELECT * FROM muscleGroup WHERE title = :muscleGroup")
-    fun getMuscleGroupWithCustomExercises(muscleGroup: String): LiveData<List<MuscleGroupWithCustomExercises>>
+    fun getMuscleGroupWithCustomExercises(muscleGroup: String): List<MuscleGroupWithCustomExercises>
 
     @Transaction
     @Query("SELECT * FROM muscleGroup WHERE title = :muscleGroup")
-    fun getMuscleGroupWithExercises(muscleGroup: String): LiveData<List<MuscleGroupWithExercises>>
+    suspend fun getMuscleGroupWithExercises(muscleGroup: String): List<MuscleGroupWithExercises>
 
     @Delete
     suspend fun deleteCustomExercise(customEx: CustomExercise)
@@ -54,9 +54,6 @@ interface ExerciseDao {
     @Update
     suspend fun updateRecord(record: Record)
 
-    @Query("SELECT EXISTS(SELECT * FROM record WHERE strftime('%Y %m %d', date/1000, 'unixepoch') = strftime('%Y %m %d', :date/1000, 'unixepoch') AND exerciseId = :exerciseId)")
-    suspend fun isRecordExist(date: Long, exerciseId: Int): Boolean
-
     @Query("SELECT * FROM record ORDER BY date ASC")
     fun getLogs(): LiveData<List<Record>>
 
@@ -67,7 +64,7 @@ interface ExerciseDao {
     fun getAllRecordsByDate(date: Long): LiveData<List<Record>>
 
     @Query("SELECT * FROM record WHERE strftime('%Y %m %d', date/1000, 'unixepoch') = strftime('%Y %m %d', :date/1000, 'unixepoch')")
-    fun getRecordListByDay(date: Long):LiveData<List<Record>>
+    suspend fun getRecordListByDay(date: Long):List<Record>
 
     @Query("SELECT * FROM record WHERE strftime('%Y %m %d', date/1000, 'unixepoch') = strftime('%Y %m %d', :date/1000, 'unixepoch') AND exerciseId = :exerciseId")
     suspend fun getRecordByDate(date: Long, exerciseId: Int): Record

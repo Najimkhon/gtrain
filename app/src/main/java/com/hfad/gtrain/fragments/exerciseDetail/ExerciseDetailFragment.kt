@@ -24,6 +24,7 @@ import com.hfad.gtrain.fragments.exerciseDetail.adapters.VpImagesAdapter
 import com.hfad.gtrain.fragments.exerciseDetail.itemLayouts.SetsItemLayout
 import com.hfad.gtrain.models.Record
 import com.hfad.gtrain.models.Set
+import com.hfad.gtrain.utils.observeOnce
 import com.hfad.gtrain.viewmodels.MainViewmodel
 import dagger.hilt.android.AndroidEntryPoint
 import kotlinx.coroutines.launch
@@ -75,7 +76,8 @@ class ExerciseDetailFragment : Fragment(), DatePickerDialog.OnDateSetListener,
         recyclerView.adapter = recordAdapter
         recyclerView.layoutManager = LinearLayoutManager(requireContext(), RecyclerView.VERTICAL, false)
         viewLifecycleOwner.lifecycleScope.launch {
-            viewModel.getExerciseWithRecords(args.currentExercise.id).observe(viewLifecycleOwner) {
+            viewModel.getExerciseWithRecords(args.currentExercise.id)
+            viewModel.exerciseWithRecords.observe(viewLifecycleOwner) {
                 recordAdapter.setData(it[0].records)
             }
         }
@@ -159,31 +161,7 @@ class ExerciseDetailFragment : Fragment(), DatePickerDialog.OnDateSetListener,
         val set =
             Set(binding.etWeight.text.toString().toInt(), binding.etReps.text.toString().toInt())
         val exerciseId = args.currentExercise.id
-        val newRecord = Record(
-            0,
-            date,
-            exerciseId,
-            mutableListOf(set)
-        )
-
-        viewLifecycleOwner.lifecycleScope.launch {
-            if (viewModel.checkRecordExistence(date, exerciseId)) {
-                val currentRecord = viewModel.getRecordByDate(date, exerciseId)
-                val sets = currentRecord.set
-                sets.add(set)
-                val updatedRecord = Record(
-                    currentRecord.id,
-                    currentRecord.date,
-                    currentRecord.exerciseId,
-                    sets
-                )
-                viewModel.updateRecord(updatedRecord)
-                Toast.makeText(requireContext(), "Updated", Toast.LENGTH_SHORT).show()
-            } else {
-                viewModel.insertRecord(newRecord)
-                Toast.makeText(requireContext(), "Record Created", Toast.LENGTH_SHORT).show()
-            }
-        }
+        viewModel.addRecord(date, exerciseId, set)
     }
 
 

@@ -32,7 +32,7 @@ class ExerciseListFragment : Fragment(), ExsListLayout.OnItemClickListener {
         pageTurner()
         setupViewPager()
         onBackPressedHandler()
-        
+
         return binding.root
 
     }

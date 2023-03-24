@@ -35,15 +35,15 @@ class RoomRepository @Inject constructor(
         exerciseDao.insertRecord(record)
     }
 
-    fun getMuscleGroupWithExercises(muscleGroup: String): LiveData<List<MuscleGroupWithExercises>> {
+    suspend fun getMuscleGroupWithExercises(muscleGroup: String): List<MuscleGroupWithExercises> {
         return exerciseDao.getMuscleGroupWithExercises(muscleGroup)
     }
 
-    fun getMuscleGroupWithCustomExercises(muscleGroup: String): LiveData<List<MuscleGroupWithCustomExercises>> {
+    fun getMuscleGroupWithCustomExercises(muscleGroup: String): List<MuscleGroupWithCustomExercises> {
         return exerciseDao.getMuscleGroupWithCustomExercises(muscleGroup)
     }
 
-    fun getExerciseWithRecords(exerciseId: Int): LiveData<List<ExerciseWithRecords>> {
+    fun getExerciseWithRecords(exerciseId: Int): List<ExerciseWithRecords> {
         return exerciseDao.getExerciseWithRecords(exerciseId)
     }
 
@@ -63,11 +63,7 @@ class RoomRepository @Inject constructor(
         exerciseDao.updateRecord(record)
     }
 
-    suspend fun isRecordExist(date: Long, exerciseId: Int): Boolean {
-        return exerciseDao.isRecordExist(date, exerciseId)
-    }
-
-    fun getRecordListByDay(date: Long):LiveData<List<Record>>{
+    suspend fun getRecordListByDay(date: Long):List<Record>{
         return exerciseDao.getRecordListByDay(date)
     }
 

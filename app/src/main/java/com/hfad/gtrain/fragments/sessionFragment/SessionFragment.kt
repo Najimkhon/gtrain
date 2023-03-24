@@ -26,6 +26,7 @@ class SessionFragment : Fragment(), SessionItemLayout.OnItemClickListener {
     private val viewModel: MainViewmodel by activityViewModels()
     private val recordAdapter: SessionAdapter by lazy { SessionAdapter(requireContext(), this) }
     private val formatter = SimpleDateFormat("MMM d", Locale.US)
+    private val sessionDate = args.logDate
 
     override fun onCreateView(
         inflater: LayoutInflater, container: ViewGroup?,
@@ -45,12 +46,18 @@ class SessionFragment : Fragment(), SessionItemLayout.OnItemClickListener {
         recyclerView.layoutManager = LinearLayoutManager(requireContext())
 
 
-        viewModel.getRecordListByDay(args.logDate).observe(viewLifecycleOwner) { recordList ->
+//        viewModel.getRecordListByDay(args.logDate).observe(viewLifecycleOwner) { recordList ->
+//            viewModel.getAllExercise.observe(viewLifecycleOwner) { exerciseList ->
+//                recordAdapter.setData(recordList, exerciseList)
+//            }
+//        }
+
+        viewModel.getRecordListByDay(sessionDate)
+
+        viewModel.recordListByDay.observe(viewLifecycleOwner) { recordList ->
             viewModel.getAllExercise.observe(viewLifecycleOwner) { exerciseList ->
                 recordAdapter.setData(recordList, exerciseList)
-                println("The testing size:" + exerciseList.size)
             }
-
         }
     }
 
