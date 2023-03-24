@@ -7,17 +7,21 @@ import com.hfad.gtrain.R
 import com.hfad.gtrain.databinding.MuscleGroupItemLayoutBinding
 import com.hfad.gtrain.models.MuscleGroup
 
-open class MuscleGroupItemLayout(context: Context, private val listener: OnItemClickListener) :
-    RelativeLayout(context) {
+class MuscleGroupItemLayout(
+    context: Context,
+    private val listener: OnItemClickListener
+) : RelativeLayout(context) {
 
     private val binding =
         MuscleGroupItemLayoutBinding.inflate(LayoutInflater.from(context), this, true)
+
     private lateinit var muscleGroup: MuscleGroup
 
-    fun fillContent(currentMuscleGr: MuscleGroup, position: Int){
+    fun fillContent(currentMuscleGr: MuscleGroup, position: Int) {
         muscleGroup = currentMuscleGr
-        binding.tvCategoryName.text = currentMuscleGr.title
-        when(muscleGroup.title){
+        binding.tvCategoryName.text = muscleGroup.title
+
+        when (muscleGroup.title) {
             "Chest" -> binding.ivBackground.setImageResource(R.drawable.img_chest)
             "Legs" -> binding.ivBackground.setImageResource(R.drawable.img_legs)
             "Shoulders" -> binding.ivBackground.setImageResource(R.drawable.img_shoulders)
@@ -27,12 +31,13 @@ open class MuscleGroupItemLayout(context: Context, private val listener: OnItemC
             "Full Body" -> binding.ivBackground.setImageResource(R.drawable.img_full_body)
             "Core" -> binding.ivBackground.setImageResource(R.drawable.img_abs)
         }
-        binding.itemView.setOnClickListener{
+
+        binding.itemView.setOnClickListener {
             listener.onItemClicked(muscleGroup)
         }
     }
 
-    interface OnItemClickListener{
+    interface OnItemClickListener {
         fun onItemClicked(clickedItem: MuscleGroup)
     }
 }
