@@ -6,9 +6,10 @@ import android.view.ViewGroup
 import androidx.recyclerview.widget.RecyclerView
 import com.hfad.gtrain.models.MuscleGroup
 
-
-class MuscleGroupAdapter(val context: Context, private val listener: MuscleGroupItemLayout.OnItemClickListener) :
-    RecyclerView.Adapter<MuscleGroupAdapter.MuscleGroupViewHolder>() {
+class MuscleGroupAdapter(
+    private val context: Context,
+    private val listener: MuscleGroupItemLayout.OnItemClickListener
+) : RecyclerView.Adapter<MuscleGroupAdapter.MuscleGroupViewHolder>() {
 
     private var muscleGroupList = emptyList<MuscleGroup>()
 
@@ -25,10 +26,9 @@ class MuscleGroupAdapter(val context: Context, private val listener: MuscleGroup
         return muscleGroupList.size
     }
 
-    fun setData(muscleGroupList: List<MuscleGroup>){
+    fun setData(muscleGroupList: List<MuscleGroup>) {
         this.muscleGroupList = muscleGroupList
         notifyDataSetChanged()
-
     }
 
     inner class MuscleGroupViewHolder(itemView: View) : RecyclerView.ViewHolder(itemView) {

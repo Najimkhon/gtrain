@@ -27,8 +27,10 @@ class MainViewModel @Inject constructor(
 
     var isLandscape: MutableLiveData<Boolean> = MutableLiveData(false)
     var muscleGroup = ""
-    val getAllMuscleGroup: LiveData<List<MuscleGroup>> = roomRepository.getAllmuscleGroup
+
+    val getAllMuscleGroup: LiveData<List<MuscleGroup>> = roomRepository.getAllMuscleGroup
     val getAllExercise: LiveData<List<Exercise>> = roomRepository.getAllExercise
+
     val getLogDays: LiveData<List<Long>> = roomRepository.getLogDays
 
     private val _recordListByDay = MutableLiveData<List<Record>>()

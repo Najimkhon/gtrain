@@ -1,14 +1,11 @@
 package com.hfad.gtrain.fragments.muscleGroupList
 
-import android.os.Bundle
-import android.view.LayoutInflater
 import android.view.View
-import android.view.ViewGroup
 import androidx.core.widget.NestedScrollView
-import androidx.fragment.app.Fragment
 import androidx.fragment.app.activityViewModels
 import androidx.navigation.fragment.findNavController
 import androidx.recyclerview.widget.LinearLayoutManager
+import com.hfad.gtrain.base.BaseFragment
 import com.hfad.gtrain.data.DummyData
 import com.hfad.gtrain.databinding.FragmentMuscleGroupListBinding
 import com.hfad.gtrain.models.MuscleGroup
@@ -17,41 +14,42 @@ import dagger.hilt.android.AndroidEntryPoint
 import jp.wasabeef.recyclerview.animators.LandingAnimator
 
 @AndroidEntryPoint
-class MuscleGroupListFragment : Fragment(), MuscleGroupItemLayout.OnItemClickListener {
+class MuscleGroupListFragment : BaseFragment<FragmentMuscleGroupListBinding>(
+    FragmentMuscleGroupListBinding::inflate
+), MuscleGroupItemLayout.OnItemClickListener {
 
-    private var _binding: FragmentMuscleGroupListBinding? = null
-    private val binding get() = _binding!!
     private val viewModel: MainViewModel by activityViewModels()
 
     private val adapter: MuscleGroupAdapter by lazy { MuscleGroupAdapter(requireContext(), this) }
 
-    override fun onCreateView(
-        inflater: LayoutInflater, container: ViewGroup?,
-        savedInstanceState: Bundle?
-    ): View {
-        _binding = FragmentMuscleGroupListBinding.inflate(inflater, container, false)
-        val view = binding.root
-
-        bindViews()
-        loadData()
-        initializeViewModel()
-        setListeners()
-        setupRecyclerView()
-
-        return view
+    override fun setListeners() {
+        binding.scrollView.setOnScrollChangeListener(
+            NestedScrollView.OnScrollChangeListener { _, _, scrollY, _, _ ->
+                if (scrollY > 0) {
+                    binding.toolbarDivider.visibility = View.VISIBLE
+                } else {
+                    binding.toolbarDivider.visibility = View.GONE
+                }
+            })
     }
 
-    private fun bindViews() {
+    override fun prepareUI() {
         binding.toolbar.tvTitle.text = "Muscle Groups"
+
+        binding.rvMuscleGroupList.adapter = adapter
+        binding.rvMuscleGroupList.layoutManager = LinearLayoutManager(requireContext(), LinearLayoutManager.VERTICAL, false)
+        binding.rvMuscleGroupList.itemAnimator = LandingAnimator().apply { addDuration = 300 }
     }
 
-    private fun loadData() {
+    override fun setObservers() {
         viewModel.getAllMuscleGroup.observe(viewLifecycleOwner) {
             if (it.isEmpty()) {
                 DummyData.muscleGroups.forEach { muscleGroup ->
                     viewModel.insertMuscleGroup(muscleGroup)
                     println("hop: MuscleGroup is added")
                 }
+            } else {
+                adapter.setData(it)
             }
         }
         viewModel.getAllExercise.observe(viewLifecycleOwner) {
@@ -64,40 +62,11 @@ class MuscleGroupListFragment : Fragment(), MuscleGroupItemLayout.OnItemClickLis
         }
     }
 
-    private fun initializeViewModel() {
-        viewModel.getAllMuscleGroup.observe(viewLifecycleOwner) {
-            adapter.setData(it)
-        }
-    }
-
-    private fun setListeners() {
-        binding.scrollView.setOnScrollChangeListener(
-            NestedScrollView.OnScrollChangeListener { v, scrollX, scrollY, oldScrollX, oldScrollY ->
-                if (scrollY > 0) {
-                    binding.toolbarDivider.visibility = View.VISIBLE
-                } else {
-                    binding.toolbarDivider.visibility = View.GONE
-                }
-            })
-    }
-
-    private fun setupRecyclerView() {
-        val recyclerView = binding.rvMuscleGroupList
-        recyclerView.adapter = adapter
-        recyclerView.layoutManager = LinearLayoutManager(requireContext())
-        recyclerView.itemAnimator = LandingAnimator().apply { addDuration = 300 }
-    }
-
     override fun onItemClicked(clickedItem: MuscleGroup) {
         val action =
             MuscleGroupListFragmentDirections.actionMuscleGroupListFragmentToExerciseListFragment(
                 clickedItem.title
             )
         findNavController().navigate(action)
-    }
-
-    override fun onDestroy() {
-        super.onDestroy()
-        _binding = null
     }
 }
