@@ -21,13 +21,13 @@ class ExerciseListVpAdapter(
     override fun createFragment(position: Int): Fragment {
         return when (position) {
             0 -> {
-                ReadyEcercisesFragment.newInstance(muscleGroup)
+                ReadyExercisesFragment.newInstance(muscleGroup)
             }
             1 -> {
                 CustomExerciseFragment.newInstance(muscleGroup)
             }
             else -> {
-                ReadyEcercisesFragment.newInstance(muscleGroup)
+                ReadyExercisesFragment.newInstance(muscleGroup)
             }
         }
     }

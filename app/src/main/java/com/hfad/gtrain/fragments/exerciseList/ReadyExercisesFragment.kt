@@ -1,10 +1,10 @@
 package com.hfad.gtrain.fragments.exerciseList
 
 import android.os.Bundle
-import androidx.fragment.app.Fragment
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
+import androidx.fragment.app.Fragment
 import androidx.fragment.app.activityViewModels
 import androidx.navigation.fragment.findNavController
 import androidx.recyclerview.widget.LinearLayoutManager
@@ -16,11 +16,9 @@ import jp.wasabeef.recyclerview.animators.LandingAnimator
 
 private const val MUSCLE_GROUP = ""
 
-
 @AndroidEntryPoint
-class ReadyEcercisesFragment : Fragment(),
+class ReadyExercisesFragment : Fragment(),
     ExsListLayout.OnItemClickListener {
-
 
     private var _binding: FragmentReadyEcercisesBinding? = null
     private val binding get() = _binding!!
@@ -70,9 +68,8 @@ class ReadyEcercisesFragment : Fragment(),
     }
 
     companion object {
-        @JvmStatic
         fun newInstance(param1: String) =
-            ReadyEcercisesFragment().apply {
+            ReadyExercisesFragment().apply {
                 arguments = Bundle().apply {
                     putString(MUSCLE_GROUP, param1)
                 }

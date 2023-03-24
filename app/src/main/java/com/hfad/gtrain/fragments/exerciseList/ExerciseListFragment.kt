@@ -1,103 +1,67 @@
 package com.hfad.gtrain.fragments.exerciseList
 
-import android.os.Bundle
-import android.view.LayoutInflater
 import android.view.View
-import android.view.ViewGroup
-import androidx.activity.OnBackPressedCallback
-import androidx.fragment.app.Fragment
-import androidx.navigation.fragment.findNavController
 import androidx.navigation.fragment.navArgs
 import androidx.viewpager2.widget.ViewPager2
 import com.hfad.gtrain.R
+import com.hfad.gtrain.base.BaseFragment
 import com.hfad.gtrain.databinding.FragmentExerciseListBinding
 import com.hfad.gtrain.models.Exercise
 import dagger.hilt.android.AndroidEntryPoint
 
 @AndroidEntryPoint
-class ExerciseListFragment : Fragment(), ExsListLayout.OnItemClickListener {
+class ExerciseListFragment : BaseFragment<FragmentExerciseListBinding>
+    (FragmentExerciseListBinding::inflate), ExsListLayout.OnItemClickListener {
 
     private val args by navArgs<ExerciseListFragmentArgs>()
-    private var _binding: FragmentExerciseListBinding? = null
-    private val binding get() = _binding!!
 
-
-    override fun onCreateView(
-        inflater: LayoutInflater, container: ViewGroup?,
-        savedInstanceState: Bundle?
-    ): View {
-        _binding = FragmentExerciseListBinding.inflate(inflater, container, false)
-
-        setListeners()
-        pageTurner()
-        setupViewPager()
-        onBackPressedHandler()
-
-        return binding.root
-
+    init {
+        isCustomExerciseView = false
     }
 
-    private fun onBackPressedHandler() {
-        requireActivity().onBackPressedDispatcher.addCallback(
-            viewLifecycleOwner,
-            object : OnBackPressedCallback(true) {
-                override fun handleOnBackPressed() {
-                    if (isCustomExerciseView) {
-                        binding.btnSwitchToExercises.setBackgroundDrawable(resources.getDrawable(R.drawable.dark_oval_card_bg))
-                        binding.btnSwitchToCustom.setBackgroundDrawable(resources.getDrawable(R.drawable.button_light_blue_bg))
-                        binding.vp.setCurrentItem(1, true)
-                        isCustomExerciseView =
-                            false // Set to false when switching back to the exercises view
-                        findNavController().navigateUp()
-                    } else {
-                        findNavController().navigateUp() // Navigate back to the previous fragment
-                    }
-                }
-            })
+    override fun setListeners() {
+        binding.btnSwitchToCustom.setOnClickListener {
+            isCustomExerciseView = true
+            updateTabSelection()
+        }
+        binding.btnSwitchToExercises.setOnClickListener {
+            isCustomExerciseView = false
+            updateTabSelection()
+        }
     }
 
-    private fun setupViewPager() {
-        val vp = binding.vp
-        val vpAdapter = ExerciseListVpAdapter(childFragmentManager, lifecycle, args.muscleGroup!!)
-        vp.isUserInputEnabled = false
-        vp.adapter = vpAdapter
-        vp.orientation = ViewPager2.ORIENTATION_HORIZONTAL
+    override fun prepareUI() {
+        binding.vp.isUserInputEnabled = false
+        binding.vp.adapter = ExerciseListVpAdapter(childFragmentManager, lifecycle, args.muscleGroup!!)
+        binding.vp.orientation = ViewPager2.ORIENTATION_HORIZONTAL
+
+        updateTabSelection()
     }
 
-    private fun pageTurner() {
+    private fun updateTabSelection() {
         if (isCustomExerciseView) {
-            binding.btnSwitchToExercises.setBackgroundDrawable(resources.getDrawable(R.drawable.dark_oval_card_bg))
-            binding.btnSwitchToCustom.setBackgroundDrawable(resources.getDrawable(R.drawable.button_light_blue_bg))
+            setTabSelected(binding.btnSwitchToCustom)
+            setTabDeselected(binding.btnSwitchToExercises)
             binding.vp.setCurrentItem(1, true)
-
         } else {
-            binding.btnSwitchToExercises.setBackgroundDrawable(resources.getDrawable(R.drawable.button_light_blue_bg))
-            binding.btnSwitchToCustom.setBackgroundDrawable(resources.getDrawable(R.drawable.dark_oval_card_bg))
+            setTabSelected(binding.btnSwitchToExercises)
+            setTabDeselected(binding.btnSwitchToCustom)
             binding.vp.setCurrentItem(0, true)
         }
     }
 
-    private fun setListeners() {
-        binding.btnSwitchToCustom.setOnClickListener {
-            isCustomExerciseView = true
-            pageTurner()
-        }
-        binding.btnSwitchToExercises.setOnClickListener {
-            isCustomExerciseView = false
-            pageTurner()
-        }
+    private fun setTabSelected(tab: View) {
+        tab.setBackgroundResource(R.drawable.button_light_blue_bg)
     }
 
-    override fun onItemClicked(clickedItem: Exercise) {
-
+    private fun setTabDeselected(tab: View) {
+        tab.setBackgroundResource(R.drawable.dark_oval_card_bg)
     }
 
-    override fun onDestroy() {
-        super.onDestroy()
-        _binding = null
-    }
+    override fun onItemClicked(clickedItem: Exercise) {}
 
     companion object {
+
         var isCustomExerciseView = false
     }
 }
