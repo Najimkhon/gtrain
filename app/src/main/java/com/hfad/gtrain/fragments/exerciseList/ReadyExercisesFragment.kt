@@ -68,6 +68,7 @@ class ReadyExercisesFragment : Fragment(),
     }
 
     companion object {
+
         fun newInstance(param1: String) =
             ReadyExercisesFragment().apply {
                 arguments = Bundle().apply {
