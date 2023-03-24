@@ -4,6 +4,7 @@ import android.os.Parcelable
 import androidx.room.Entity
 import androidx.room.PrimaryKey
 import kotlinx.parcelize.Parcelize
+
 @Entity
 @Parcelize
 data class Exercise(
@@ -15,4 +16,4 @@ data class Exercise(
     val description: String = "",
     val calories: Int,
     val muscleGroup: String
-    ):Parcelable
+) : Parcelable
