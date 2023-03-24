@@ -1,24 +1,24 @@
 <?xml version="1.0" encoding="utf-8"?>
-<androidx.constraintlayout.widget.ConstraintLayout xmlns:android="http://schemas.android.com/apk/res/android"
+<androidx.constraintlayout.widget.ConstraintLayout
+    xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:app="http://schemas.android.com/apk/res-auto"
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    android:background="@color/black"
     tools:context=".fragments.muscleGroupList.MuscleGroupListFragment">
 
     <include
         android:id="@+id/toolbar"
-        layout="@layout/exercise_list_fr_toolbar"
-        app:layout_constraintTop_toTopOf="parent" />
+        layout="@layout/layout_toolbar"
+        app:layout_constraintTop_toTopOf="parent"/>
+
     <TextView
         android:id="@+id/toolbarDivider"
         android:layout_width="match_parent"
         android:layout_height="1dp"
-        android:visibility="gone"
         android:background="@color/divider_color"
-        app:layout_constraintTop_toBottomOf="@+id/toolbar"
-        />
+        android:visibility="gone"
+        app:layout_constraintTop_toBottomOf="@+id/toolbar"/>
 
     <androidx.core.widget.NestedScrollView
         android:id="@+id/scrollView"
@@ -36,13 +36,12 @@
                 android:id="@+id/tvWelcomeMessage"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
+                android:layout_gravity="center"
                 android:layout_margin="16dp"
                 android:fontFamily="@font/main_title_font_2"
                 android:text="Welcome to G-train"
                 android:textColor="@color/light_blue"
-                android:textSize="32sp"
-                android:layout_gravity="center"
-                />
+                android:textSize="32sp"/>
 
             <TextView
                 android:id="@+id/tvDescription"
@@ -53,8 +52,7 @@
                 android:layout_marginRight="16dp"
                 android:fontFamily="@font/sf_pro_rounded_regular"
                 android:text="In this section, you can learn about classical gym exercises and record your progress."
-                android:textColor="@color/light_grey"
-                />
+                android:textColor="@color/light_grey"/>
 
             <TextView
                 android:id="@+id/divider"
@@ -63,8 +61,8 @@
                 android:layout_marginLeft="16dp"
                 android:layout_marginTop="16dp"
                 android:layout_marginRight="16dp"
-                android:background="@color/divider_color"
-                />
+                android:background="@color/divider_color"/>
+
             <TextView
                 android:id="@+id/tvWorkoutProgram"
                 android:layout_width="wrap_content"
@@ -73,19 +71,13 @@
                 android:layout_marginTop="16dp"
                 android:fontFamily="@font/sf_pro_rounded_regular"
                 android:text="Workout Program"
-                android:textColor="@color/light_blue"
-                />
+                android:textColor="@color/light_blue"/>
 
             <androidx.recyclerview.widget.RecyclerView
                 android:id="@+id/rvMuscleGroupList"
                 android:layout_width="match_parent"
-                android:layout_height="wrap_content"
-
-                />
+                android:layout_height="wrap_content"/>
 
         </LinearLayout>
-
     </androidx.core.widget.NestedScrollView>
-
-
 </androidx.constraintlayout.widget.ConstraintLayout>

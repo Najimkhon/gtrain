@@ -9,7 +9,7 @@
 
     <include
         android:id="@+id/toolbar"
-        layout="@layout/exercise_list_fr_toolbar"
+        layout="@layout/layout_toolbar"
         app:layout_constraintTop_toTopOf="parent" />
 
     <androidx.cardview.widget.CardView
