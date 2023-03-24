@@ -22,7 +22,7 @@ import com.hfad.gtrain.fragments.exerciseList.ExerciseListFragment
 import com.hfad.gtrain.models.CustomExercise
 import com.hfad.gtrain.ui.dialogs.DialogManager
 import com.hfad.gtrain.ui.dialogs.OnDialogClickListener
-import com.hfad.gtrain.viewmodels.MainViewmodel
+import com.hfad.gtrain.viewmodels.MainViewModel
 import dagger.hilt.android.AndroidEntryPoint
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.launch
@@ -37,7 +37,7 @@ class UpdateExerciseFragment : Fragment() {
     private val args by navArgs<UpdateExerciseFragmentArgs>()
     private var _binding: FragmentUpdateExerciseBinding? = null
     private val binding get() = _binding!!
-    private val viewModel: MainViewmodel by activityViewModels()
+    private val viewModel: MainViewModel by activityViewModels()
     private var imageUri: Uri? = null
     private var imageName: String = ""
 

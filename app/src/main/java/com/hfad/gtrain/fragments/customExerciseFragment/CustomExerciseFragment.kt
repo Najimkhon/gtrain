@@ -14,7 +14,7 @@ import com.hfad.gtrain.R
 import com.hfad.gtrain.databinding.FragmentCustomExerciseBinding
 import com.hfad.gtrain.fragments.exerciseList.ExerciseListFragmentDirections
 import com.hfad.gtrain.models.CustomExercise
-import com.hfad.gtrain.viewmodels.MainViewmodel
+import com.hfad.gtrain.viewmodels.MainViewModel
 import dagger.hilt.android.AndroidEntryPoint
 
 private const val MUSCLE_GROUP = ""
@@ -44,7 +44,7 @@ class CustomExerciseFragment : Fragment(),
             }
         }
     }
-    private val viewModel: MainViewmodel by activityViewModels()
+    private val viewModel: MainViewModel by activityViewModels()
 
     private var muscleGroup: String? = null
 

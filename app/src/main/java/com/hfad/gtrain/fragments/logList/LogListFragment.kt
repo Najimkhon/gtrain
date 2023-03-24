@@ -9,16 +9,14 @@ import androidx.fragment.app.activityViewModels
 import androidx.navigation.fragment.findNavController
 import androidx.recyclerview.widget.LinearLayoutManager
 import com.hfad.gtrain.databinding.FragmentLogListBinding
-import com.hfad.gtrain.viewmodels.MainViewmodel
-import java.text.SimpleDateFormat
-import java.util.*
+import com.hfad.gtrain.viewmodels.MainViewModel
 
 class LogListFragment : Fragment(), LogsItemLayout.OnItemClickListener {
 
     private var _binding: FragmentLogListBinding? = null
     private val binding get() = _binding!!
     private val adapter: LogsAdapter by lazy { LogsAdapter(requireContext(), this) }
-    private val viewModel: MainViewmodel by activityViewModels()
+    private val viewModel: MainViewModel by activityViewModels()
 
     override fun onCreateView(
         inflater: LayoutInflater, container: ViewGroup?,

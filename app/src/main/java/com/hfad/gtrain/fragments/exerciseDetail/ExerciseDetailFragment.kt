@@ -24,8 +24,7 @@ import com.hfad.gtrain.fragments.exerciseDetail.adapters.VpImagesAdapter
 import com.hfad.gtrain.fragments.exerciseDetail.itemLayouts.SetsItemLayout
 import com.hfad.gtrain.models.Record
 import com.hfad.gtrain.models.Set
-import com.hfad.gtrain.utils.observeOnce
-import com.hfad.gtrain.viewmodels.MainViewmodel
+import com.hfad.gtrain.viewmodels.MainViewModel
 import dagger.hilt.android.AndroidEntryPoint
 import kotlinx.coroutines.launch
 import java.text.SimpleDateFormat
@@ -39,7 +38,7 @@ class ExerciseDetailFragment : Fragment(), DatePickerDialog.OnDateSetListener,
     private var _binding: FragmentExerciseDetailBinding? = null
     private val binding get() = _binding!!
     private val adapter: VpImagesAdapter by lazy { VpImagesAdapter(requireContext()) }
-    private val viewModel: MainViewmodel by activityViewModels()
+    private val viewModel: MainViewModel by activityViewModels()
     private var calendar = Calendar.getInstance()
     private val formatter = SimpleDateFormat("MMM dd yyyy", Locale.US)
     private lateinit var lastSelectedItem: SetsItemLayout

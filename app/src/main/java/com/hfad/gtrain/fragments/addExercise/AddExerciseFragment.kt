@@ -13,7 +13,6 @@ import android.view.ViewGroup
 import android.widget.Toast
 import androidx.fragment.app.Fragment
 import androidx.fragment.app.activityViewModels
-import androidx.fragment.app.viewModels
 import androidx.navigation.fragment.findNavController
 import com.hfad.gtrain.databinding.FragmentAddExerciseBinding
 import com.hfad.gtrain.fragments.exerciseList.ExerciseListFragment
@@ -21,7 +20,7 @@ import com.hfad.gtrain.models.CustomExercise
 import com.hfad.gtrain.models.MuscleGroup
 import com.hfad.gtrain.ui.dialogs.DialogManager
 import com.hfad.gtrain.ui.dialogs.OnDialogClickListener
-import com.hfad.gtrain.viewmodels.MainViewmodel
+import com.hfad.gtrain.viewmodels.MainViewModel
 import dagger.hilt.android.AndroidEntryPoint
 import java.io.IOException
 import javax.inject.Inject
@@ -30,7 +29,7 @@ import javax.inject.Inject
 class AddExerciseFragment : Fragment() {
     private var _binding: FragmentAddExerciseBinding? = null
     private val binding get() = _binding!!
-    private val viewModel: MainViewmodel by activityViewModels()
+    private val viewModel: MainViewModel by activityViewModels()
 
     @Inject
     lateinit var dialogManager: DialogManager
@@ -44,7 +43,7 @@ class AddExerciseFragment : Fragment() {
         _binding = FragmentAddExerciseBinding.inflate(inflater, container, false)
         setListeners()
 
-        viewModel.getAllmuscleGroup.observe(viewLifecycleOwner) {
+        viewModel.getAllMuscleGroup.observe(viewLifecycleOwner) {
             muscleGroupList = it
         }
 

@@ -10,7 +10,7 @@ import androidx.navigation.fragment.findNavController
 import androidx.recyclerview.widget.LinearLayoutManager
 import com.hfad.gtrain.databinding.FragmentReadyEcercisesBinding
 import com.hfad.gtrain.models.Exercise
-import com.hfad.gtrain.viewmodels.MainViewmodel
+import com.hfad.gtrain.viewmodels.MainViewModel
 import dagger.hilt.android.AndroidEntryPoint
 import jp.wasabeef.recyclerview.animators.LandingAnimator
 
@@ -24,7 +24,7 @@ class ReadyEcercisesFragment : Fragment(),
 
     private var _binding: FragmentReadyEcercisesBinding? = null
     private val binding get() = _binding!!
-    private val viewModel: MainViewmodel by activityViewModels()
+    private val viewModel: MainViewModel by activityViewModels()
     private val adapter: ExsListAdapter by lazy { ExsListAdapter(requireContext(), this) }
 
     private var muscleGroup: String? = null

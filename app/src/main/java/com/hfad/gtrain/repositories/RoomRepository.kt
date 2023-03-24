@@ -14,10 +14,10 @@ import javax.inject.Inject
 class RoomRepository @Inject constructor(
     private val exerciseDao: ExerciseDao
 ) {
+
     val getAllmuscleGroup: LiveData<List<MuscleGroup>> = exerciseDao.getAllMuscleGroup()
     val getAllExercise: LiveData<List<Exercise>> = exerciseDao.getAllExercise()
     val getLogDays: LiveData<List<Long>> = exerciseDao.getLogDays()
-
 
     suspend fun insertMuscleGroup(muscleGroup: MuscleGroup) {
         exerciseDao.insertMuscleGroup(muscleGroup)
@@ -51,7 +51,7 @@ class RoomRepository @Inject constructor(
         exerciseDao.deleteCustomExercise(customEx)
     }
 
-    suspend fun deleteRecord(record: Record){
+    suspend fun deleteRecord(record: Record) {
         exerciseDao.deleteRecord(record)
     }
 
@@ -63,13 +63,12 @@ class RoomRepository @Inject constructor(
         exerciseDao.updateRecord(record)
     }
 
-    suspend fun getRecordListByDay(date: Long):List<Record>{
+    suspend fun getRecordListByDay(date: Long): List<Record> {
         return exerciseDao.getRecordListByDay(date)
     }
 
-    suspend fun getRecordByDate(date: Long, exerciseId: Int): Record{
+    suspend fun getRecordByDate(date: Long, exerciseId: Int): Record? {
         return exerciseDao.getRecordByDate(date, exerciseId)
     }
-
 
 }

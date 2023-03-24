@@ -12,7 +12,7 @@ import androidx.recyclerview.widget.LinearLayoutManager
 import com.hfad.gtrain.data.DummyData
 import com.hfad.gtrain.databinding.FragmentMuscleGroupListBinding
 import com.hfad.gtrain.models.MuscleGroup
-import com.hfad.gtrain.viewmodels.MainViewmodel
+import com.hfad.gtrain.viewmodels.MainViewModel
 import dagger.hilt.android.AndroidEntryPoint
 import jp.wasabeef.recyclerview.animators.LandingAnimator
 
@@ -20,7 +20,7 @@ import jp.wasabeef.recyclerview.animators.LandingAnimator
 class MuscleGroupListFragment : Fragment(), MuscleGroupItemLayout.OnItemClickListener {
     private var _binding: FragmentMuscleGroupListBinding? = null
     private val binding get() = _binding!!
-    private val viewModel: MainViewmodel by activityViewModels()
+    private val viewModel: MainViewModel by activityViewModels()
     private val adapter: MuscleGroupAdapter by lazy { MuscleGroupAdapter(requireContext(), this) }
 
     override fun onCreateView(
@@ -48,7 +48,7 @@ class MuscleGroupListFragment : Fragment(), MuscleGroupItemLayout.OnItemClickLis
     }
 
     private fun initializeViewModel() {
-        viewModel.getAllmuscleGroup.observe(viewLifecycleOwner) {
+        viewModel.getAllMuscleGroup.observe(viewLifecycleOwner) {
             adapter.setData(it)
         }
     }
@@ -77,7 +77,7 @@ class MuscleGroupListFragment : Fragment(), MuscleGroupItemLayout.OnItemClickLis
     }
 
     private fun loadData() {
-        viewModel.getAllmuscleGroup.observe(viewLifecycleOwner) {
+        viewModel.getAllMuscleGroup.observe(viewLifecycleOwner) {
             if (it.isEmpty()) {
                 DummyData.muscleGroups.forEach { muscleGroup ->
                     viewModel.insertMuscleGroup(muscleGroup)

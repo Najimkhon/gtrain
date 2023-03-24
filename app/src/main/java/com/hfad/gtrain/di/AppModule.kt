@@ -18,7 +18,7 @@ object AppModule {
     @Provides
     fun provideExerciseDatabase(
         @ApplicationContext app: Context
-    )= Room.databaseBuilder(
+    ) = Room.databaseBuilder(
         app,
         ExerciseDatabase::class.java,
         "exercise_database"

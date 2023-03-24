@@ -29,7 +29,7 @@ import com.hfad.gtrain.models.Record
 import com.hfad.gtrain.ui.dialogs.DialogManager
 import com.hfad.gtrain.utils.ChartDateFormatter
 import com.hfad.gtrain.utils.GraphState
-import com.hfad.gtrain.viewmodels.MainViewmodel
+import com.hfad.gtrain.viewmodels.MainViewModel
 import dagger.hilt.android.AndroidEntryPoint
 import nl.bryanderidder.themedtogglebuttongroup.ThemedButton
 import java.text.SimpleDateFormat
@@ -42,7 +42,7 @@ class GraphFragment : Fragment(), SetsItemLayout.OnSetClickedListener {
     private val args by navArgs<GraphFragmentArgs>()
     private var _binding: FragmentGraphBinding? = null
     private val binding get() = _binding!!
-    private val viewModel: MainViewmodel by activityViewModels()
+    private val viewModel: MainViewModel by activityViewModels()
     private var graphState: MutableLiveData<GraphState> = MutableLiveData(GraphState.DisplayWeight)
     private lateinit var recyclerView: RecyclerView
     private lateinit var lastSelectedItem: SetsItemLayout

@@ -17,16 +17,17 @@ import kotlinx.coroutines.launch
 import javax.inject.Inject
 
 @HiltViewModel
-class MainViewmodel @Inject constructor(
+class MainViewModel @Inject constructor(
     val roomRepository: RoomRepository
 ) : ViewModel() {
+
     init {
         println("VM is created")
     }
 
     var isLandscape: MutableLiveData<Boolean> = MutableLiveData(false)
     var muscleGroup = ""
-    val getAllmuscleGroup: LiveData<List<MuscleGroup>> = roomRepository.getAllmuscleGroup
+    val getAllMuscleGroup: LiveData<List<MuscleGroup>> = roomRepository.getAllmuscleGroup
     val getAllExercise: LiveData<List<Exercise>> = roomRepository.getAllExercise
     val getLogDays: LiveData<List<Long>> = roomRepository.getLogDays
 
@@ -118,10 +119,6 @@ class MainViewmodel @Inject constructor(
         }
     }
 
-    suspend fun getRecordByDate(date: Long, exerciseId: Int): Record {
-        return roomRepository.getRecordByDate(date, exerciseId)
-    }
-
     fun addRecord(date: Long, exerciseId: Int, set: Set) {
         viewModelScope.launch {
             val existingRecord = getRecordByDate(date, exerciseId)
@@ -129,9 +126,14 @@ class MainViewmodel @Inject constructor(
                 existingRecord.set.add(set)
                 updateRecord(existingRecord)
             } else {
+                println("hop: tutu kirdim")
                 val newRecord = Record(0, date, exerciseId, mutableListOf(set))
                 insertRecord(newRecord)
             }
         }
+    }
+
+    suspend fun getRecordByDate(date: Long, exerciseId: Int): Record? {
+        return roomRepository.getRecordByDate(date, exerciseId)
     }
 }

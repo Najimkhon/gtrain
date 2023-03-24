@@ -1,7 +1,6 @@
 package com.hfad.gtrain.fragments.exerciseDetail
 
 import android.content.res.Configuration
-import android.graphics.Color
 import android.os.Bundle
 import android.view.*
 import androidx.core.view.WindowCompat
@@ -12,7 +11,7 @@ import androidx.fragment.app.activityViewModels
 import androidx.navigation.fragment.navArgs
 import com.google.android.material.bottomnavigation.BottomNavigationView
 import com.hfad.gtrain.databinding.FragmentVideoPlayerBinding
-import com.hfad.gtrain.viewmodels.MainViewmodel
+import com.hfad.gtrain.viewmodels.MainViewModel
 import com.pierfrancescosoffritti.androidyoutubeplayer.core.player.YouTubePlayer
 import com.pierfrancescosoffritti.androidyoutubeplayer.core.player.listeners.AbstractYouTubePlayerListener
 
@@ -22,7 +21,7 @@ class VideoPlayerFragment : Fragment() {
     private var _binding: FragmentVideoPlayerBinding? = null
     private val binding get() = _binding!!
     private lateinit var bottomNav: BottomNavigationView
-    private val viewModel: MainViewmodel by activityViewModels()
+    private val viewModel: MainViewModel by activityViewModels()
 
     override fun onCreateView(
         inflater: LayoutInflater, container: ViewGroup?,
