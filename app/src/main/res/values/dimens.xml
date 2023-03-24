@@ -15,4 +15,6 @@
     <dimen name="large_text_size">18sp</dimen>
     <dimen name="huge_text_size">22sp</dimen>
 
+    <dimen name="radius_25">25dp</dimen>
+
 </resources>
