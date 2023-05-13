@@ -4,11 +4,7 @@ import android.app.Activity
 import android.content.Intent
 import android.graphics.Bitmap
 import android.net.Uri
-import android.os.Bundle
 import android.provider.MediaStore
-import android.view.LayoutInflater
-import android.view.View
-import android.view.ViewGroup
 import android.widget.Toast
 import androidx.fragment.app.activityViewModels
 import androidx.lifecycle.lifecycleScope
@@ -51,7 +47,8 @@ class UpdateExerciseFragment :
             }
             tvExerciseName.text = args.currentExercise.name
             tvDescription.text = args.currentExercise.description
-            tvRepetition.text = makeRepetitionsString(args.currentExercise.sets, args.currentExercise.reps)
+            tvRepetition.text =
+                makeRepetitionsString(args.currentExercise.sets, args.currentExercise.reps)
             tvMuscleGroup.text = args.currentExercise.muscleGroup
             tvCalories.text = args.currentExercise.calories.toString()
         }
