@@ -244,6 +244,7 @@ class GraphFragment : Fragment(), SetsItemLayout.OnSetClickedListener {
         record.set[updatedRecordPosition].rep = binding.etReps.text.toString().toInt()
         record.set[updatedRecordPosition].weight = binding.etWeight.text.toString().toInt()
         viewModel.updateRecord(record)
+        lastSelectedItem.normalState()
     }
 
     override fun onSetClicked(record: Record, selectedItemLayout: SetsItemLayout, position: Int) {
