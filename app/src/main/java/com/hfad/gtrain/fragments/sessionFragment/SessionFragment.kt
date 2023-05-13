@@ -40,6 +40,4 @@ class SessionFragment : BaseFragment<FragmentSessionBinding>(FragmentSessionBind
         val action = SessionFragmentDirections.actionSessionFragmentToGraphFragment(exerciseId)
         findNavController().navigate(action)
     }
-
-
 }
