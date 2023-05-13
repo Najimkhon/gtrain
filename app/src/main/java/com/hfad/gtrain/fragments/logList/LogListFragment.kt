@@ -39,6 +39,7 @@ class LogListFragment : Fragment(), LogsItemLayout.OnItemClickListener {
     }
 
     override fun onItemClicked(logDate: Long) {
+        println("hop: session date is: $logDate==================================")
         val action =
             LogListFragmentDirections.actionLogListFragmentToSessionFragment(
                 logDate
