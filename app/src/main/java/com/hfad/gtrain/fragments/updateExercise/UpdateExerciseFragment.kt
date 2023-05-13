@@ -1,126 +1,111 @@
 package com.hfad.gtrain.fragments.updateExercise
 
 import android.app.Activity
-import android.content.Context
 import android.content.Intent
 import android.graphics.Bitmap
-import android.graphics.BitmapFactory
 import android.net.Uri
-import android.os.Bundle
 import android.provider.MediaStore
-import android.view.LayoutInflater
-import android.view.View
-import android.view.ViewGroup
 import android.widget.Toast
-import androidx.fragment.app.Fragment
 import androidx.fragment.app.activityViewModels
 import androidx.lifecycle.lifecycleScope
 import androidx.navigation.fragment.findNavController
 import androidx.navigation.fragment.navArgs
+import com.hfad.gtrain.base.BaseFragment
 import com.hfad.gtrain.databinding.FragmentUpdateExerciseBinding
-import com.hfad.gtrain.fragments.exerciseList.ExerciseListFragment
+import com.hfad.gtrain.fragments.utils.ImageHelper
 import com.hfad.gtrain.models.CustomExercise
 import com.hfad.gtrain.ui.dialogs.DialogManager
 import com.hfad.gtrain.ui.dialogs.OnDialogClickListener
 import com.hfad.gtrain.viewmodels.MainViewModel
 import dagger.hilt.android.AndroidEntryPoint
-import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.launch
-import kotlinx.coroutines.withContext
-import java.io.IOException
 import javax.inject.Inject
 
 
 @AndroidEntryPoint
-class UpdateExerciseFragment : Fragment() {
+class UpdateExerciseFragment :
+    BaseFragment<FragmentUpdateExerciseBinding>(FragmentUpdateExerciseBinding::inflate) {
 
     private val args by navArgs<UpdateExerciseFragmentArgs>()
-    private var _binding: FragmentUpdateExerciseBinding? = null
-    private val binding get() = _binding!!
     private val viewModel: MainViewModel by activityViewModels()
     private var imageUri: Uri? = null
     private var imageName: String = ""
 
     @Inject
+    lateinit var imageHelper: ImageHelper
+
+    @Inject
     lateinit var dialogManager: DialogManager
 
-
-    override fun onCreateView(
-        inflater: LayoutInflater, container: ViewGroup?,
-        savedInstanceState: Bundle?
-    ): View {
-        _binding = FragmentUpdateExerciseBinding.inflate(inflater, container, false)
-        setListeners()
-        bindViews()
-
-        return binding.root
-    }
-
-    private fun bindViews() {
-        lifecycleScope.launch {
-            val photos = loadPhotos(args.currentExercise.image, requireContext())
-            if (photos.isNotEmpty()) {
-                binding.ivAddImage.setImageBitmap(photos[0])
+    override fun prepareUI() {
+        binding.apply {
+            lifecycleScope.launch {
+                val photos = imageHelper.loadPhotos(args.currentExercise.image, requireContext())
+                if (photos.isNotEmpty()) {
+                    ivAddImage.setImageBitmap(photos[0])
+                }
             }
+            tvExerciseName.text = args.currentExercise.name
+            tvDescription.text = args.currentExercise.description
+            tvRepetition.text =
+                makeRepetitionsString(args.currentExercise.sets, args.currentExercise.reps)
+            tvMuscleGroup.text = args.currentExercise.muscleGroup
+            tvCalories.text = args.currentExercise.calories.toString()
         }
-        binding.tvExerciseName.text = args.currentExercise.name
-        binding.tvDescription.text = args.currentExercise.description
-        binding.tvRepetition.text =
-            makeRepetitionsString(args.currentExercise.sets, args.currentExercise.reps)
-        binding.tvMuscleGroup.text = args.currentExercise.muscleGroup
-        binding.tvCalories.text = args.currentExercise.calories.toString()
     }
 
-    private fun setListeners() {
-        binding.ivAddImage.setOnClickListener {
-            launchGallery()
-        }
+    override fun setListeners() {
+        binding.apply {
+            ivAddImage.setOnClickListener {
+                launchGallery()
+            }
 
-        binding.exerciseBlock.setOnClickListener {
-            dialogManager.showExerciseNameDialog(object : OnDialogClickListener {
-                override fun onSaveClicked(input: String) {
-                    binding.tvExerciseName.text = input
-                }
-            })
-        }
+            exerciseBlock.setOnClickListener {
+                dialogManager.showExerciseNameDialog(object : OnDialogClickListener {
+                    override fun onSaveClicked(input: String) {
+                        binding.tvExerciseName.text = input
+                    }
+                })
+            }
 
-        binding.descritionBlock.setOnClickListener {
-            dialogManager.showExerciseDescriptionDialog(object : OnDialogClickListener {
-                override fun onSaveClicked(input: String) {
-                    binding.tvDescription.text = input
-                }
-            })
-        }
+            descritionBlock.setOnClickListener {
+                dialogManager.showExerciseDescriptionDialog(object : OnDialogClickListener {
+                    override fun onSaveClicked(input: String) {
+                        binding.tvDescription.text = input
+                    }
+                })
+            }
 
-        binding.repsBlock.setOnClickListener {
-            dialogManager.showRepetitionsDialog(object : OnDialogClickListener {
-                override fun onSaveClicked(input: String) {
-                    binding.tvRepetition.text = input
-                }
-            })
-        }
+            repsBlock.setOnClickListener {
+                dialogManager.showRepetitionsDialog(object : OnDialogClickListener {
+                    override fun onSaveClicked(input: String) {
+                        binding.tvRepetition.text = input
+                    }
+                })
+            }
 
-        binding.categoryBlock.setOnClickListener {
-            dialogManager.showMuscleGroupDialog(object : OnDialogClickListener {
-                override fun onSaveClicked(input: String) {
-                    binding.tvMuscleGroup.text = input
-                }
-            })
-        }
+            categoryBlock.setOnClickListener {
+                dialogManager.showMuscleGroupDialog(object : OnDialogClickListener {
+                    override fun onSaveClicked(input: String) {
+                        binding.tvMuscleGroup.text = input
+                    }
+                })
+            }
 
-        binding.caloriesBlock.setOnClickListener {
-            dialogManager.showCalorieDialog(object : OnDialogClickListener {
-                override fun onSaveClicked(input: String) {
-                    binding.tvCalories.text = input
-                }
-            })
-        }
+            caloriesBlock.setOnClickListener {
+                dialogManager.showCalorieDialog(object : OnDialogClickListener {
+                    override fun onSaveClicked(input: String) {
+                        binding.tvCalories.text = input
+                    }
+                })
+            }
 
-        binding.btnSave.setOnClickListener {
-            updateExercise()
-        }
-        binding.btnCancel.setOnClickListener {
-            findNavController().popBackStack()
+            btnSave.setOnClickListener {
+                updateExercise()
+            }
+            btnCancel.setOnClickListener {
+                findNavController().popBackStack()
+            }
         }
     }
 
@@ -130,16 +115,6 @@ class UpdateExerciseFragment : Fragment() {
             repetitions += "$it/"
         }
         return repetitions.dropLast(1)
-    }
-
-    private suspend fun loadPhotos(imageName: String, context: Context): List<Bitmap> {
-        return withContext(Dispatchers.IO) {
-            val files = context.filesDir.listFiles()
-            files.filter { it.canRead() && it.isFile && it.name.contentEquals(imageName) }.map {
-                val bytes = it.readBytes()
-                BitmapFactory.decodeByteArray(bytes, 0, bytes.size)
-            }
-        }
     }
 
     private fun updateExercise() {
@@ -165,7 +140,6 @@ class UpdateExerciseFragment : Fragment() {
             )
             viewModel.updateCustomExercise(newExercise)
             findNavController().popBackStack()
-            ExerciseListFragment.isCustomExerciseView = true
         } else {
             Toast.makeText(requireContext(), "Please, fill all the fields!", Toast.LENGTH_SHORT)
                 .show()
@@ -188,21 +162,6 @@ class UpdateExerciseFragment : Fragment() {
         return sets[6].digitToInt()
     }
 
-    private fun saveBitmapToInternalStorage(filename: String, bmp: Bitmap): Boolean {
-        return try {
-            requireActivity().openFileOutput(filename, Context.MODE_PRIVATE).use { stream ->
-                if (!bmp.compress(Bitmap.CompressFormat.JPEG, 95, stream)) {
-                    throw IOException("Couldn't save bitmap.")
-                }
-                imageName = filename
-            }
-            true
-        } catch (e: IOException) {
-            e.printStackTrace()
-            false
-        }
-    }
-
     private fun launchGallery() {
         val intent = Intent(Intent.ACTION_PICK)
         intent.type = "image/*"
@@ -218,7 +177,10 @@ class UpdateExerciseFragment : Fragment() {
                     imageUri.toString()
                 )
             )
-            imageUri!!.lastPathSegment?.let { saveBitmapToInternalStorage(it, bitmap) }
+            imageUri!!.lastPathSegment?.let {
+                imageHelper.saveBitmapToInternalStorage(it, bitmap)
+                imageName = it
+            }
             binding.ivAddImage.setImageURI(imageUri)
         }
     }
@@ -226,5 +188,4 @@ class UpdateExerciseFragment : Fragment() {
     companion object {
         private const val IMAGE_PICK_CODE = 999
     }
-
 }

@@ -9,7 +9,7 @@ plugins {
 }
 
 android {
-    compileSdk 32
+    compileSdk 33
 
     defaultConfig {
         applicationId "com.hfad.gtrain"
@@ -88,6 +88,7 @@ dependencies {
     //dagger-hilt
     implementation "com.google.dagger:hilt-android:2.44"
     kapt "com.google.dagger:hilt-compiler:2.44"
+
 
     //Picasso
     implementation 'com.squareup.picasso:picasso:2.8'

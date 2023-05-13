@@ -3,6 +3,7 @@ package com.hfad.gtrain.di
 import android.content.Context
 import androidx.room.Room
 import com.hfad.gtrain.data.ExerciseDatabase
+import com.hfad.gtrain.fragments.utils.ImageHelper
 import dagger.Module
 import dagger.Provides
 import dagger.hilt.InstallIn
@@ -27,4 +28,8 @@ object AppModule {
     @Singleton
     @Provides
     fun provideExerciseDao(db: ExerciseDatabase) = db.exerciseDao()
+
+    @Singleton
+    @Provides
+    fun provideImageHelper(@ApplicationContext context: Context) = ImageHelper(context)
 }

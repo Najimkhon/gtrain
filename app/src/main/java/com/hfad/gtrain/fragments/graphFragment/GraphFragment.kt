@@ -20,6 +20,7 @@ import com.github.mikephil.charting.data.Entry
 import com.github.mikephil.charting.data.LineData
 import com.github.mikephil.charting.data.LineDataSet
 import com.github.mikephil.charting.interfaces.datasets.ILineDataSet
+import com.github.mikephil.charting.utils.EntryXComparator
 import com.google.android.material.snackbar.Snackbar
 import com.hfad.gtrain.R
 import com.hfad.gtrain.databinding.FragmentGraphBinding
@@ -203,6 +204,8 @@ class GraphFragment : Fragment(), SetsItemLayout.OnSetClickedListener {
             }
         }
 
+        Collections.sort(dataSet, EntryXComparator())
+
         return dataSet
     }
 
@@ -241,6 +244,7 @@ class GraphFragment : Fragment(), SetsItemLayout.OnSetClickedListener {
         record.set[updatedRecordPosition].rep = binding.etReps.text.toString().toInt()
         record.set[updatedRecordPosition].weight = binding.etWeight.text.toString().toInt()
         viewModel.updateRecord(record)
+        lastSelectedItem.normalState()
     }
 
     override fun onSetClicked(record: Record, selectedItemLayout: SetsItemLayout, position: Int) {

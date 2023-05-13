@@ -1,6 +1,5 @@
 <?xml version="1.0" encoding="utf-8"?>
-<androidx.constraintlayout.widget.ConstraintLayout
-    xmlns:android="http://schemas.android.com/apk/res/android"
+<androidx.constraintlayout.widget.ConstraintLayout xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:app="http://schemas.android.com/apk/res-auto"
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
@@ -10,51 +9,31 @@
     <include
         android:id="@+id/toolbar"
         layout="@layout/layout_toolbar"
-        app:layout_constraintTop_toTopOf="parent"/>
+        app:layout_constraintTop_toTopOf="parent" />
 
-    <androidx.cardview.widget.CardView
-        android:id="@+id/cardTabContainer"
-        android:layout_width="match_parent"
+    <com.google.android.material.tabs.TabLayout
+        android:id="@+id/tabLayout"
+        android:layout_width="0dp"
         android:layout_height="wrap_content"
-        android:layout_marginHorizontal="@dimen/medium_padding"
-        android:layout_marginTop="@dimen/small_padding"
-        app:cardBackgroundColor="@color/dark_grey"
-        app:cardCornerRadius="@dimen/radius_25"
-        app:layout_constraintTop_toBottomOf="@+id/toolbar">
-
-        <LinearLayout
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content">
-
-            <androidx.appcompat.widget.AppCompatButton
-                android:id="@+id/btnSwitchToExercises"
-                android:layout_width="0dp"
-                android:layout_height="wrap_content"
-                android:layout_weight="1"
-                android:fontFamily="@font/sf_pro_rounded_bold"
-                android:text="Exercises"
-                android:textColor="@color/light_grey"
-                tools:background="@drawable/button_light_blue_bg"/>
-
-            <androidx.appcompat.widget.AppCompatButton
-                android:id="@+id/btnSwitchToCustom"
-                android:layout_width="0dp"
-                android:layout_height="wrap_content"
-                android:layout_weight="1"
-                android:fontFamily="@font/sf_pro_rounded_bold"
-                android:text="CUSTOM"
-                android:textColor="@color/light_grey"
-                tools:background="@drawable/dark_oval_card_bg"/>
-
-        </LinearLayout>
-    </androidx.cardview.widget.CardView>
+        android:layout_marginHorizontal="16dp"
+        android:layout_marginTop="16dp"
+        android:state_selected="false"
+        app:layout_constraintLeft_toLeftOf="parent"
+        app:layout_constraintRight_toRightOf="parent"
+        app:layout_constraintTop_toBottomOf="@id/toolbar"
+        app:tabBackground="@drawable/tab_selector"
+        app:tabIndicatorHeight="0dp"
+        app:tabSelectedTextColor="@color/black"
+        app:tabTextAppearance="@style/MineCustomTabText"
+        app:tabTextColor="@color/light_grey"
+        android:background="@drawable/dark_oval_card_bg" />
 
     <TextView
         android:layout_width="match_parent"
         android:layout_height="1dp"
         android:background="@color/divider_color"
         android:visibility="visible"
-        app:layout_constraintTop_toBottomOf="@+id/cardTabContainer"/>
+        app:layout_constraintTop_toBottomOf="@+id/tabLayout" />
 
     <androidx.viewpager2.widget.ViewPager2
         android:id="@+id/vp"
@@ -64,6 +43,6 @@
         app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintLeft_toLeftOf="parent"
         app:layout_constraintRight_toRightOf="parent"
-        app:layout_constraintTop_toBottomOf="@+id/cardTabContainer"/>
+        app:layout_constraintTop_toBottomOf="@+id/tabLayout" />
 
 </androidx.constraintlayout.widget.ConstraintLayout>
