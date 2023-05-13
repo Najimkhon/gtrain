@@ -41,79 +41,74 @@ class UpdateExerciseFragment :
     @Inject
     lateinit var dialogManager: DialogManager
 
-    override fun onCreateView(
-        inflater: LayoutInflater, container: ViewGroup?, savedInstanceState: Bundle?
-    ): View {
-        setListeners()
-
-        return binding.root
-    }
-
     override fun prepareUI() {
-        lifecycleScope.launch {
-            val photos = imageHelper.loadPhotos(args.currentExercise.image, requireContext())
-            if (photos.isNotEmpty()) {
-                binding.ivAddImage.setImageBitmap(photos[0])
+        binding.apply {
+            lifecycleScope.launch {
+                val photos = imageHelper.loadPhotos(args.currentExercise.image, requireContext())
+                if (photos.isNotEmpty()) {
+                    ivAddImage.setImageBitmap(photos[0])
+                }
             }
+            tvExerciseName.text = args.currentExercise.name
+            tvDescription.text = args.currentExercise.description
+            tvRepetition.text = makeRepetitionsString(args.currentExercise.sets, args.currentExercise.reps)
+            tvMuscleGroup.text = args.currentExercise.muscleGroup
+            tvCalories.text = args.currentExercise.calories.toString()
         }
-        binding.tvExerciseName.text = args.currentExercise.name
-        binding.tvDescription.text = args.currentExercise.description
-        binding.tvRepetition.text =
-            makeRepetitionsString(args.currentExercise.sets, args.currentExercise.reps)
-        binding.tvMuscleGroup.text = args.currentExercise.muscleGroup
-        binding.tvCalories.text = args.currentExercise.calories.toString()
     }
 
     override fun setListeners() {
-        binding.ivAddImage.setOnClickListener {
-            launchGallery()
-        }
+        binding.apply {
+            ivAddImage.setOnClickListener {
+                launchGallery()
+            }
 
-        binding.exerciseBlock.setOnClickListener {
-            dialogManager.showExerciseNameDialog(object : OnDialogClickListener {
-                override fun onSaveClicked(input: String) {
-                    binding.tvExerciseName.text = input
-                }
-            })
-        }
+            exerciseBlock.setOnClickListener {
+                dialogManager.showExerciseNameDialog(object : OnDialogClickListener {
+                    override fun onSaveClicked(input: String) {
+                        binding.tvExerciseName.text = input
+                    }
+                })
+            }
 
-        binding.descritionBlock.setOnClickListener {
-            dialogManager.showExerciseDescriptionDialog(object : OnDialogClickListener {
-                override fun onSaveClicked(input: String) {
-                    binding.tvDescription.text = input
-                }
-            })
-        }
+            descritionBlock.setOnClickListener {
+                dialogManager.showExerciseDescriptionDialog(object : OnDialogClickListener {
+                    override fun onSaveClicked(input: String) {
+                        binding.tvDescription.text = input
+                    }
+                })
+            }
 
-        binding.repsBlock.setOnClickListener {
-            dialogManager.showRepetitionsDialog(object : OnDialogClickListener {
-                override fun onSaveClicked(input: String) {
-                    binding.tvRepetition.text = input
-                }
-            })
-        }
+            repsBlock.setOnClickListener {
+                dialogManager.showRepetitionsDialog(object : OnDialogClickListener {
+                    override fun onSaveClicked(input: String) {
+                        binding.tvRepetition.text = input
+                    }
+                })
+            }
 
-        binding.categoryBlock.setOnClickListener {
-            dialogManager.showMuscleGroupDialog(object : OnDialogClickListener {
-                override fun onSaveClicked(input: String) {
-                    binding.tvMuscleGroup.text = input
-                }
-            })
-        }
+            categoryBlock.setOnClickListener {
+                dialogManager.showMuscleGroupDialog(object : OnDialogClickListener {
+                    override fun onSaveClicked(input: String) {
+                        binding.tvMuscleGroup.text = input
+                    }
+                })
+            }
 
-        binding.caloriesBlock.setOnClickListener {
-            dialogManager.showCalorieDialog(object : OnDialogClickListener {
-                override fun onSaveClicked(input: String) {
-                    binding.tvCalories.text = input
-                }
-            })
-        }
+            caloriesBlock.setOnClickListener {
+                dialogManager.showCalorieDialog(object : OnDialogClickListener {
+                    override fun onSaveClicked(input: String) {
+                        binding.tvCalories.text = input
+                    }
+                })
+            }
 
-        binding.btnSave.setOnClickListener {
-            updateExercise()
-        }
-        binding.btnCancel.setOnClickListener {
-            findNavController().popBackStack()
+            btnSave.setOnClickListener {
+                updateExercise()
+            }
+            btnCancel.setOnClickListener {
+                findNavController().popBackStack()
+            }
         }
     }
 
