@@ -2,11 +2,7 @@ package com.hfad.gtrain.fragments.exerciseDetail
 
 import android.app.DatePickerDialog
 import android.content.Context
-import android.os.Bundle
-import androidx.fragment.app.Fragment
-import android.view.LayoutInflater
 import android.view.View
-import android.view.ViewGroup
 import android.view.inputmethod.InputMethodManager
 import android.widget.DatePicker
 import android.widget.Toast
@@ -18,6 +14,7 @@ import androidx.recyclerview.widget.LinearLayoutManager
 import androidx.recyclerview.widget.RecyclerView
 import com.google.android.material.snackbar.Snackbar
 import com.hfad.gtrain.R
+import com.hfad.gtrain.base.BaseFragment
 import com.hfad.gtrain.databinding.FragmentExerciseDetailBinding
 import com.hfad.gtrain.fragments.exerciseDetail.adapters.RecordAdapter
 import com.hfad.gtrain.fragments.exerciseDetail.adapters.VpImagesAdapter
@@ -32,19 +29,17 @@ import java.util.*
 
 
 @AndroidEntryPoint
-class ExerciseDetailFragment : Fragment(), DatePickerDialog.OnDateSetListener,
-    SetsItemLayout.OnSetClickedListener {
+class ExerciseDetailFragment :
+    BaseFragment<FragmentExerciseDetailBinding>(FragmentExerciseDetailBinding::inflate),
+    DatePickerDialog.OnDateSetListener, SetsItemLayout.OnSetClickedListener {
     private val args by navArgs<ExerciseDetailFragmentArgs>()
-    private var _binding: FragmentExerciseDetailBinding? = null
-    private val binding get() = _binding!!
-    private val adapter: VpImagesAdapter by lazy { VpImagesAdapter(requireContext()) }
+    private val vpAdapter: VpImagesAdapter by lazy { VpImagesAdapter(requireContext()) }
     private val viewModel: MainViewModel by activityViewModels()
     private var calendar = Calendar.getInstance()
     private val formatter = SimpleDateFormat("MMM dd yyyy", Locale.US)
     private lateinit var lastSelectedItem: SetsItemLayout
     private lateinit var updatedRecord: Record
     private var updatedRecordPosition = 0
-    private lateinit var recyclerView: RecyclerView
 
     private val recordAdapter: RecordAdapter by lazy {
         RecordAdapter(requireContext(), { record, action, position ->
@@ -56,33 +51,7 @@ class ExerciseDetailFragment : Fragment(), DatePickerDialog.OnDateSetListener,
         }, this)
     }
 
-    override fun onCreateView(
-        inflater: LayoutInflater, container: ViewGroup?,
-        savedInstanceState: Bundle?
-    ): View {
-        _binding = FragmentExerciseDetailBinding.inflate(inflater, container, false)
-
-        setupLogsRecyclerView()
-        setupViewPager()
-        setListeners()
-        bindViews()
-
-        return binding.root
-    }
-
-    private fun setupLogsRecyclerView() {
-        recyclerView = binding.rvLogs
-        recyclerView.adapter = recordAdapter
-        recyclerView.layoutManager = LinearLayoutManager(requireContext(), RecyclerView.VERTICAL, false)
-        viewLifecycleOwner.lifecycleScope.launch {
-            viewModel.getExerciseWithRecords(args.currentExercise.id)
-            viewModel.exerciseWithRecords.observe(viewLifecycleOwner) {
-                recordAdapter.setData(it[0].records)
-            }
-        }
-    }
-
-    private fun setListeners() {
+    override fun setListeners() {
         binding.btnPlay.setOnClickListener {
             val action =
                 ExerciseDetailFragmentDirections.actionExerciseDetailFragmentToVideoPlayerFragment(
@@ -139,14 +108,26 @@ class ExerciseDetailFragment : Fragment(), DatePickerDialog.OnDateSetListener,
         }
     }
 
-    private fun bindViews() {
+    override fun prepareUI() {
         binding.tvDescription.text = args.currentExercise.description
+        binding.vpImages.apply {
+            adapter = vpAdapter
+            vpAdapter.setData(args.currentExercise.image)
+        }
+
+        binding.rvLogs.apply {
+            adapter = recordAdapter
+            layoutManager = LinearLayoutManager(requireContext(), RecyclerView.VERTICAL, false)
+        }
     }
 
-    private fun setupViewPager() {
-        val viewPager = binding.vpImages
-        viewPager.adapter = adapter
-        adapter.setData(args.currentExercise.image)
+    override fun setObservers() {
+        viewLifecycleOwner.lifecycleScope.launch {
+            viewModel.getExerciseWithRecords(args.currentExercise.id)
+            viewModel.exerciseWithRecords.observe(viewLifecycleOwner) {
+                recordAdapter.setData(it[0].records)
+            }
+        }
     }
 
     private fun updateRecord(record: Record) {
@@ -162,7 +143,6 @@ class ExerciseDetailFragment : Fragment(), DatePickerDialog.OnDateSetListener,
         val exerciseId = args.currentExercise.id
         viewModel.addRecord(date, exerciseId, set)
     }
-
 
     override fun onDateSet(view: DatePicker?, year: Int, month: Int, dayOfMonth: Int) {
         calendar.set(year, month, dayOfMonth)
@@ -182,9 +162,7 @@ class ExerciseDetailFragment : Fragment(), DatePickerDialog.OnDateSetListener,
 
     private fun restoreDeletedData(view: View, deletedItem: Record, position: Int) {
         val snackbar = Snackbar.make(
-            view,
-            "You deleted a record",
-            Snackbar.LENGTH_LONG
+            view, "You deleted a record", Snackbar.LENGTH_LONG
         )
         snackbar.setAction("Undo") {
             viewModel.insertRecord(deletedItem)
@@ -216,6 +194,7 @@ class ExerciseDetailFragment : Fragment(), DatePickerDialog.OnDateSetListener,
     private fun defaultMode() {
         binding.btnUpdateRecord.visibility = View.GONE
         binding.btnAddRecord.visibility = View.VISIBLE
+        lastSelectedItem.normalState()
     }
 
     private fun closeKeyBoard() {
