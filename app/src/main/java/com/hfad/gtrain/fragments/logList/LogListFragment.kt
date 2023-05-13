@@ -10,20 +10,20 @@ import com.hfad.gtrain.viewmodels.MainViewModel
 class LogListFragment : BaseFragment<FragmentLogListBinding>(FragmentLogListBinding::inflate),
     LogsItemLayout.OnItemClickListener {
 
-    private val adapter: LogsAdapter by lazy { LogsAdapter(requireContext(), this) }
+    private val logsAdapter: LogsAdapter by lazy { LogsAdapter(requireContext(), this) }
     private val viewModel: MainViewModel by activityViewModels()
 
     override fun prepareUI() {
         binding.toolbar.tvTitle.text = "Logs"
         binding.rvLogs.apply {
-            adapter = adapter
+            adapter = logsAdapter
             layoutManager = LinearLayoutManager(requireContext())
         }
     }
 
     override fun setObservers() {
         viewModel.getLogDays.observe(viewLifecycleOwner) {
-            adapter.setData(it)
+            logsAdapter.setData(it)
         }
     }
 
