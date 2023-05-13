@@ -7,20 +7,18 @@ import androidx.viewpager2.adapter.FragmentStateAdapter
 import com.hfad.gtrain.fragments.customExerciseFragment.CustomExerciseFragment
 
 class ExerciseListVpAdapter(
-    fragmentManager: FragmentManager,
-    lifecycle: Lifecycle,
-    private val muscleGroup: String
+    fragmentManager: FragmentManager, lifecycle: Lifecycle, private val muscleGroup: String
 ) : FragmentStateAdapter(fragmentManager, lifecycle) {
-
-    override fun getItemCount(): Int {
-        return TAB_COUNT
+    enum class FragmentType {
+        READY, CUSTOM
     }
 
+    override fun getItemCount() = TAB_COUNT
+
     override fun createFragment(position: Int): Fragment {
-        return when (position) {
-            0 -> ReadyExercisesFragment.newInstance(muscleGroup)
-            1 -> CustomExerciseFragment.newInstance(muscleGroup)
-            else -> ReadyExercisesFragment.newInstance(muscleGroup)
+        return when (FragmentType.values()[position]) {
+            FragmentType.READY -> ReadyExercisesFragment.newInstance(muscleGroup)
+            FragmentType.CUSTOM -> CustomExerciseFragment.newInstance(muscleGroup)
         }
     }
 

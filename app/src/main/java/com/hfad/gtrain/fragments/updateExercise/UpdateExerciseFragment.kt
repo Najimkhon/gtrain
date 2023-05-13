@@ -16,7 +16,6 @@ import androidx.navigation.fragment.findNavController
 import androidx.navigation.fragment.navArgs
 import com.hfad.gtrain.base.BaseFragment
 import com.hfad.gtrain.databinding.FragmentUpdateExerciseBinding
-import com.hfad.gtrain.fragments.exerciseList.ExerciseListFragment
 import com.hfad.gtrain.fragments.utils.ImageHelper
 import com.hfad.gtrain.models.CustomExercise
 import com.hfad.gtrain.ui.dialogs.DialogManager
@@ -38,6 +37,7 @@ class UpdateExerciseFragment :
 
     @Inject
     lateinit var imageHelper: ImageHelper
+
     @Inject
     lateinit var dialogManager: DialogManager
 
@@ -148,7 +148,6 @@ class UpdateExerciseFragment :
             )
             viewModel.updateCustomExercise(newExercise)
             findNavController().popBackStack()
-            ExerciseListFragment.isCustomExerciseView = true
         } else {
             Toast.makeText(requireContext(), "Please, fill all the fields!", Toast.LENGTH_SHORT)
                 .show()

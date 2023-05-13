@@ -5,17 +5,12 @@ import android.content.Context
 import android.content.Intent
 import android.graphics.Bitmap
 import android.net.Uri
-import android.os.Bundle
 import android.provider.MediaStore
-import android.view.LayoutInflater
-import android.view.View
-import android.view.ViewGroup
 import android.widget.Toast
-import androidx.fragment.app.Fragment
 import androidx.fragment.app.activityViewModels
 import androidx.navigation.fragment.findNavController
+import com.hfad.gtrain.base.BaseFragment
 import com.hfad.gtrain.databinding.FragmentAddExerciseBinding
-import com.hfad.gtrain.fragments.exerciseList.ExerciseListFragment
 import com.hfad.gtrain.models.CustomExercise
 import com.hfad.gtrain.models.MuscleGroup
 import com.hfad.gtrain.ui.dialogs.DialogManager
@@ -26,9 +21,8 @@ import java.io.IOException
 import javax.inject.Inject
 
 @AndroidEntryPoint
-class AddExerciseFragment : Fragment() {
-    private var _binding: FragmentAddExerciseBinding? = null
-    private val binding get() = _binding!!
+class AddExerciseFragment :
+    BaseFragment<FragmentAddExerciseBinding>(FragmentAddExerciseBinding::inflate) {
     private val viewModel: MainViewModel by activityViewModels()
 
     @Inject
@@ -36,21 +30,13 @@ class AddExerciseFragment : Fragment() {
     private var imageUri: Uri? = null
     private var imageName: String = ""
 
-    override fun onCreateView(
-        inflater: LayoutInflater, container: ViewGroup?,
-        savedInstanceState: Bundle?
-    ): View {
-        _binding = FragmentAddExerciseBinding.inflate(inflater, container, false)
-        setListeners()
-
+    override fun setObservers() {
         viewModel.getAllMuscleGroup.observe(viewLifecycleOwner) {
             muscleGroupList = it
         }
-
-        return binding.root
     }
 
-    private fun setListeners() {
+    override fun setListeners() {
         binding.ivAddImage.setOnClickListener {
             launchGallery()
         }
@@ -125,7 +111,6 @@ class AddExerciseFragment : Fragment() {
             )
             viewModel.insertCustomExercise(newExercise)
             findNavController().popBackStack()
-            ExerciseListFragment.isCustomExerciseView = true
         } else {
             Toast.makeText(requireContext(), "Please, fill all the fields!", Toast.LENGTH_SHORT)
                 .show()
