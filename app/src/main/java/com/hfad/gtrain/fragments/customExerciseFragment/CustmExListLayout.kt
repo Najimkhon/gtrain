@@ -7,14 +7,18 @@ import android.view.LayoutInflater
 import android.view.View
 import android.widget.RelativeLayout
 import com.hfad.gtrain.databinding.CustomExerciseItemLayoutBinding
+import com.hfad.gtrain.fragments.utils.ImageHelper
 import com.hfad.gtrain.models.CustomExercise
+import dagger.hilt.android.AndroidEntryPoint
 import github.com.st235.lib_swipetoactionlayout.SwipeAction
 import github.com.st235.lib_swipetoactionlayout.SwipeMenuListener
 import kotlinx.coroutines.CoroutineScope
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.launch
 import kotlinx.coroutines.withContext
+import javax.inject.Inject
 
+@AndroidEntryPoint
 class CustomExListLayout(
     context: Context,
     private val listener: OnItemClickListener,
@@ -28,6 +32,9 @@ class CustomExListLayout(
     private val swipeActionLayout = binding.swipeToActionLayout
     private var position = 0
 
+    @Inject
+    lateinit var imageHelper: ImageHelper
+
 
     fun fillContent(currentExercise: CustomExercise, position: Int) {
         swipeActionLayout.menuListener = this
@@ -37,7 +44,7 @@ class CustomExListLayout(
         binding.tvCalorie.text = currentExercise.calories.toString()
 
         CoroutineScope(Dispatchers.IO).launch {
-            val photos = loadPhotos(currentExercise.image, context)
+            val photos = imageHelper.loadPhotos(currentExercise.image, context)
             if (photos.isNotEmpty()) {
                 withContext(Dispatchers.Main) {
                     binding.ivImage.setImageBitmap(photos[0])
@@ -48,16 +55,6 @@ class CustomExListLayout(
             listener.onItemClicked(currentExercise)
         }
 
-    }
-
-    private suspend fun loadPhotos(imageName: String, context: Context): List<Bitmap> {
-        return withContext(Dispatchers.IO) {
-            val files = context.filesDir.listFiles()
-            files.filter { it.canRead() && it.isFile && it.name.contentEquals(imageName) }.map {
-                val bytes = it.readBytes()
-                BitmapFactory.decodeByteArray(bytes, 0, bytes.size)
-            }
-        }
     }
 
     override fun onActionClicked(view: View, action: SwipeAction) {
