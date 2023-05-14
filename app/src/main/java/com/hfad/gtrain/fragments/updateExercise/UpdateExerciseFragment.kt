@@ -16,6 +16,7 @@ import com.hfad.gtrain.ui.dialogs.DialogManager
 import com.hfad.gtrain.ui.dialogs.OnDialogClickListener
 import com.hfad.gtrain.viewmodels.MainViewModel
 import dagger.hilt.android.AndroidEntryPoint
+import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.launch
 import javax.inject.Inject
 
@@ -176,7 +177,9 @@ class UpdateExerciseFragment :
             )
             binding.ivAddImage.setImageBitmap(selectedBitmap)
             imageName = imageHelper.generateFileName()
-            imageHelper.saveBitmapToInternalStorage(imageName, selectedBitmap!!)
+            lifecycleScope.launch(Dispatchers.IO) {
+                imageHelper.saveBitmapToInternalStorage(imageName, selectedBitmap!!)
+            }
         }
     }
 
