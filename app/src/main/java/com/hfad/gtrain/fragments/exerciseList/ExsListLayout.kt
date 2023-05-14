@@ -23,7 +23,6 @@ class ExsListLayout(context: Context, private val listener: OnItemClickListener)
             Picasso.get()
                 .load(imageUri)
                 .resize(200,200)
-                .placeholder(R.drawable.ic_info)
                 .into(binding.ivImage)
         }
         binding.cvExercise.setOnClickListener {

@@ -2,9 +2,7 @@ package com.hfad.gtrain.fragments.updateExercise
 
 import android.app.Activity
 import android.content.Intent
-import android.graphics.Bitmap
 import android.net.Uri
-import android.provider.MediaStore
 import android.widget.Toast
 import androidx.fragment.app.activityViewModels
 import androidx.lifecycle.lifecycleScope
@@ -172,20 +170,19 @@ class UpdateExerciseFragment :
         super.onActivityResult(requestCode, resultCode, data)
         if (requestCode == IMAGE_PICK_CODE && resultCode == Activity.RESULT_OK) {
             imageUri = data?.data!!
-            val bitmap: Bitmap = MediaStore.Images.Media.getBitmap(
-                requireContext().contentResolver, Uri.parse(
-                    imageUri.toString()
-                )
+            val inputStream = requireContext().contentResolver.openInputStream(data?.data!!)
+            val selectedBitmap = imageHelper.decodeSampledBitmapFromStream(
+                inputStream!!, REDUCED_WIDTH, REDUCED_HEIGHT
             )
-            imageUri!!.lastPathSegment?.let {
-                imageHelper.saveBitmapToInternalStorage(it, bitmap)
-                imageName = it
-            }
-            binding.ivAddImage.setImageURI(imageUri)
+            binding.ivAddImage.setImageBitmap(selectedBitmap)
+            imageName = imageHelper.generateFileName()
+            imageHelper.saveBitmapToInternalStorage(imageName, selectedBitmap!!)
         }
     }
 
     companion object {
         private const val IMAGE_PICK_CODE = 999
+        private const val REDUCED_WIDTH = 500
+        private const val REDUCED_HEIGHT = 500
     }
 }
